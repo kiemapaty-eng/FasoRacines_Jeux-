@@ -68,4 +68,112 @@
   .piece{ width:68%; height:68%; border-radius:50%; }
   .piece.p1{ background:radial-gradient(circle at 35% 30%,#e8c77a,#8a5a1f); }
   .piece.p2{ background:radial-gradient(circle at 35% 30%,#dfe3ea,#6d7480); }
-  .track{ display:flex; flex-
+  .track{ display:flex; flex-wrap:wrap; gap:4px; background:var(--wood); border-radius:14px; padding:10px; }
+  .track-cell{ width:12.5%; aspect-ratio:1; background:#3a2313; border-radius:6px; display:flex; align-items:center; justify-content:center; font-size:0.6rem; color:#8a7a63; position:relative; }
+  .pawn{ width:60%; height:60%; border-radius:50%; position:absolute; }
+  .pawn.p1{ background:radial-gradient(circle at 35% 30%,#e8c77a,#8a5a1f); left:2px; }
+  .pawn.p2{ background:radial-gradient(circle at 35% 30%,#dfe3ea,#6d7480); right:2px; }
+  #dice-face{ width:3.2rem; height:3.2rem; margin:1rem auto; background:#fff; border-radius:10px; display:flex; align-items:center; justify-content:center; font-family:'Fraunces',serif; font-size:1.6rem; color:var(--wood); box-shadow:0 4px 10px rgba(0,0,0,0.15); }
+</style>
+</head>
+<body>
+
+<div class="view active" id="view-home">
+  <div class="hero">
+    <div class="eyebrow">Racines · Jeux traditionnels d'Afrique</div>
+    <h1>5 jeux, un seul patrimoine.</h1>
+    <p>Awalé, Yoté, Dara, Achi et Ludo traditionnel — choisissez un jeu pour commencer.</p>
+    <button id="install-btn" onclick="installApp()" style="display:none; margin-top:1.2rem; background:var(--ochre); color:#fff; border:none; padding:0.7rem 1.3rem; border-radius:30px; font-weight:600; font-size:0.88rem; cursor:pointer; align-items:center; gap:0.5rem;">📲 Installer l'appli</button>
+  </div>
+  <div class="game-list">
+    <div class="game-card" onclick="showView('view-awale')">
+      <div class="game-icon">◉</div>
+      <div class="game-info"><h3>Awalé</h3><p>Semez vos graines, capturez celles de l'adversaire.</p><span class="game-tag">Contre l'IA</span></div>
+    </div>
+    <div class="game-card" onclick="showView('view-yote')">
+      <div class="game-icon">◆</div>
+      <div class="game-info"><h3>Yoté</h3><p>Posez, déplacez, capturez à deux — chaque prise en vaut deux.</p><span class="game-tag">À deux joueurs</span></div>
+    </div>
+    <div class="game-card" onclick="showView('view-dara')">
+      <div class="game-icon">▦</div>
+      <div class="game-info"><h3>Dara</h3><p>Alignez 3 pions pour capturer ceux de l'adversaire.</p><span class="game-tag">À deux joueurs</span></div>
+    </div>
+    <div class="game-card" onclick="showView('view-achi')">
+      <div class="game-icon">✕</div>
+      <div class="game-info"><h3>Achi</h3><p>Placez puis glissez vos pions pour aligner trois.</p><span class="game-tag">À deux joueurs</span></div>
+    </div>
+    <div class="game-card" onclick="showView('view-ludo')">
+      <div class="game-icon">●</div>
+      <div class="game-info"><h3>Ludo traditionnel</h3><p>Lancez le dé, avancez, renvoyez l'adversaire au départ.</p><span class="game-tag">À deux joueurs</span></div>
+    </div>
+  </div>
+</div>
+
+<div class="view" id="view-awale">
+  <div class="game-header"><button class="back-btn" onclick="showView('view-home')">←</button><h2>Awalé</h2></div>
+  <div class="game-body">
+    <div class="board-wrap">
+      <div class="board-labels"><span>Adversaire</span><span>IA</span></div>
+      <div class="row6" id="aw-row-top"></div>
+      <div class="row6" id="aw-row-bottom"></div>
+      <div class="board-labels" style="margin-top:0.6rem;"><span>Vous</span><span>Joueur</span></div>
+      <div class="store-row">
+        <div class="store"><b id="aw-score-player">0</b><span>Vos graines</span></div>
+        <div class="store"><b id="aw-score-ai">0</b><span>Graines IA</span></div>
+      </div>
+    </div>
+    <div class="status-line" id="aw-status">À vous de jouer</div>
+    <div class="controls-row"><button class="reset" onclick="Awale.reset()">Recommencer</button></div>
+    <div class="rule-box"><strong>Règle :</strong> semez vos graines une par une dans les trous suivants. Si la dernière tombe dans un trou adverse contenant alors 2 ou 3 graines, vous les capturez.</div>
+  </div>
+</div>
+
+<div class="view" id="view-yote">
+  <div class="game-header"><button class="back-btn" onclick="showView('view-home')">←</button><h2>Yoté</h2></div>
+  <div class="game-body">
+    <div class="reserve-row">
+      <div class="reserve-chip"><b id="yote-hand-p2">12</b><span>Réserve J2</span></div>
+      <div class="reserve-chip"><b id="yote-hand-p1">12</b><span>Réserve J1</span></div>
+    </div>
+    <div class="grid-board" id="yote-board" style="grid-template-columns:repeat(6,1fr);"></div>
+    <div class="status-line" id="yote-status">Placez ou déplacez — Joueur 1</div>
+    <div class="controls-row"><button class="reset" onclick="Yote.reset()">Recommencer</button></div>
+    <div class="rule-box"><strong>Règle authentique :</strong> le plateau démarre vide. À votre tour, posez un de vos 12 pions sur une case libre, ou déplacez un pion déjà sur le plateau vers une case adjacente. Sautez par-dessus un pion adverse pour le capturer — vous retirez alors <strong>ce pion et un second pion adverse au choix</strong>. Si vous ne pouvez plus jouer, celui qui a le plus de pions restants gagne.</div>
+  </div>
+</div>
+
+<div class="view" id="view-dara">
+  <div class="game-header"><button class="back-btn" onclick="showView('view-home')">←</button><h2>Dara</h2></div>
+  <div class="game-body">
+    <div class="grid-board" id="dara-board" style="grid-template-columns:repeat(6,1fr);"></div>
+    <div class="status-line" id="dara-status">Placement — Joueur 1</div>
+    <div class="controls-row"><button class="reset" onclick="Dara.reset()">Recommencer</button></div>
+    <div class="rule-box"><strong>Règle authentique :</strong> placez d'abord vos 12 pions (un alignement de 3 pendant cette phase ne compte pas). Puis déplacez un pion par tour vers une case adjacente libre. Un alignement de 3 formé <strong>pendant le déplacement</strong> capture un pion adverse au choix — sauf les pions déjà alignés par 3, qui sont protégés.</div>
+  </div>
+</div>
+
+<div class="view" id="view-achi">
+  <div class="game-header"><button class="back-btn" onclick="showView('view-home')">←</button><h2>Achi</h2></div>
+  <div class="game-body">
+    <div class="grid-board" id="achi-board" style="grid-template-columns:repeat(3,1fr); max-width:280px; margin:0 auto;"></div>
+    <div class="status-line" id="achi-status">Placement — Joueur 1</div>
+    <div class="controls-row"><button class="reset" onclick="Achi.reset()">Recommencer</button></div>
+    <div class="rule-box"><strong>Règle authentique :</strong> chaque joueur a 4 pions (version ghanéenne principale). Placez-les d'abord, puis glissez-les d'un nœud à un nœud voisin le long des lignes (pas de saut). Le premier à aligner 3 pions gagne.</div>
+  </div>
+</div>
+
+<div class="view" id="view-ludo">
+  <div class="game-header"><button class="back-btn" onclick="showView('view-home')">←</button><h2>Ludo traditionnel</h2></div>
+  <div class="game-body">
+    <div class="track" id="ludo-track"></div>
+    <div id="dice-face">–</div>
+    <div class="status-line" id="ludo-status">Tour du joueur 1 — lancez le dé</div>
+    <div class="controls-row">
+      <button class="action primary" onclick="Ludo.roll()">Lancer le dé</button>
+      <button class="reset" onclick="Ludo.reset()">Recommencer</button>
+    </div>
+    <div class="rule-box"><strong>Règle :</strong> il faut un 6 pour entrer sur le parcours. Avancez du nombre indiqué par le dé. Si vous tombez sur l'adversaire, il retourne au départ. Premier arrivé au bout gagne.</div>
+  </div>
+</div>
+
+<script>

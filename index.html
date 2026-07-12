@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Racines — 5 jeux traditionnels d'Afrique</title>
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#1B1F3B">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Racines">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --indigo:#1B1F3B; --indigo-deep:#10132A; --ochre:#C97C2C; --wood:#6B3F26;
+    --bone:#EFE6D3; --kente:#A62639; --green-ok:#3E7B4F;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  body{ background:var(--bone); color:var(--indigo-deep); font-family:'Work Sans', sans-serif; line-height:1.6; }
+  h1,h2,h3{ font-family:'Fraunces', serif; font-weight:700; letter-spacing:-0.01em; }
+  button{ font-family:'Work Sans', sans-serif; }
+  .view{ display:none; }
+  .view.active{ display:block; }
+  .hero{ background:var(--indigo); color:var(--bone); padding:2.6rem 1.5rem 2rem; }
+  .eyebrow{ font-size:0.72rem; text-transform:uppercase; letter-spacing:0.16em; color:var(--ochre); font-weight:600; margin-bottom:0.7rem; }
+  .hero h1{ font-size:1.7rem; max-width:16ch; }
+  .hero p{ color:#D8D2C0; font-size:0.92rem; margin-top:0.6rem; max-width:34ch; }
+  .game-list{ padding:1.6rem 1.2rem 3rem; max-width:640px; margin:0 auto; display:grid; gap:0.9rem; }
+  .game-card{ background:#fff; border:1px solid #e2d6ba; border-radius:16px; padding:1.1rem 1.2rem; display:flex; align-items:center; gap:1rem; cursor:pointer; }
+  .game-card:hover{ border-color:var(--ochre); }
+  .game-icon{ width:3rem; height:3rem; min-width:3rem; border-radius:12px; display:flex; align-items:center; justify-content:center; font-size:1.4rem; background:var(--wood); color:var(--bone); }
+  .game-info h3{ font-size:1.05rem; margin-bottom:0.15rem; }
+  .game-info p{ font-size:0.82rem; color:#5b5548; }
+  .game-tag{ font-size:0.68rem; text-transform:uppercase; letter-spacing:0.06em; font-weight:600; color:var(--ochre); margin-top:0.3rem; display:inline-block; }
+  .game-header{ background:var(--indigo); color:var(--bone); padding:1.1rem 1.2rem; display:flex; align-items:center; gap:0.8rem; position:sticky; top:0; z-index:5; }
+  .back-btn{ background:rgba(255,255,255,0.1); border:none; color:var(--bone); width:2.2rem; height:2.2rem; border-radius:50%; font-size:1.1rem; cursor:pointer; }
+  .game-header h2{ font-size:1.05rem; color:var(--bone); }
+  .game-body{ padding:1.4rem 1.2rem 3rem; max-width:560px; margin:0 auto; }
+  .status-line{ text-align:center; font-weight:600; font-size:0.92rem; color:var(--wood); min-height:1.4em; margin:0.9rem 0; }
+  .controls-row{ display:flex; justify-content:center; gap:0.7rem; margin-top:1rem; flex-wrap:wrap; }
+  button.reset, button.action{ background:none; border:1px solid var(--wood); color:var(--wood); padding:0.5rem 1.1rem; border-radius:30px; font-size:0.82rem; font-weight:600; cursor:pointer; }
+  button.reset:hover, button.action:hover{ background:var(--wood); color:var(--bone); }
+  button.action.primary{ background:var(--ochre); border-color:var(--ochre); color:#fff; }
+  button.action.primary:hover{ background:#b06a24; }
+  .rule-box{ background:rgba(201,124,44,0.08); border-left:3px solid var(--ochre); padding:0.9rem 1rem; border-radius:6px; font-size:0.82rem; color:#5b5548; margin-top:1.6rem; }
+  .rule-box strong{ color:var(--indigo-deep); }
+  .reserve-row{ display:flex; justify-content:space-between; gap:0.8rem; margin-bottom:1rem; }
+  .reserve-chip{ flex:1; background:#fff; border:1px solid #e2d6ba; border-radius:12px; padding:0.6rem; text-align:center; }
+  .reserve-chip b{ font-family:'Fraunces',serif; font-size:1.3rem; display:block; color:var(--wood); }
+  .reserve-chip span{ font-size:0.68rem; text-transform:uppercase; letter-spacing:0.06em; color:#8a7a63; }
+  .board-wrap{ background:linear-gradient(180deg,var(--wood),#4d2c19); border-radius:18px; padding:1.1rem 0.9rem; box-shadow:0 14px 30px -12px rgba(0,0,0,0.5); }
+  .row6{ display:grid; grid-template-columns:repeat(6,1fr); gap:0.5rem; }
+  .row6 + .row6{ margin-top:0.5rem; }
+  .pit{ aspect-ratio:1; border-radius:50%; background:radial-gradient(circle at 35% 30%,#3a2313,#1e1108 75%); box-shadow:inset 0 3px 6px rgba(0,0,0,0.6); display:flex; align-items:center; justify-content:center; flex-wrap:wrap; gap:2px; padding:4px; cursor:pointer; position:relative; }
+  .pit.playable::after{ content:""; position:absolute; inset:-3px; border-radius:50%; border:1.5px solid var(--ochre); opacity:0.5; }
+  .pit .count{ position:absolute; bottom:-1.3rem; font-size:0.65rem; color:#8a7a63; font-weight:600; }
+  .seed{ width:8px; height:8px; border-radius:50%; background:radial-gradient(circle at 35% 30%,#d9b45f,#3D2B1F 80%); }
+  .board-labels{ display:flex; justify-content:space-between; color:#B9AE93; font-size:0.7rem; text-transform:uppercase; letter-spacing:0.1em; margin:0.6rem 0.2rem; }
+  .store-row{ display:flex; justify-content:space-between; margin-top:1rem; padding:0.7rem 0.9rem; background:rgba(0,0,0,0.18); border-radius:12px; color:var(--bone); }
+  .store{ text-align:center; }
+  .store b{ font-family:'Fraunces',serif; font-size:1.4rem; display:block; color:var(--ochre); }
+  .store span{ font-size:0.68rem; text-transform:uppercase; letter-spacing:0.07em; color:#B9AE93; }
+  .grid-board{ display:grid; gap:6px; background:var(--wood); border-radius:14px; padding:10px; }
+  .cell{ aspect-ratio:1; background:#3a2313; border-radius:6px; display:flex; align-items:center; justify-content:center; cursor:pointer; position:relative; }
+  .cell.selectable::after{ content:""; position:absolute; inset:2px; border-radius:5px; border:1.5px dashed var(--ochre); opacity:0.6; }
+  .cell.selected::after{ content:""; position:absolute; inset:2px; border-radius:5px; border:2px solid #fff; }
+  .piece{ width:68%; height:68%; border-radius:50%; }
+  .piece.p1{ background:radial-gradient(circle at 35% 30%,#e8c77a,#8a5a1f); }
+  .piece.p2{ background:radial-gradient(circle at 35% 30%,#dfe3ea,#6d7480); }
+  .track{ display:flex; flex-

@@ -176,4 +176,110 @@
   </div>
 </div>
 
-<script>
+<script>function showView(id){
+  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo(0,0);
+}
+
+if('serviceWorker' in navigator){
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('service-worker.js').catch(()=>{});
+  });
+}
+
+let deferredInstallPrompt = null;
+window.addEventListener('beforeinstallprompt', (e) => {
+  e.preventDefault();
+  deferredInstallPrompt = e;
+  const btn = document.getElementById('install-btn');
+  if(btn) btn.style.display = 'inline-flex';
+});
+function installApp(){
+  const btn = document.getElementById('install-btn');
+  if(deferredInstallPrompt){
+    deferredInstallPrompt.prompt();
+    deferredInstallPrompt.userChoice.finally(() => {
+      deferredInstallPrompt = null;
+      if(btn) btn.style.display = 'none';
+    });
+  }
+}
+window.addEventListener('appinstalled', () => {
+  const btn = document.getElementById('install-btn');
+  if(btn) btn.style.display = 'none';
+});
+
+const Awale = (function(){
+  let board, stores, turn, gameOver;
+  const rowTop = document.getElementById('aw-row-top');
+  const rowBottom = document.getElementById('aw-row-bottom');
+  const statusEl = document.getElementById('aw-status');
+
+  function render(){
+    rowTop.innerHTML=''; rowBottom.innerHTML='';
+    for(let i=5;i>=0;i--) rowTop.appendChild(makePit(i,false));
+    for(let i=6;i<=11;i++) rowBottom.appendChild(makePit(i, turn==='player' && !gameOver));
+    document.getElementById('aw-score-player').textContent = stores.player;
+    document.getElementById('aw-score-ai').textContent = stores.ai;
+  }
+  function makePit(index, playable){
+    const div=document.createElement('div');
+    div.className='pit'+(playable && board[index]>0 ? ' playable':'');
+    for(let s=0;s<Math.min(board[index],12);s++){ const sd=document.createElement('div'); sd.className='seed'; div.appendChild(sd); }
+    const c=document.createElement('div'); c.className='count'; c.textContent=board[index]; div.appendChild(c);
+    if(playable && board[index]>0) div.addEventListener('click', ()=>playMove(index));
+    return div;
+  }
+  function nextIndex(i){ return (i+1)%12; }
+  function sow(index,isPlayer){
+    let seeds=board[index]; board[index]=0; let i=index;
+    while(seeds>0){ i=nextIndex(i); if(i===index) continue; board[i]++; seeds--; }
+    let last=i; const opp=isPlayer?[0,5]:[6,11];
+    while(last>=opp[0] && last<=opp[1] && (board[last]===2||board[last]===3)){
+      if(isPlayer) stores.player+=board[last]; else stores.ai+=board[last];
+      board[last]=0; last--; if(last<opp[0]) break;
+    }
+  }
+  function sideSum(r){ let s=0; for(let i=r[0];i<=r[1];i++) s+=board[i]; return s; }
+  function checkEnd(){
+    const ps=sideSum([6,11]), as=sideSum([0,5]);
+    if(ps===0||as===0){
+      stores.player+=ps; stores.ai+=as; board=board.map(()=>0); gameOver=true;
+      statusEl.textContent=(stores.player>stores.ai?'Vous gagnez ! 🎉':(stores.player<stores.ai?"L'IA gagne.":'Match nul.'))+' — '+stores.player+' / '+stores.ai;
+      return true;
+    }
+    return false;
+  }
+  function playMove(index){
+    if(gameOver||turn!=='player'||board[index]===0) return;
+    sow(index,true); render(); if(checkEnd()) return;
+    turn='ai'; statusEl.textContent="L'IA réfléchit..."; render();
+    setTimeout(aiMove,550);
+  }
+  function aiMove(){
+    if(gameOver) return;
+    let bestIndex=-1, bestCapture=-1;
+    for(let i=0;i<=5;i++){
+      if(board[i]===0) continue;
+      const bCopy=board.slice(), sCopy={...stores};
+      const savedB=board, savedS=stores; board=bCopy; stores=sCopy;
+      sow(i,false); const gained=stores.ai-sCopy.ai;
+      board=savedB; stores=savedS;
+      if(gained>bestCapture){ bestCapture=gained; bestIndex=i; }
+    }
+    if(bestIndex===-1){
+      const valid=[]; for(let i=0;i<=5;i++) if(board[i]>0) valid.push(i);
+      if(valid.length===0){ checkEnd(); render(); return; }
+      bestIndex=valid[Math.floor(Math.random()*valid.length)];
+    }
+    sow(bestIndex,false); render(); if(checkEnd()) return;
+    turn='player'; statusEl.textContent='À vous de jouer'; render();
+  }
+  function reset(){
+    board=new Array(12).fill(4); stores={player:0,ai:0}; turn='player'; gameOver=false;
+    statusEl.textContent='À vous de jouer'; render();
+  }
+  reset();
+  return { reset };
+})();

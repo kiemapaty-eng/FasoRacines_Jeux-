@@ -33,6 +33,8 @@
   .game-info h3{ font-size:1.05rem; margin-bottom:0.15rem; }
   .game-info p{ font-size:0.82rem; color:#5b5548; }
   .game-tag{ font-size:0.68rem; text-transform:uppercase; letter-spacing:0.06em; font-weight:600; color:var(--ochre); margin-top:0.3rem; display:inline-block; }
+  .play-btn{ background:var(--ochre); color:#fff; border:none; padding:0.5rem 1rem; border-radius:24px; font-size:0.8rem; font-weight:600; cursor:pointer; white-space:nowrap; margin-left:auto; }
+  .play-btn:hover{ background:#b06a24; }
   .game-header{ background:var(--indigo); color:var(--bone); padding:1.1rem 1.2rem; display:flex; align-items:center; gap:0.8rem; position:sticky; top:0; z-index:5; }
   .back-btn{ background:rgba(255,255,255,0.1); border:none; color:var(--bone); width:2.2rem; height:2.2rem; border-radius:50%; font-size:1.1rem; cursor:pointer; }
   .game-header h2{ font-size:1.05rem; color:var(--bone); }
@@ -86,25 +88,30 @@
     <button id="install-btn" onclick="installApp()" style="display:none; margin-top:1.2rem; background:var(--ochre); color:#fff; border:none; padding:0.7rem 1.3rem; border-radius:30px; font-weight:600; font-size:0.88rem; cursor:pointer; align-items:center; gap:0.5rem;">📲 Installer l'appli</button>
   </div>
   <div class="game-list">
-    <div class="game-card" onclick="showView('view-awale')">
+    <div class="game-card">
       <div class="game-icon">◉</div>
       <div class="game-info"><h3>Awalé</h3><p>Semez vos graines, capturez celles de l'adversaire.</p><span class="game-tag">Contre l'IA</span></div>
+      <button class="play-btn" onclick="showView('view-awale')">Jouer</button>
     </div>
-    <div class="game-card" onclick="showView('view-yote')">
+    <div class="game-card">
       <div class="game-icon">◆</div>
       <div class="game-info"><h3>Yoté</h3><p>Posez, déplacez, capturez à deux — chaque prise en vaut deux.</p><span class="game-tag">À deux joueurs</span></div>
+      <button class="play-btn" onclick="showView('view-yote')">Jouer</button>
     </div>
-    <div class="game-card" onclick="showView('view-dara')">
+    <div class="game-card">
       <div class="game-icon">▦</div>
       <div class="game-info"><h3>Dara</h3><p>Alignez 3 pions pour capturer ceux de l'adversaire.</p><span class="game-tag">À deux joueurs</span></div>
+      <button class="play-btn" onclick="showView('view-dara')">Jouer</button>
     </div>
-    <div class="game-card" onclick="showView('view-achi')">
+    <div class="game-card">
       <div class="game-icon">✕</div>
       <div class="game-info"><h3>Achi</h3><p>Placez puis glissez vos pions pour aligner trois.</p><span class="game-tag">À deux joueurs</span></div>
+      <button class="play-btn" onclick="showView('view-achi')">Jouer</button>
     </div>
-    <div class="game-card" onclick="showView('view-ludo')">
+    <div class="game-card">
       <div class="game-icon">●</div>
       <div class="game-info"><h3>Ludo traditionnel</h3><p>Lancez le dé, avancez, renvoyez l'adversaire au départ.</p><span class="game-tag">À deux joueurs</span></div>
+      <button class="play-btn" onclick="showView('view-ludo')">Jouer</button>
     </div>
   </div>
 </div>
@@ -176,7 +183,8 @@
   </div>
 </div>
 
-<script>function showView(id){
+<script>
+function showView(id){
   document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
   document.getElementById(id).classList.add('active');
   window.scrollTo(0,0);
@@ -184,7 +192,7 @@
 
 if('serviceWorker' in navigator){
   window.addEventListener('load', () => {
-    navigator.serviceWorker.register('service-worker.js').catch(()=>{});
+    navigator.serviceWorker.register('service-worker.js').catch(function(){});
   });
 }
 
@@ -210,6 +218,7 @@ window.addEventListener('appinstalled', () => {
   if(btn) btn.style.display = 'none';
 });
 
+/* ===================== AWALE ===================== */
 const Awale = (function(){
   let board, stores, turn, gameOver;
   const rowTop = document.getElementById('aw-row-top');
@@ -228,7 +237,7 @@ const Awale = (function(){
     div.className='pit'+(playable && board[index]>0 ? ' playable':'');
     for(let s=0;s<Math.min(board[index],12);s++){ const sd=document.createElement('div'); sd.className='seed'; div.appendChild(sd); }
     const c=document.createElement('div'); c.className='count'; c.textContent=board[index]; div.appendChild(c);
-    if(playable && board[index]>0) div.addEventListener('click', ()=>playMove(index));
+    if(playable && board[index]>0) div.addEventListener('click', function(){ playMove(index); });
     return div;
   }
   function nextIndex(i){ return (i+1)%12; }
@@ -245,7 +254,7 @@ const Awale = (function(){
   function checkEnd(){
     const ps=sideSum([6,11]), as=sideSum([0,5]);
     if(ps===0||as===0){
-      stores.player+=ps; stores.ai+=as; board=board.map(()=>0); gameOver=true;
+      stores.player+=ps; stores.ai+=as; board=board.map(function(){return 0;}); gameOver=true;
       statusEl.textContent=(stores.player>stores.ai?'Vous gagnez ! 🎉':(stores.player<stores.ai?"L'IA gagne.":'Match nul.'))+' — '+stores.player+' / '+stores.ai;
       return true;
     }
@@ -262,7 +271,7 @@ const Awale = (function(){
     let bestIndex=-1, bestCapture=-1;
     for(let i=0;i<=5;i++){
       if(board[i]===0) continue;
-      const bCopy=board.slice(), sCopy={...stores};
+      const bCopy=board.slice(), sCopy={player:stores.player,ai:stores.ai};
       const savedB=board, savedS=stores; board=bCopy; stores=sCopy;
       sow(i,false); const gained=stores.ai-sCopy.ai;
       board=savedB; stores=savedS;
@@ -283,3 +292,366 @@ const Awale = (function(){
   reset();
   return { reset };
 })();
+
+/* ===================== YOTE ===================== */
+const Yote = (function(){
+  let board, hand, turn, gameOver, selected;
+  const boardEl = document.getElementById('yote-board');
+  const statusEl = document.getElementById('yote-status');
+  const handP1El = document.getElementById('yote-hand-p1');
+  const handP2El = document.getElementById('yote-hand-p2');
+  const SIZE = 6;
+  function idx(r,c){ return r*SIZE+c; }
+  function neighbors(i){
+    const r = Math.floor(i/SIZE), c = i%SIZE;
+    const list = [];
+    if(r>0) list.push(idx(r-1,c));
+    if(r<SIZE-1) list.push(idx(r+1,c));
+    if(c>0) list.push(idx(r,c-1));
+    if(c<SIZE-1) list.push(idx(r,c+1));
+    return list;
+  }
+  function render(){
+    boardEl.innerHTML='';
+    for(let i=0;i<SIZE*SIZE;i++){
+      const cell=document.createElement('div');
+      cell.className='cell';
+      if(board[i]){
+        const p=document.createElement('div');
+        p.className='piece '+(board[i]===1?'p1':'p2');
+        cell.appendChild(p);
+      }
+      if(!gameOver){
+        if(hand[turn]>0 && !board[i]){
+          cell.classList.add('selectable');
+          cell.addEventListener('click', (function(idx2){ return function(){ place(idx2); }; })(i));
+        } else if(hand[turn]===0){
+          if(selected===i) cell.classList.add('selected');
+          if(board[i]===turn){
+            cell.addEventListener('click', (function(idx2){ return function(){ select(idx2); }; })(i));
+          } else if(selected!==null && canMoveOrCapture(selected,i)){
+            cell.classList.add('selectable');
+            cell.addEventListener('click', (function(idx2){ return function(){ moveOrCapture(selected,idx2); }; })(i));
+          }
+        }
+      }
+      boardEl.appendChild(cell);
+    }
+    handP1El.textContent = hand[1];
+    handP2El.textContent = hand[2];
+  }
+  function place(i){
+    if(gameOver||hand[turn]<=0||board[i]) return;
+    board[i]=turn; hand[turn]--;
+    endTurn();
+  }
+  function select(i){
+    selected = (selected===i) ? null : i;
+    render();
+  }
+  function canMoveOrCapture(from,to){
+    if(neighbors(from).indexOf(to)!==-1 && !board[to]) return true;
+    const r1=Math.floor(from/SIZE), c1=from%SIZE;
+    const r2=Math.floor(to/SIZE), c2=to%SIZE;
+    const dr=r2-r1, dc=c2-c1;
+    if((Math.abs(dr)===2 && dc===0) || (dr===0 && Math.abs(dc)===2)){
+      const mid = idx(r1+dr/2, c1+dc/2);
+      if(board[mid] && board[mid]!==turn && !board[to]) return true;
+    }
+    return false;
+  }
+  function moveOrCapture(from,to){
+    if(neighbors(from).indexOf(to)!==-1 && !board[to]){
+      board[to]=board[from]; board[from]=0; selected=null;
+      endTurn();
+      return;
+    }
+    const r1=Math.floor(from/SIZE), c1=from%SIZE;
+    const r2=Math.floor(to/SIZE), c2=to%SIZE;
+    const dr=r2-r1, dc=c2-c1;
+    const mid = idx(r1+dr/2, c1+dc/2);
+    if(board[mid] && board[mid]!==turn){
+      board[to]=board[from]; board[from]=0; board[mid]=0;
+      selected=null;
+      statusEl.textContent = 'Capture ! Choisissez un second pion adverse à retirer.';
+      render();
+      enableBonusCapture();
+      return;
+    }
+  }
+  function enableBonusCapture(){
+    const cells = boardEl.querySelectorAll('.cell');
+    for(let i=0;i<SIZE*SIZE;i++){
+      if(board[i] && board[i]!==turn){
+        (function(idx2){
+          cells[idx2].classList.add('selectable');
+          cells[idx2].addEventListener('click', function(){
+            board[idx2]=0;
+            endTurn();
+          }, { once:true });
+        })(i);
+      }
+    }
+  }
+  function checkWin(){
+    const count1 = board.filter(function(v){return v===1;}).length + hand[1];
+    const count2 = board.filter(function(v){return v===2;}).length + hand[2];
+    if(count1===0){ gameOver=true; statusEl.textContent='Joueur 2 gagne !'; return true; }
+    if(count2===0){ gameOver=true; statusEl.textContent='Joueur 1 gagne !'; return true; }
+    return false;
+  }
+  function endTurn(){
+    if(checkWin()){ render(); return; }
+    turn = turn===1?2:1;
+    statusEl.textContent = 'Placez ou déplacez — Joueur '+turn;
+    render();
+  }
+  function reset(){
+    board = new Array(SIZE*SIZE).fill(0);
+    hand = {1:12,2:12};
+    turn = 1; gameOver=false; selected=null;
+    statusEl.textContent='Placez ou déplacez — Joueur 1';
+    render();
+  }
+  reset();
+  return { reset };
+})();
+
+/* ===================== DARA ===================== */
+const Dara = (function(){
+  let board, placed, turn, gameOver, phase, selected;
+  const boardEl = document.getElementById('dara-board');
+  const statusEl = document.getElementById('dara-status');
+  const SIZE = 6;
+  function idx(r,c){ return r*SIZE+c; }
+  function neighbors(i){
+    const r=Math.floor(i/SIZE), c=i%SIZE;
+    const list=[];
+    if(r>0) list.push(idx(r-1,c));
+    if(r<SIZE-1) list.push(idx(r+1,c));
+    if(c>0) list.push(idx(r,c-1));
+    if(c<SIZE-1) list.push(idx(r,c+1));
+    return list;
+  }
+  function linesThrough(i){
+    const r=Math.floor(i/SIZE), c=i%SIZE;
+    const lines=[];
+    for(let start=Math.max(0,c-2); start<=Math.min(SIZE-3,c); start++){
+      lines.push([idx(r,start),idx(r,start+1),idx(r,start+2)]);
+    }
+    for(let start=Math.max(0,r-2); start<=Math.min(SIZE-3,r); start++){
+      lines.push([idx(start,c),idx(start+1,c),idx(start+2,c)]);
+    }
+    return lines;
+  }
+  function render(){
+    boardEl.innerHTML='';
+    for(let i=0;i<SIZE*SIZE;i++){
+      const cell=document.createElement('div');
+      cell.className='cell';
+      if(board[i]){
+        const p=document.createElement('div');
+        p.className='piece '+(board[i]===1?'p1':'p2');
+        cell.appendChild(p);
+      }
+      if(!gameOver){
+        if(phase==='place'){
+          if(!board[i]){
+            cell.classList.add('selectable');
+            cell.addEventListener('click', (function(idx2){ return function(){ place(idx2); }; })(i));
+          }
+        } else {
+          if(selected===i) cell.classList.add('selected');
+          if(board[i]===turn){
+            cell.addEventListener('click', (function(idx2){ return function(){ select(idx2); }; })(i));
+          } else if(selected!==null && !board[i] && neighbors(selected).indexOf(i)!==-1){
+            cell.classList.add('selectable');
+            cell.addEventListener('click', (function(idx2){ return function(){ move(selected,idx2); }; })(i));
+          }
+        }
+      }
+      boardEl.appendChild(cell);
+    }
+  }
+  function place(i){
+    board[i]=turn; placed[turn]++;
+    if(placed[1]>=12 && placed[2]>=12){ phase='move'; turn=1; statusEl.textContent='Déplacement — Joueur 1'; render(); return; }
+    turn = turn===1?2:1;
+    statusEl.textContent = 'Placement — Joueur '+turn;
+    render();
+  }
+  function select(i){ selected=(selected===i)?null:i; render(); }
+  function move(from,to){
+    board[to]=board[from]; board[from]=0; selected=null;
+    for(const line of linesThrough(to)){
+      if(line.every(function(p){return board[p]===turn;})){
+        statusEl.textContent='Alignement ! Choisissez un pion adverse à capturer.';
+        render();
+        enableCapture();
+        return;
+      }
+    }
+    endTurn();
+  }
+  function enableCapture(){
+    const cells = boardEl.querySelectorAll('.cell');
+    const opp = turn===1?2:1;
+    for(let i=0;i<SIZE*SIZE;i++){
+      if(board[i]===opp){
+        (function(idx2){
+          cells[idx2].classList.add('selectable');
+          cells[idx2].addEventListener('click', function(){
+            board[idx2]=0; endTurn();
+          }, { once:true });
+        })(i);
+      }
+    }
+  }
+  function checkWin(){
+    const c1=board.filter(function(v){return v===1;}).length;
+    const c2=board.filter(function(v){return v===2;}).length;
+    if(c1<3){ gameOver=true; statusEl.textContent='Joueur 2 gagne !'; return true; }
+    if(c2<3){ gameOver=true; statusEl.textContent='Joueur 1 gagne !'; return true; }
+    return false;
+  }
+  function endTurn(){
+    if(checkWin()){ render(); return; }
+    turn = turn===1?2:1;
+    statusEl.textContent = 'Déplacement — Joueur '+turn;
+    render();
+  }
+  function reset(){
+    board=new Array(SIZE*SIZE).fill(0);
+    placed={1:0,2:0}; turn=1; gameOver=false; phase='place'; selected=null;
+    statusEl.textContent='Placement — Joueur 1';
+    render();
+  }
+  reset();
+  return { reset };
+})();
+
+/* ===================== ACHI ===================== */
+const Achi = (function(){
+  let board, placed, turn, gameOver, phase, selected;
+  const boardEl = document.getElementById('achi-board');
+  const statusEl = document.getElementById('achi-status');
+  const adj = [
+    [1,3,4],[0,2,4],[1,5,4],
+    [0,4,6],[0,1,2,3,5,6,7,8],[2,4,8],
+    [3,4,7],[6,8,4],[7,5,4]
+  ];
+  const lines = [[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];
+  function render(){
+    boardEl.innerHTML='';
+    for(let i=0;i<9;i++){
+      const cell=document.createElement('div');
+      cell.className='cell';
+      if(board[i]){
+        const p=document.createElement('div');
+        p.className='piece '+(board[i]===1?'p1':'p2');
+        cell.appendChild(p);
+      }
+      if(!gameOver){
+        if(phase==='place'){
+          if(!board[i]){
+            cell.classList.add('selectable');
+            cell.addEventListener('click', (function(idx2){ return function(){ place(idx2); }; })(i));
+          }
+        } else {
+          if(selected===i) cell.classList.add('selected');
+          if(board[i]===turn){
+            cell.addEventListener('click', (function(idx2){ return function(){ select(idx2); }; })(i));
+          } else if(selected!==null && !board[i] && adj[selected].indexOf(i)!==-1){
+            cell.classList.add('selectable');
+            cell.addEventListener('click', (function(idx2){ return function(){ move(selected,idx2); }; })(i));
+          }
+        }
+      }
+      boardEl.appendChild(cell);
+    }
+  }
+  function checkWin(){
+    for(const line of lines){
+      if(line.every(function(p){return board[p]===turn;})) return true;
+    }
+    return false;
+  }
+  function place(i){
+    board[i]=turn; placed[turn]++;
+    if(checkWin()){ gameOver=true; statusEl.textContent='Joueur '+turn+' gagne !'; render(); return; }
+    if(placed[1]>=4 && placed[2]>=4){ phase='move'; }
+    turn = turn===1?2:1;
+    statusEl.textContent = (phase==='place'?'Placement':'Déplacement')+' — Joueur '+turn;
+    render();
+  }
+  function select(i){ selected=(selected===i)?null:i; render(); }
+  function move(from,to){
+    board[to]=board[from]; board[from]=0; selected=null;
+    if(checkWin()){ gameOver=true; statusEl.textContent='Joueur '+turn+' gagne !'; render(); return; }
+    turn = turn===1?2:1;
+    statusEl.textContent = 'Déplacement — Joueur '+turn;
+    render();
+  }
+  function reset(){
+    board=new Array(9).fill(0);
+    placed={1:0,2:0}; turn=1; gameOver=false; phase='place'; selected=null;
+    statusEl.textContent='Placement — Joueur 1';
+    render();
+  }
+  reset();
+  return { reset };
+})();
+
+/* ===================== LUDO ===================== */
+const Ludo = (function(){
+  let pos, turn, gameOver;
+  const trackEl = document.getElementById('ludo-track');
+  const diceEl = document.getElementById('dice-face');
+  const statusEl = document.getElementById('ludo-status');
+  const TRACK_LEN = 24;
+  function render(){
+    trackEl.innerHTML='';
+    for(let i=0;i<TRACK_LEN;i++){
+      const cell=document.createElement('div');
+      cell.className='track-cell';
+      cell.textContent=i+1;
+      if(pos[1]===i){ const p=document.createElement('div'); p.className='pawn p1'; cell.appendChild(p); }
+      if(pos[2]===i){ const p=document.createElement('div'); p.className='pawn p2'; cell.appendChild(p); }
+      trackEl.appendChild(cell);
+    }
+  }
+  function roll(){
+    if(gameOver) return;
+    const d = 1+Math.floor(Math.random()*6);
+    diceEl.textContent = d;
+    if(pos[turn]===-1){
+      if(d===6){ pos[turn]=0; statusEl.textContent='Joueur '+turn+' entre en jeu !'; }
+      else { statusEl.textContent='Il faut un 6 pour entrer — Joueur '+(turn===1?2:1); turn=turn===1?2:1; render(); return; }
+    } else {
+      pos[turn]+=d;
+      if(pos[turn]>=TRACK_LEN){
+        gameOver=true; statusEl.textContent='Joueur '+turn+' a gagné !'; render(); return;
+      }
+      const opp=turn===1?2:1;
+      if(pos[turn]===pos[opp]){
+        pos[opp]=-1;
+        statusEl.textContent="Joueur "+turn+" capture l'adversaire !";
+        turn=opp; render(); return;
+      }
+    }
+    turn = turn===1?2:1;
+    statusEl.textContent='Tour du joueur '+turn+' — lancez le dé';
+    render();
+  }
+  function reset(){
+    pos={1:-1,2:-1}; turn=1; gameOver=false;
+    diceEl.textContent='–';
+    statusEl.textContent='Tour du joueur 1 — lancez le dé';
+    render();
+  }
+  reset();
+  return { roll, reset };
+})();
+</script>
+</body>
+</html>

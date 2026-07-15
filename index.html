@@ -113,6 +113,41 @@
       <div class="game-info"><h3>Ludo traditionnel</h3><p>Lancez le dé, avancez, renvoyez l'adversaire au départ.</p><span class="game-tag">À deux joueurs</span></div>
       <button class="play-btn" onclick="showView('view-ludo')">Jouer</button>
     </div>
+    <div class="game-card">
+      <div class="game-icon">🌐</div>
+      <div class="game-info"><h3>Jouer en ligne</h3><p>Yoté à distance — défiez un ami avec un code de salle.</p><span class="game-tag">Nouveau</span></div>
+      <button class="play-btn" onclick="showView('view-online-lobby')">Jouer</button>
+    </div>
+  </div>
+</div>
+
+<div class="view" id="view-online-lobby">
+  <div class="game-header"><button class="back-btn" onclick="showView('view-home')">←</button><h2>Jouer en ligne — Yoté</h2></div>
+  <div class="game-body">
+    <div class="rule-box" style="margin-top:0;">Créez une salle et partagez le code à 4 chiffres avec votre adversaire, ou rejoignez une salle existante avec le code reçu.</div>
+    <div class="controls-row" style="margin-top:1.4rem;">
+      <button class="action primary" onclick="OnlineYote.createRoom()">Créer une salle</button>
+    </div>
+    <div id="online-code-display" style="text-align:center; font-family:'Fraunces',serif; font-size:2.4rem; color:var(--wood); margin:0.6rem 0; letter-spacing:0.1em;"></div>
+    <div style="text-align:center; margin:1.6rem 0 0.6rem; font-weight:600; color:var(--wood);">— ou —</div>
+    <div style="display:flex; gap:0.6rem; justify-content:center; margin-top:0.8rem;">
+      <input id="online-code-input" maxlength="4" inputmode="numeric" placeholder="Code" style="width:7rem; text-align:center; font-size:1.2rem; padding:0.6rem; border:1px solid #e2d6ba; border-radius:10px;">
+      <button class="action" onclick="OnlineYote.joinRoom(document.getElementById('online-code-input').value)">Rejoindre</button>
+    </div>
+    <div class="status-line" id="online-lobby-status"></div>
+  </div>
+</div>
+
+<div class="view" id="view-yote-online">
+  <div class="game-header"><button class="back-btn" onclick="OnlineYote.leaveRoom()">←</button><h2>Yoté en ligne</h2></div>
+  <div class="game-body">
+    <div class="status-line" id="online-room-label" style="color:var(--indigo-deep); font-weight:400; font-size:0.8rem;"></div>
+    <div class="reserve-row">
+      <div class="reserve-chip"><b id="online-hand-p2">12</b><span>Réserve J2</span></div>
+      <div class="reserve-chip"><b id="online-hand-p1">12</b><span>Réserve J1</span></div>
+    </div>
+    <div class="grid-board" id="online-board" style="grid-template-columns:repeat(6,1fr);"></div>
+    <div class="status-line" id="online-status">Connexion...</div>
   </div>
 </div>
 
@@ -183,6 +218,8 @@
   </div>
 </div>
 
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
 <script>
 function showView(id){
   document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
@@ -415,9 +452,7 @@ const Yote = (function(){
   }
   reset();
   return { reset };
-})();
-
-/* ===================== DARA ===================== */
+})();/* ===================== DARA ===================== */
 const Dara = (function(){
   let board, placed, turn, gameOver, phase, selected;
   const boardEl = document.getElementById('dara-board');
@@ -651,6 +686,200 @@ const Ludo = (function(){
   }
   reset();
   return { roll, reset };
+})();
+
+/* ===================== ONLINE (Firebase) ===================== */
+const firebaseConfig = {
+  apiKey: "AIzaSyDqK1uiKmHjCCtvW0OMQ0bj_qyNgmGM1LY",
+  authDomain: "fasoracine.firebaseapp.com",
+  databaseURL: "https://fasoracine-default-rtdb.firebaseio.com/",
+  projectId: "fasoracine",
+  storageBucket: "fasoracine.firebasestorage.app",
+  messagingSenderId: "400120515060",
+  appId: "1:400120515060:web:8fbad38607e25fe66e11a1"
+};
+firebase.initializeApp(firebaseConfig);
+const db = firebase.database();
+
+const OnlineYote = (function(){
+  let roomCode = null, myPlayer = null, roomRef = null, state = null, selected = null;
+  const SIZE = 6;
+  const lobbyStatus = document.getElementById('online-lobby-status');
+  const codeDisplay = document.getElementById('online-code-display');
+  const boardEl = document.getElementById('online-board');
+  const statusEl = document.getElementById('online-status');
+  const handP1El = document.getElementById('online-hand-p1');
+  const handP2El = document.getElementById('online-hand-p2');
+  const roomLabelEl = document.getElementById('online-room-label');
+
+  function randomCode(){ return String(Math.floor(1000 + Math.random()*9000)); }
+
+  function createRoom(){
+    roomCode = randomCode();
+    myPlayer = 1;
+    lobbyStatus.textContent = 'Création de la salle...';
+    roomRef = db.ref('rooms/'+roomCode);
+    const initialState = { board:new Array(SIZE*SIZE).fill(0), hand:{1:12,2:12}, turn:1, gameOver:false, winner:null, bonus:false };
+    roomRef.set({ playerCount:1, state:initialState }).then(function(){
+      codeDisplay.textContent = roomCode;
+      lobbyStatus.textContent = "Salle créée ! Partagez ce code : "+roomCode+". En attente d'un adversaire...";
+      roomRef.child('playerCount').on('value', function(snap){
+        if(snap.val()===2){
+          roomRef.child('playerCount').off();
+          startGame();
+        }
+      });
+    });
+  }
+
+  function joinRoom(code){
+    if(!code || code.length!==4){ lobbyStatus.textContent = 'Entrez un code à 4 chiffres.'; return; }
+    roomCode = code;
+    roomRef = db.ref('rooms/'+roomCode);
+    lobbyStatus.textContent = 'Connexion...';
+    roomRef.once('value').then(function(snap){
+      const val = snap.val();
+      if(!val){ lobbyStatus.textContent = "Cette salle n'existe pas."; return; }
+      if(val.playerCount>=2){ lobbyStatus.textContent = 'Cette salle est déjà pleine.'; return; }
+      myPlayer = 2;
+      roomRef.child('playerCount').set(2).then(function(){
+        startGame();
+      });
+    });
+  }
+
+  function startGame(){
+    roomLabelEl.textContent = 'Salle '+roomCode+' — vous êtes le Joueur '+myPlayer;
+    showView('view-yote-online');
+    roomRef.child('state').on('value', function(snap){
+      state = snap.val();
+      if(state) render();
+    });
+  }
+
+  function leaveRoom(){
+    if(roomRef) roomRef.child('state').off();
+    roomCode = null; myPlayer = null; roomRef = null; state = null; selected = null;
+    showView('view-home');
+  }
+
+  function pushState(newState){
+    roomRef.child('state').set(newState);
+  }
+
+  function idx(r,c){ return r*SIZE+c; }
+  function neighbors(i){
+    const r=Math.floor(i/SIZE), c=i%SIZE;
+    const list=[];
+    if(r>0) list.push(idx(r-1,c));
+    if(r<SIZE-1) list.push(idx(r+1,c));
+    if(c>0) list.push(idx(r,c-1));
+    if(c<SIZE-1) list.push(idx(r,c+1));
+    return list;
+  }
+  function canMoveOrCapture(from,to,board,turn){
+    if(neighbors(from).indexOf(to)!==-1 && !board[to]) return true;
+    const r1=Math.floor(from/SIZE), c1=from%SIZE;
+    const r2=Math.floor(to/SIZE), c2=to%SIZE;
+    const dr=r2-r1, dc=c2-c1;
+    if((Math.abs(dr)===2 && dc===0) || (dr===0 && Math.abs(dc)===2)){
+      const mid = idx(r1+dr/2, c1+dc/2);
+      if(board[mid] && board[mid]!==turn && !board[to]) return true;
+    }
+    return false;
+  }
+
+  function render(){
+    if(!state) return;
+    const board = state.board, hand = state.hand, turn = state.turn;
+    const myTurn = (turn===myPlayer) && !state.gameOver;
+    boardEl.innerHTML='';
+    for(let i=0;i<SIZE*SIZE;i++){
+      const cell=document.createElement('div');
+      cell.className='cell';
+      if(board[i]){
+        const p=document.createElement('div');
+        p.className='piece '+(board[i]===1?'p1':'p2');
+        cell.appendChild(p);
+      }
+      if(myTurn && !state.bonus){
+        if(hand[turn]>0 && !board[i]){
+          cell.classList.add('selectable');
+          cell.addEventListener('click', (function(idx2){ return function(){ place(idx2); }; })(i));
+        } else if(hand[turn]===0){
+          if(selected===i) cell.classList.add('selected');
+          if(board[i]===turn){
+            cell.addEventListener('click', (function(idx2){ return function(){ select(idx2); }; })(i));
+          } else if(selected!==null && canMoveOrCapture(selected,i,board,turn)){
+            cell.classList.add('selectable');
+            cell.addEventListener('click', (function(idx2){ return function(){ moveOrCapture(selected,idx2); }; })(i));
+          }
+        }
+      } else if(myTurn && state.bonus && state.bonus===myPlayer){
+        const opp = turn===1?2:1;
+        if(board[i]===opp){
+          cell.classList.add('selectable');
+          cell.addEventListener('click', (function(idx2){ return function(){ bonusCapture(idx2); }; })(i));
+        }
+      }
+      boardEl.appendChild(cell);
+    }
+    handP1El.textContent = hand[1];
+    handP2El.textContent = hand[2];
+    if(state.gameOver){
+      statusEl.textContent = state.winner===myPlayer ? 'Vous avez gagné ! 🎉' : 'Vous avez perdu.';
+    } else if(state.bonus){
+      statusEl.textContent = state.bonus===myPlayer ? 'Capture bonus : choisissez un pion adverse.' : "L'adversaire choisit sa capture bonus...";
+    } else {
+      statusEl.textContent = myTurn ? 'À vous de jouer' : "Tour de l'adversaire...";
+    }
+  }
+
+  function place(i){
+    const board = state.board.slice();
+    const hand = { 1: state.hand[1], 2: state.hand[2] };
+    board[i]=myPlayer; hand[myPlayer]--;
+    const newState = Object.assign({}, state, { board:board, hand:hand });
+    endTurn(newState);
+  }
+  function select(i){ selected=(selected===i)?null:i; render(); }
+  function moveOrCapture(from,to){
+    const board = state.board.slice();
+    const turn = state.turn;
+    if(neighbors(from).indexOf(to)!==-1 && !board[to]){
+      board[to]=board[from]; board[from]=0; selected=null;
+      const newState = Object.assign({}, state, { board:board });
+      endTurn(newState);
+      return;
+    }
+    const r1=Math.floor(from/SIZE), c1=from%SIZE;
+    const r2=Math.floor(to/SIZE), c2=to%SIZE;
+    const dr=r2-r1, dc=c2-c1;
+    const mid = idx(r1+dr/2, c1+dc/2);
+    if(board[mid] && board[mid]!==turn){
+      board[to]=board[from]; board[from]=0; board[mid]=0;
+      selected=null;
+      const newState = Object.assign({}, state, { board:board, bonus:turn });
+      pushState(newState);
+    }
+  }
+  function bonusCapture(i){
+    const board = state.board.slice();
+    board[i]=0;
+    const newState = Object.assign({}, state, { board:board, bonus:false });
+    endTurn(newState);
+  }
+  function endTurn(newState){
+    const board = newState.board, hand = newState.hand;
+    const count1 = board.filter(function(v){return v===1;}).length + hand[1];
+    const count2 = board.filter(function(v){return v===2;}).length + hand[2];
+    if(count1===0){ newState.gameOver=true; newState.winner=2; }
+    else if(count2===0){ newState.gameOver=true; newState.winner=1; }
+    else { newState.turn = newState.turn===1?2:1; newState.bonus=false; }
+    pushState(newState);
+  }
+
+  return { createRoom, joinRoom, leaveRoom };
 })();
 </script>
 </body>

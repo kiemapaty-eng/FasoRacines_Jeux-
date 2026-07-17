@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Racines — 5 jeux traditionnels d'Afrique</title>
 <link rel="manifest" href="manifest.json">
-<meta name="theme-color" content="#1B1F3B">
+<meta name="theme-color" content="#15110D">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Racines">
@@ -13,146 +13,268 @@
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
   :root{
-    --indigo:#1B1F3B; --indigo-deep:#10132A; --ochre:#C97C2C; --wood:#6B3F26;
-    --bone:#EFE6D3; --kente:#A62639; --green-ok:#3E7B4F;
+    --bg:#15110D; --bg-alt:#1E1811; --card:#241C15; --card-border:#3A2C1E;
+    --ink:#F3ECE0; --ink-dim:#A89A86; --accent:#E0913D; --accent-dark:#B76E28;
+    --green:#3E7B4F; --wood:#6B3F26; --kente:#A62639;
   }
   *{box-sizing:border-box; margin:0; padding:0;}
-  body{ background:var(--bone); color:var(--indigo-deep); font-family:'Work Sans', sans-serif; line-height:1.6; }
+  body{ background:var(--bg); color:var(--ink); font-family:'Work Sans', sans-serif; line-height:1.6; padding-bottom:0; }
   h1,h2,h3{ font-family:'Fraunces', serif; font-weight:700; letter-spacing:-0.01em; }
   button{ font-family:'Work Sans', sans-serif; }
   .view{ display:none; }
   .view.active{ display:block; }
-  .hero{ background:var(--indigo); color:var(--bone); padding:2.6rem 1.5rem 2rem; }
-  .eyebrow{ font-size:0.72rem; text-transform:uppercase; letter-spacing:0.16em; color:var(--ochre); font-weight:600; margin-bottom:0.7rem; }
-  .hero h1{ font-size:1.7rem; max-width:16ch; }
-  .hero p{ color:#D8D2C0; font-size:0.92rem; margin-top:0.6rem; max-width:34ch; }
-  .game-list{ padding:1.6rem 1.2rem 3rem; max-width:640px; margin:0 auto; display:grid; gap:0.9rem; }
-  .game-card{ background:#fff; border:1px solid #e2d6ba; border-radius:16px; padding:1.1rem 1.2rem; display:flex; align-items:center; gap:1rem; cursor:pointer; }
-  .game-card:hover{ border-color:var(--ochre); }
-  .game-icon{ width:3rem; height:3rem; min-width:3rem; border-radius:12px; display:flex; align-items:center; justify-content:center; font-size:1.4rem; background:var(--wood); color:var(--bone); }
-  .game-info h3{ font-size:1.05rem; margin-bottom:0.15rem; }
-  .game-info p{ font-size:0.82rem; color:#5b5548; }
-  .game-tag{ font-size:0.68rem; text-transform:uppercase; letter-spacing:0.06em; font-weight:600; color:var(--ochre); margin-top:0.3rem; display:inline-block; }
-  .play-btn{ background:var(--ochre); color:#fff; border:none; padding:0.5rem 1rem; border-radius:24px; font-size:0.8rem; font-weight:600; cursor:pointer; white-space:nowrap; margin-left:auto; }
-  .play-btn:hover{ background:#b06a24; }
-  .game-header{ background:var(--indigo); color:var(--bone); padding:1.1rem 1.2rem; display:flex; align-items:center; gap:0.8rem; position:sticky; top:0; z-index:5; }
-  .back-btn{ background:rgba(255,255,255,0.1); border:none; color:var(--bone); width:2.2rem; height:2.2rem; border-radius:50%; font-size:1.1rem; cursor:pointer; }
-  .game-header h2{ font-size:1.05rem; color:var(--bone); }
-  .game-body{ padding:1.4rem 1.2rem 3rem; max-width:560px; margin:0 auto; }
-  .status-line{ text-align:center; font-weight:600; font-size:0.92rem; color:var(--wood); min-height:1.4em; margin:0.9rem 0; }
+  .eyebrow{ font-size:0.72rem; text-transform:uppercase; letter-spacing:0.16em; color:var(--accent); font-weight:600; margin-bottom:0.5rem; }
+
+  /* ---------- HOME ---------- */
+  .hero{ padding:3rem 1.5rem 1.2rem; text-align:center; }
+  .logo-mark{ font-size:3rem; margin-bottom:0.6rem; }
+  .hero h1{ font-size:1.9rem; color:var(--ink); }
+  .hero .tagline{ color:var(--accent); font-size:0.78rem; text-transform:uppercase; letter-spacing:0.14em; font-weight:600; margin-top:0.3rem; }
+  .hero p{ color:var(--ink-dim); font-size:0.9rem; margin:1rem auto 0; max-width:30ch; }
+  .home-actions{ padding:1.6rem 1.4rem 1rem; max-width:420px; margin:0 auto; display:flex; flex-direction:column; gap:0.7rem; }
+  .big-btn{ border:none; border-radius:16px; padding:1rem; font-weight:700; font-size:0.95rem; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:0.6rem; }
+  .big-btn.primary{ background:var(--accent); color:#1A1108; }
+  .big-btn.secondary{ background:var(--card); color:var(--ink); border:1px solid var(--card-border); }
+  .big-btn.tertiary{ background:transparent; color:var(--ink-dim); border:1px solid var(--card-border); }
+  #install-btn{ display:none; margin:0.4rem auto 0; background:none; border:1px solid var(--accent); color:var(--accent); padding:0.6rem 1.2rem; border-radius:30px; font-weight:600; font-size:0.82rem; cursor:pointer; }
+
+  /* ---------- BOTTOM NAV ---------- */
+  .bottom-nav{ position:sticky; bottom:0; display:flex; background:var(--bg-alt); border-top:1px solid var(--card-border); padding:0.6rem 0.4rem calc(0.6rem + env(safe-area-inset-bottom)); margin-top:2rem; }
+  .nav-item{ flex:1; background:none; border:none; color:var(--ink-dim); display:flex; flex-direction:column; align-items:center; gap:0.2rem; font-size:0.66rem; cursor:pointer; padding:0.3rem 0; }
+  .nav-item .nav-ic{ font-size:1.15rem; }
+  .nav-item.active{ color:var(--accent); }
+
+  /* ---------- GAMES LIST ---------- */
+  .game-header{ background:var(--bg-alt); color:var(--ink); padding:1.1rem 1.2rem; display:flex; align-items:center; gap:0.8rem; position:sticky; top:0; z-index:5; border-bottom:1px solid var(--card-border); }
+  .back-btn{ background:rgba(255,255,255,0.06); border:none; color:var(--ink); width:2.2rem; height:2.2rem; border-radius:50%; font-size:1.1rem; cursor:pointer; }
+  .game-header h2{ font-size:1.05rem; color:var(--ink); flex:1; }
+  .game-list{ padding:1.2rem 1rem 1rem; max-width:640px; margin:0 auto; display:grid; gap:0.8rem; }
+  .game-card{ background:var(--card); border:1px solid var(--card-border); border-radius:16px; padding:1rem 1.1rem; display:flex; align-items:center; gap:1rem; cursor:pointer; }
+  .game-card:active{ border-color:var(--accent); }
+  .game-icon{ width:2.9rem; height:2.9rem; min-width:2.9rem; border-radius:12px; display:flex; align-items:center; justify-content:center; font-size:1.3rem; background:var(--accent-dark); color:#1A1108; }
+  .game-info h3{ font-size:1rem; margin-bottom:0.15rem; color:var(--ink); }
+  .game-info p{ font-size:0.8rem; color:var(--ink-dim); }
+  .game-tag{ font-size:0.66rem; text-transform:uppercase; letter-spacing:0.06em; font-weight:600; color:var(--accent); margin-top:0.25rem; display:inline-block; }
+  .chevron{ color:var(--ink-dim); font-size:1.2rem; margin-left:auto; }
+
+  /* ---------- GAME INFO (tabs) ---------- */
+  .tabs-row{ display:flex; background:var(--bg-alt); border-bottom:1px solid var(--card-border); position:sticky; top:60px; z-index:4; }
+  .tab-btn{ flex:1; background:none; border:none; color:var(--ink-dim); padding:0.8rem 0.4rem; font-size:0.72rem; font-weight:700; letter-spacing:0.04em; cursor:pointer; border-bottom:2px solid transparent; }
+  .tab-btn.active{ color:var(--accent); border-bottom-color:var(--accent); }
+  .game-body{ padding:1.3rem 1.2rem 1.5rem; max-width:560px; margin:0 auto; }
+  .tab-panel{ display:none; }
+  .tab-panel.active{ display:block; }
+  .tab-panel p{ font-size:0.88rem; color:#CFC4B2; }
+  .rule-step{ display:flex; gap:0.8rem; margin-top:1rem; align-items:flex-start; }
+  .rule-num{ min-width:1.7rem; height:1.7rem; border-radius:50%; background:var(--accent-dark); color:#1A1108; font-family:'Fraunces',serif; font-weight:700; display:flex; align-items:center; justify-content:center; font-size:0.8rem; }
+  .rule-step p{ font-size:0.85rem; color:#CFC4B2; padding-top:0.15rem; }
+  .play-btn-big{ width:100%; margin-top:1.6rem; background:var(--accent); color:#1A1108; border:none; padding:0.95rem; border-radius:30px; font-weight:700; font-size:0.92rem; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:0.5rem; }
+
+  /* ---------- STEPPER (tutoriel) ---------- */
+  .stepper-dots{ display:flex; gap:0.5rem; justify-content:center; margin-bottom:1.4rem; }
+  .dot{ width:1.7rem; height:1.7rem; border-radius:50%; background:var(--card); border:1px solid var(--card-border); color:var(--ink-dim); display:flex; align-items:center; justify-content:center; font-size:0.75rem; font-weight:700; }
+  .dot.active{ background:var(--accent); border-color:var(--accent); color:#1A1108; }
+  .tuto-step-title{ font-family:'Fraunces',serif; font-weight:700; font-size:1.05rem; margin-bottom:0.5rem; color:var(--ink); }
+  .tuto-icon{ font-size:2.2rem; text-align:center; margin:1rem 0; opacity:0.85; }
+  .tuto-tip{ background:rgba(224,145,61,0.1); border-left:3px solid var(--accent); border-radius:6px; padding:0.8rem 0.9rem; margin-top:1.4rem; font-size:0.8rem; color:#CFC4B2; }
+
+  /* ---------- GAMEPLAY (boards) ---------- */
+  .status-line{ text-align:center; font-weight:600; font-size:0.92rem; color:var(--accent); min-height:1.4em; margin:0.9rem 0; }
   .controls-row{ display:flex; justify-content:center; gap:0.7rem; margin-top:1rem; flex-wrap:wrap; }
-  button.reset, button.action{ background:none; border:1px solid var(--wood); color:var(--wood); padding:0.5rem 1.1rem; border-radius:30px; font-size:0.82rem; font-weight:600; cursor:pointer; }
-  button.reset:hover, button.action:hover{ background:var(--wood); color:var(--bone); }
-  button.action.primary{ background:var(--ochre); border-color:var(--ochre); color:#fff; }
-  button.action.primary:hover{ background:#b06a24; }
-  .rule-box{ background:rgba(201,124,44,0.08); border-left:3px solid var(--ochre); padding:0.9rem 1rem; border-radius:6px; font-size:0.82rem; color:#5b5548; margin-top:1.6rem; }
-  .rule-box strong{ color:var(--indigo-deep); }
+  button.reset, button.action{ background:none; border:1px solid var(--card-border); color:var(--ink); padding:0.5rem 1.1rem; border-radius:30px; font-size:0.82rem; font-weight:600; cursor:pointer; }
+  button.reset:hover, button.action:hover{ background:var(--card); }
+  button.action.primary{ background:var(--accent); border-color:var(--accent); color:#1A1108; }
   .reserve-row{ display:flex; justify-content:space-between; gap:0.8rem; margin-bottom:1rem; }
-  .reserve-chip{ flex:1; background:#fff; border:1px solid #e2d6ba; border-radius:12px; padding:0.6rem; text-align:center; }
-  .reserve-chip b{ font-family:'Fraunces',serif; font-size:1.3rem; display:block; color:var(--wood); }
-  .reserve-chip span{ font-size:0.68rem; text-transform:uppercase; letter-spacing:0.06em; color:#8a7a63; }
-  .board-wrap{ background:linear-gradient(180deg,var(--wood),#4d2c19); border-radius:18px; padding:1.1rem 0.9rem; box-shadow:0 14px 30px -12px rgba(0,0,0,0.5); }
+  .reserve-chip{ flex:1; background:var(--card); border:1px solid var(--card-border); border-radius:12px; padding:0.6rem; text-align:center; }
+  .reserve-chip b{ font-family:'Fraunces',serif; font-size:1.3rem; display:block; color:var(--accent); }
+  .reserve-chip span{ font-size:0.68rem; text-transform:uppercase; letter-spacing:0.06em; color:var(--ink-dim); }
+  .board-wrap{ background:linear-gradient(180deg,var(--wood),#3a2313); border-radius:18px; padding:1.1rem 0.9rem; box-shadow:0 14px 30px -12px rgba(0,0,0,0.6); }
   .row6{ display:grid; grid-template-columns:repeat(6,1fr); gap:0.5rem; }
   .row6 + .row6{ margin-top:0.5rem; }
   .pit{ aspect-ratio:1; border-radius:50%; background:radial-gradient(circle at 35% 30%,#3a2313,#1e1108 75%); box-shadow:inset 0 3px 6px rgba(0,0,0,0.6); display:flex; align-items:center; justify-content:center; flex-wrap:wrap; gap:2px; padding:4px; cursor:pointer; position:relative; }
-  .pit.playable::after{ content:""; position:absolute; inset:-3px; border-radius:50%; border:1.5px solid var(--ochre); opacity:0.5; }
-  .pit .count{ position:absolute; bottom:-1.3rem; font-size:0.65rem; color:#8a7a63; font-weight:600; }
+  .pit.playable::after{ content:""; position:absolute; inset:-3px; border-radius:50%; border:1.5px solid var(--accent); opacity:0.6; }
+  .pit .count{ position:absolute; bottom:-1.3rem; font-size:0.65rem; color:var(--ink-dim); font-weight:600; }
   .seed{ width:8px; height:8px; border-radius:50%; background:radial-gradient(circle at 35% 30%,#d9b45f,#3D2B1F 80%); }
   .board-labels{ display:flex; justify-content:space-between; color:#B9AE93; font-size:0.7rem; text-transform:uppercase; letter-spacing:0.1em; margin:0.6rem 0.2rem; }
-  .store-row{ display:flex; justify-content:space-between; margin-top:1rem; padding:0.7rem 0.9rem; background:rgba(0,0,0,0.18); border-radius:12px; color:var(--bone); }
+  .store-row{ display:flex; justify-content:space-between; margin-top:1rem; padding:0.7rem 0.9rem; background:rgba(0,0,0,0.25); border-radius:12px; color:var(--ink); }
   .store{ text-align:center; }
-  .store b{ font-family:'Fraunces',serif; font-size:1.4rem; display:block; color:var(--ochre); }
+  .store b{ font-family:'Fraunces',serif; font-size:1.4rem; display:block; color:var(--accent); }
   .store span{ font-size:0.68rem; text-transform:uppercase; letter-spacing:0.07em; color:#B9AE93; }
   .grid-board{ display:grid; gap:6px; background:var(--wood); border-radius:14px; padding:10px; }
   .cell{ aspect-ratio:1; background:#3a2313; border-radius:6px; display:flex; align-items:center; justify-content:center; cursor:pointer; position:relative; }
-  .cell.selectable::after{ content:""; position:absolute; inset:2px; border-radius:5px; border:1.5px dashed var(--ochre); opacity:0.6; }
+  .cell.selectable::after{ content:""; position:absolute; inset:2px; border-radius:5px; border:1.5px dashed var(--accent); opacity:0.7; }
   .cell.selected::after{ content:""; position:absolute; inset:2px; border-radius:5px; border:2px solid #fff; }
   .piece{ width:68%; height:68%; border-radius:50%; }
   .piece.p1{ background:radial-gradient(circle at 35% 30%,#e8c77a,#8a5a1f); }
   .piece.p2{ background:radial-gradient(circle at 35% 30%,#dfe3ea,#6d7480); }
   .track{ display:flex; flex-wrap:wrap; gap:4px; background:var(--wood); border-radius:14px; padding:10px; }
-  .track-cell{ width:12.5%; aspect-ratio:1; background:#3a2313; border-radius:6px; display:flex; align-items:center; justify-content:center; font-size:0.6rem; color:#8a7a63; position:relative; }
+  .track-cell{ width:12.5%; aspect-ratio:1; background:#3a2313; border-radius:6px; display:flex; align-items:center; justify-content:center; font-size:0.6rem; color:var(--ink-dim); position:relative; }
   .pawn{ width:60%; height:60%; border-radius:50%; position:absolute; }
   .pawn.p1{ background:radial-gradient(circle at 35% 30%,#e8c77a,#8a5a1f); left:2px; }
   .pawn.p2{ background:radial-gradient(circle at 35% 30%,#dfe3ea,#6d7480); right:2px; }
-  #dice-face{ width:3.2rem; height:3.2rem; margin:1rem auto; background:#fff; border-radius:10px; display:flex; align-items:center; justify-content:center; font-family:'Fraunces',serif; font-size:1.6rem; color:var(--wood); box-shadow:0 4px 10px rgba(0,0,0,0.15); }
+  #dice-face, #online-dice{ width:3.2rem; height:3.2rem; margin:1rem auto; background:var(--card); border:1px solid var(--card-border); border-radius:10px; display:flex; align-items:center; justify-content:center; font-family:'Fraunces',serif; font-size:1.6rem; color:var(--accent); }
+
+  /* ---------- ONLINE LOBBY ---------- */
+  .picker-row{ display:grid; grid-template-columns:1fr 1fr; gap:0.7rem; margin-top:1.2rem; }
+  .game-pick{ background:var(--card); border:1.5px solid var(--card-border); border-radius:14px; padding:0.9rem 0.6rem; text-align:center; cursor:pointer; font-weight:600; font-size:0.85rem; color:var(--ink); }
+  .game-pick.active{ border-color:var(--accent); background:rgba(224,145,61,0.1); color:var(--accent); }
+  #online-create-join{ display:none; margin-top:1.4rem; }
+  .room-label{ text-align:center; color:var(--ink-dim); font-weight:400; font-size:0.8rem; margin-bottom:0.8rem; }
+  .info-box{ background:var(--card); border:1px solid var(--card-border); border-left:3px solid var(--accent); padding:0.9rem 1rem; border-radius:6px; font-size:0.82rem; color:var(--ink-dim); }
+
+  /* ---------- STUB ---------- */
+  .stub-wrap{ padding:4rem 1.5rem; text-align:center; }
+  .stub-wrap .stub-ic{ font-size:2.6rem; margin-bottom:1rem; }
+  .stub-wrap h3{ color:var(--ink); font-size:1.2rem; margin-bottom:0.5rem; }
+  .stub-wrap p{ color:var(--ink-dim); font-size:0.85rem; max-width:28ch; margin:0 auto; }
 </style>
 </head>
 <body>
 
+<!-- ===================== HOME ===================== -->
 <div class="view active" id="view-home">
   <div class="hero">
-    <div class="eyebrow">Racines · Jeux traditionnels d'Afrique</div>
-    <h1>5 jeux, un seul patrimoine.</h1>
-    <p>Awalé, Yoté, Dara, Achi et Ludo traditionnel — choisissez un jeu pour commencer.</p>
-    <button id="install-btn" onclick="installApp()" style="display:none; margin-top:1.2rem; background:var(--ochre); color:#fff; border:none; padding:0.7rem 1.3rem; border-radius:30px; font-weight:600; font-size:0.88rem; cursor:pointer; align-items:center; gap:0.5rem;">📲 Installer l'appli</button>
+    <div class="logo-mark">🌳</div>
+    <h1>RACINES</h1>
+    <div class="tagline">Nos jeux, notre héritage</div>
+    <p>Les jeux traditionnels africains, notre culture, notre fierté.</p>
   </div>
+  <div class="home-actions">
+    <button class="big-btn primary" onclick="showView('view-games-list')">▶ JOUER</button>
+    <button class="big-btn secondary" onclick="showView('view-online-lobby')">🌐 JOUER EN LIGNE</button>
+    <button class="big-btn tertiary" onclick="openStub()">🏆 DÉFIS &amp; TOURNOIS</button>
+    <button id="install-btn" onclick="installApp()">📲 Installer l'appli</button>
+  </div>
+  <div class="bottom-nav">
+    <button class="nav-item active"><span class="nav-ic">🏠</span>Accueil</button>
+    <button class="nav-item" onclick="showView('view-games-list')"><span class="nav-ic">🎲</span>Jeux</button>
+    <button class="nav-item" onclick="openStub()"><span class="nav-ic">👤</span>Profil</button>
+    <button class="nav-item" onclick="openStub()"><span class="nav-ic">🏅</span>Classement</button>
+    <button class="nav-item" onclick="openStub()"><span class="nav-ic">⋯</span>Plus</button>
+  </div>
+</div>
+
+<!-- ===================== GAMES LIST ===================== -->
+<div class="view" id="view-games-list">
+  <div class="game-header"><button class="back-btn" onclick="showView('view-home')">←</button><h2>Choisir un jeu</h2></div>
   <div class="game-list">
-    <div class="game-card">
+    <div class="game-card" onclick="openGameInfo('awale')">
       <div class="game-icon">◉</div>
-      <div class="game-info"><h3>Awalé</h3><p>Semez vos graines, capturez celles de l'adversaire.</p><span class="game-tag">Contre l'IA</span></div>
-      <button class="play-btn" onclick="showView('view-awale')">Jouer</button>
+      <div class="game-info"><h3>Awalé (Waré)</h3><p>2 joueurs · Le jeu de semailles le plus populaire.</p><span class="game-tag">Contre l'IA</span></div>
+      <span class="chevron">›</span>
     </div>
-    <div class="game-card">
+    <div class="game-card" onclick="openGameInfo('yote')">
       <div class="game-icon">◆</div>
-      <div class="game-info"><h3>Yoté</h3><p>Posez, déplacez, capturez à deux — chaque prise en vaut deux.</p><span class="game-tag">À deux joueurs</span></div>
-      <button class="play-btn" onclick="showView('view-yote')">Jouer</button>
+      <div class="game-info"><h3>Yoté</h3><p>2 joueurs · Capture tes adversaires !</p><span class="game-tag">À deux joueurs</span></div>
+      <span class="chevron">›</span>
     </div>
-    <div class="game-card">
+    <div class="game-card" onclick="openGameInfo('dara')">
       <div class="game-icon">▦</div>
-      <div class="game-info"><h3>Dara</h3><p>Alignez 3 pions pour capturer ceux de l'adversaire.</p><span class="game-tag">À deux joueurs</span></div>
-      <button class="play-btn" onclick="showView('view-dara')">Jouer</button>
+      <div class="game-info"><h3>Dara</h3><p>2 joueurs · Aligne 3 et remporte la partie.</p><span class="game-tag">À deux joueurs</span></div>
+      <span class="chevron">›</span>
     </div>
-    <div class="game-card">
+    <div class="game-card" onclick="openGameInfo('achi')">
       <div class="game-icon">✕</div>
-      <div class="game-info"><h3>Achi</h3><p>Placez puis glissez vos pions pour aligner trois.</p><span class="game-tag">À deux joueurs</span></div>
-      <button class="play-btn" onclick="showView('view-achi')">Jouer</button>
+      <div class="game-info"><h3>Achi</h3><p>2 joueurs · Réfléchis avant chaque coup.</p><span class="game-tag">À deux joueurs</span></div>
+      <span class="chevron">›</span>
     </div>
-    <div class="game-card">
+    <div class="game-card" onclick="openGameInfo('ludo')">
       <div class="game-icon">●</div>
-      <div class="game-info"><h3>Ludo traditionnel</h3><p>Lancez le dé, avancez, renvoyez l'adversaire au départ.</p><span class="game-tag">À deux joueurs</span></div>
-      <button class="play-btn" onclick="showView('view-ludo')">Jouer</button>
+      <div class="game-info"><h3>Ludo traditionnel</h3><p>2 joueurs · Le classique que tout le monde aime.</p><span class="game-tag">À deux joueurs</span></div>
+      <span class="chevron">›</span>
     </div>
-    <div class="game-card">
-      <div class="game-icon">🌐</div>
-      <div class="game-info"><h3>Jouer en ligne</h3><p>Yoté à distance — défiez un ami avec un code de salle.</p><span class="game-tag">Nouveau</span></div>
-      <button class="play-btn" onclick="showView('view-online-lobby')">Jouer</button>
+  </div>
+  <div class="bottom-nav">
+    <button class="nav-item" onclick="showView('view-home')"><span class="nav-ic">🏠</span>Accueil</button>
+    <button class="nav-item active"><span class="nav-ic">🎲</span>Jeux</button>
+    <button class="nav-item" onclick="openStub()"><span class="nav-ic">👤</span>Profil</button>
+    <button class="nav-item" onclick="openStub()"><span class="nav-ic">🏅</span>Classement</button>
+    <button class="nav-item" onclick="openStub()"><span class="nav-ic">⋯</span>Plus</button>
+  </div>
+</div>
+
+<!-- ===================== GAME INFO (À propos / Règles / Tutoriel) ===================== -->
+<div class="view" id="view-game-info">
+  <div class="game-header"><button class="back-btn" onclick="showView('view-games-list')">←</button><h2 id="info-title">Jeu</h2></div>
+  <div class="tabs-row">
+    <button class="tab-btn active" id="tab-btn-about" onclick="switchInfoTab('about')">À PROPOS</button>
+    <button class="tab-btn" id="tab-btn-rules" onclick="switchInfoTab('rules')">RÈGLES</button>
+    <button class="tab-btn" id="tab-btn-tuto" onclick="switchInfoTab('tuto')">TUTORIEL</button>
+  </div>
+  <div class="game-body">
+    <div class="tab-panel active" id="panel-about">
+      <div class="eyebrow">Origine</div>
+      <p id="info-about-text"></p>
+      <button class="play-btn-big" onclick="startGamePlay()">▶ JOUER</button></div>
+    <div class="tab-panel" id="panel-rules">
+      <div class="eyebrow">But du jeu</div>
+      <p id="info-goal-text"></p>
+      <div class="eyebrow" style="margin-top:1.3rem;">Comment jouer ?</div>
+      <div id="info-rules-steps"></div>
+      <button class="play-btn-big" onclick="startGamePlay()">▶ JOUER</button>
+    </div>
+    <div class="tab-panel" id="panel-tuto">
+      <div class="stepper-dots" id="tuto-dots"></div>
+      <div class="tuto-icon" id="tuto-icon"></div>
+      <div class="tuto-step-title" id="tuto-step-title"></div>
+      <p id="tuto-step-text"></p>
+      <div class="tuto-tip" id="tuto-tip" style="display:none;"></div>
+      <div class="controls-row">
+        <button class="reset" id="tuto-prev-btn" onclick="tutoPrev()">Précédent</button>
+        <button class="action primary" id="tuto-next-btn" onclick="tutoNext()">Suivant</button>
+      </div>
     </div>
   </div>
 </div>
 
+<!-- ===================== ONLINE LOBBY ===================== -->
 <div class="view" id="view-online-lobby">
-  <div class="game-header"><button class="back-btn" onclick="showView('view-home')">←</button><h2>Jouer en ligne — Yoté</h2></div>
+  <div class="game-header"><button class="back-btn" onclick="showView('view-home')">←</button><h2>Jouer en ligne</h2></div>
   <div class="game-body">
-    <div class="rule-box" style="margin-top:0;">Créez une salle et partagez le code à 4 chiffres avec votre adversaire, ou rejoignez une salle existante avec le code reçu.</div>
-    <div class="controls-row" style="margin-top:1.4rem;">
-      <button class="action primary" onclick="OnlineYote.createRoom()">Créer une salle</button>
+    <div class="info-box" style="margin-top:0;">Choisissez un jeu, puis créez une salle pour obtenir un code à 4 chiffres à partager, ou entrez le code reçu pour rejoindre votre adversaire.</div>
+    <div class="picker-row">
+      <div class="game-pick" id="pick-yote" onclick="Online.chooseGame('yote')">◆ Yoté</div>
+      <div class="game-pick" id="pick-dara" onclick="Online.chooseGame('dara')">▦ Dara</div>
+      <div class="game-pick" id="pick-achi" onclick="Online.chooseGame('achi')">✕ Achi</div>
+      <div class="game-pick" id="pick-ludo" onclick="Online.chooseGame('ludo')">● Ludo</div>
     </div>
-    <div id="online-code-display" style="text-align:center; font-family:'Fraunces',serif; font-size:2.4rem; color:var(--wood); margin:0.6rem 0; letter-spacing:0.1em;"></div>
-    <div style="text-align:center; margin:1.6rem 0 0.6rem; font-weight:600; color:var(--wood);">— ou —</div>
-    <div style="display:flex; gap:0.6rem; justify-content:center; margin-top:0.8rem;">
-      <input id="online-code-input" maxlength="4" inputmode="numeric" placeholder="Code" style="width:7rem; text-align:center; font-size:1.2rem; padding:0.6rem; border:1px solid #e2d6ba; border-radius:10px;">
-      <button class="action" onclick="OnlineYote.joinRoom(document.getElementById('online-code-input').value)">Rejoindre</button>
+    <div id="online-create-join">
+      <div class="controls-row" style="margin-top:1.4rem;">
+        <button class="action primary" onclick="Online.createRoom()">Créer une salle</button>
+      </div>
+      <div id="online-code-display" style="text-align:center; font-family:'Fraunces',serif; font-size:2.4rem; color:var(--accent); margin:0.6rem 0; letter-spacing:0.1em;"></div>
+      <div style="text-align:center; margin:1.6rem 0 0.6rem; font-weight:600; color:var(--ink-dim);">— ou —</div>
+      <div style="display:flex; gap:0.6rem; justify-content:center; margin-top:0.8rem;">
+        <input id="online-code-input" maxlength="4" inputmode="numeric" placeholder="Code" style="width:7rem; text-align:center; font-size:1.2rem; padding:0.6rem; border:1px solid var(--card-border); border-radius:10px; background:var(--card); color:var(--ink);">
+        <button class="action" onclick="Online.joinRoom(document.getElementById('online-code-input').value)">Rejoindre</button>
+      </div>
     </div>
     <div class="status-line" id="online-lobby-status"></div>
   </div>
 </div>
 
-<div class="view" id="view-yote-online">
-  <div class="game-header"><button class="back-btn" onclick="OnlineYote.leaveRoom()">←</button><h2>Yoté en ligne</h2></div>
+<!-- ===================== ONLINE GAME (generic) ===================== -->
+<div class="view" id="view-online-game">
+  <div class="game-header"><button class="back-btn" onclick="Online.leaveRoom()">←</button><h2 id="online-game-title">En ligne</h2></div>
   <div class="game-body">
-    <div class="status-line" id="online-room-label" style="color:var(--indigo-deep); font-weight:400; font-size:0.8rem;"></div>
-    <div class="reserve-row">
+    <div class="room-label" id="online-room-label"></div>
+    <div class="reserve-row" id="online-reserve-row" style="display:none;">
       <div class="reserve-chip"><b id="online-hand-p2">12</b><span>Réserve J2</span></div>
       <div class="reserve-chip"><b id="online-hand-p1">12</b><span>Réserve J1</span></div>
     </div>
-    <div class="grid-board" id="online-board" style="grid-template-columns:repeat(6,1fr);"></div>
+    <div class="grid-board" id="online-board" style="grid-template-columns:repeat(6,1fr); display:none;"></div>
+    <div class="track" id="online-track" style="display:none;"></div>
+    <div id="online-dice" style="display:none;">–</div>
     <div class="status-line" id="online-status">Connexion...</div>
+    <div class="controls-row">
+      <button class="action primary" id="online-roll-btn" style="display:none;" onclick="Online.roll()">Lancer le dé</button>
+    </div>
   </div>
 </div>
 
+<!-- ===================== AWALE ===================== -->
 <div class="view" id="view-awale">
-  <div class="game-header"><button class="back-btn" onclick="showView('view-home')">←</button><h2>Awalé</h2></div>
+  <div class="game-header"><button class="back-btn" onclick="showView('view-games-list')">←</button><h2>Awalé (Waré)</h2></div>
   <div class="game-body">
     <div class="board-wrap">
       <div class="board-labels"><span>Adversaire</span><span>IA</span></div>
@@ -166,12 +288,12 @@
     </div>
     <div class="status-line" id="aw-status">À vous de jouer</div>
     <div class="controls-row"><button class="reset" onclick="Awale.reset()">Recommencer</button></div>
-    <div class="rule-box"><strong>Règle :</strong> semez vos graines une par une dans les trous suivants. Si la dernière tombe dans un trou adverse contenant alors 2 ou 3 graines, vous les capturez.</div>
   </div>
 </div>
 
+<!-- ===================== YOTE ===================== -->
 <div class="view" id="view-yote">
-  <div class="game-header"><button class="back-btn" onclick="showView('view-home')">←</button><h2>Yoté</h2></div>
+  <div class="game-header"><button class="back-btn" onclick="showView('view-games-list')">←</button><h2>Yoté</h2></div>
   <div class="game-body">
     <div class="reserve-row">
       <div class="reserve-chip"><b id="yote-hand-p2">12</b><span>Réserve J2</span></div>
@@ -180,32 +302,32 @@
     <div class="grid-board" id="yote-board" style="grid-template-columns:repeat(6,1fr);"></div>
     <div class="status-line" id="yote-status">Placez ou déplacez — Joueur 1</div>
     <div class="controls-row"><button class="reset" onclick="Yote.reset()">Recommencer</button></div>
-    <div class="rule-box"><strong>Règle authentique :</strong> le plateau démarre vide. À votre tour, posez un de vos 12 pions sur une case libre, ou déplacez un pion déjà sur le plateau vers une case adjacente. Sautez par-dessus un pion adverse pour le capturer — vous retirez alors <strong>ce pion et un second pion adverse au choix</strong>. Si vous ne pouvez plus jouer, celui qui a le plus de pions restants gagne.</div>
   </div>
 </div>
 
+<!-- ===================== DARA ===================== -->
 <div class="view" id="view-dara">
-  <div class="game-header"><button class="back-btn" onclick="showView('view-home')">←</button><h2>Dara</h2></div>
+  <div class="game-header"><button class="back-btn" onclick="showView('view-games-list')">←</button><h2>Dara</h2></div>
   <div class="game-body">
     <div class="grid-board" id="dara-board" style="grid-template-columns:repeat(6,1fr);"></div>
     <div class="status-line" id="dara-status">Placement — Joueur 1</div>
     <div class="controls-row"><button class="reset" onclick="Dara.reset()">Recommencer</button></div>
-    <div class="rule-box"><strong>Règle authentique :</strong> placez d'abord vos 12 pions (un alignement de 3 pendant cette phase ne compte pas). Puis déplacez un pion par tour vers une case adjacente libre. Un alignement de 3 formé <strong>pendant le déplacement</strong> capture un pion adverse au choix — sauf les pions déjà alignés par 3, qui sont protégés.</div>
   </div>
 </div>
 
+<!-- ===================== ACHI ===================== -->
 <div class="view" id="view-achi">
-  <div class="game-header"><button class="back-btn" onclick="showView('view-home')">←</button><h2>Achi</h2></div>
+  <div class="game-header"><button class="back-btn" onclick="showView('view-games-list')">←</button><h2>Achi</h2></div>
   <div class="game-body">
     <div class="grid-board" id="achi-board" style="grid-template-columns:repeat(3,1fr); max-width:280px; margin:0 auto;"></div>
     <div class="status-line" id="achi-status">Placement — Joueur 1</div>
     <div class="controls-row"><button class="reset" onclick="Achi.reset()">Recommencer</button></div>
-    <div class="rule-box"><strong>Règle authentique :</strong> chaque joueur a 4 pions (version ghanéenne principale). Placez-les d'abord, puis glissez-les d'un nœud à un nœud voisin le long des lignes (pas de saut). Le premier à aligner 3 pions gagne.</div>
   </div>
 </div>
 
+<!-- ===================== LUDO ===================== -->
 <div class="view" id="view-ludo">
-  <div class="game-header"><button class="back-btn" onclick="showView('view-home')">←</button><h2>Ludo traditionnel</h2></div>
+  <div class="game-header"><button class="back-btn" onclick="showView('view-games-list')">←</button><h2>Ludo traditionnel</h2></div>
   <div class="game-body">
     <div class="track" id="ludo-track"></div>
     <div id="dice-face">–</div>
@@ -214,7 +336,16 @@
       <button class="action primary" onclick="Ludo.roll()">Lancer le dé</button>
       <button class="reset" onclick="Ludo.reset()">Recommencer</button>
     </div>
-    <div class="rule-box"><strong>Règle :</strong> il faut un 6 pour entrer sur le parcours. Avancez du nombre indiqué par le dé. Si vous tombez sur l'adversaire, il retourne au départ. Premier arrivé au bout gagne.</div>
+  </div>
+</div>
+
+<!-- ===================== STUB (à venir) ===================== -->
+<div class="view" id="view-stub">
+  <div class="game-header"><button class="back-btn" onclick="showView('view-home')">←</button><h2>Bientôt disponible</h2></div>
+  <div class="stub-wrap">
+    <div class="stub-ic">🚧</div>
+    <h3>On y travaille</h3>
+    <p>Les profils, le classement et les tournois arrivent dans une prochaine mise à jour.</p>
   </div>
 </div>
 
@@ -226,6 +357,7 @@ function showView(id){
   document.getElementById(id).classList.add('active');
   window.scrollTo(0,0);
 }
+function openStub(){ showView('view-stub'); }
 
 if('serviceWorker' in navigator){
   window.addEventListener('load', () => {
@@ -238,7 +370,7 @@ window.addEventListener('beforeinstallprompt', (e) => {
   e.preventDefault();
   deferredInstallPrompt = e;
   const btn = document.getElementById('install-btn');
-  if(btn) btn.style.display = 'inline-flex';
+  if(btn) btn.style.display = 'block';
 });
 function installApp(){
   const btn = document.getElementById('install-btn');
@@ -254,6 +386,134 @@ window.addEventListener('appinstalled', () => {
   const btn = document.getElementById('install-btn');
   if(btn) btn.style.display = 'none';
 });
+
+/* ===================== GAME INFO / TABS / TUTORIAL STEPPER ===================== */
+const GAME_INFO = {
+  awale: {
+    name:'Awalé (Waré)', icon:'◉', viewId:'view-awale',
+    about:"Le Awalé, aussi appelé Waré, est un jeu de semailles pratiqué depuis des siècles en Afrique de l'Ouest. Il se joue avec des graines que l'on distribue trou par trou, dans un savant mélange de calcul et d'anticipation.",
+    goal:"Capturer plus de graines que votre adversaire.",
+    steps:[
+      "Le plateau a 12 trous (6 de chaque côté), avec 4 graines dans chacun au départ.",
+      "À votre tour, choisissez un trou de votre côté : vous semez une graine dans chaque trou suivant, sens inverse des aiguilles d'une montre.",
+      "Si votre dernière graine tombe dans un trou adverse qui contient alors 2 ou 3 graines, vous les capturez.",
+      "Le gagnant est celui qui a capturé le plus de graines au total."
+    ]
+  },
+  yote: {
+    name:'Yoté', icon:'◆', viewId:'view-yote',
+    about:"Le Yoté est un jeu de stratégie répandu au Sénégal et dans plusieurs pays voisins. Les joueurs y déploient leurs pions sur le plateau avant de les déplacer pour capturer ceux de l'adversaire.",
+    goal:"Capturer tous les pions de l'adversaire ou l'empêcher de jouer.",
+    steps:[
+      "Chaque joueur commence avec 12 pions en réserve, le plateau est vide.",
+      "À votre tour : posez un pion sur une case vide, ou déplacez un pion déjà posé vers une case voisine libre.",
+      "Pour capturer, sautez par-dessus un pion adverse pour atterrir sur la case libre juste après lui.",
+      "Chaque capture retire ce pion ET un second pion adverse de votre choix.",
+      "Le joueur qui perd tous ses pions perd la partie."
+    ]
+  },
+  dara: {
+    name:'Dara', icon:'▦', viewId:'view-dara',
+    about:"Le Dara est un jeu d'alignement originaire d'Afrique de l'Ouest, notamment pratiqué au Mali et au Niger. Il demande de la patience : il faut placer ses pions avant de manœuvrer pour aligner trois pièces et capturer.",
+    goal:"Réduire l'adversaire à moins de 3 pions sur le plateau.",
+    steps:[
+      "Chaque joueur place ses 12 pions, un par un, sur des cases vides (aligner 3 pendant cette phase ne compte pas).",
+      "Une fois tous les pions placés, déplacez un pion par tour vers une case voisine libre.",
+      "Si ce déplacement aligne 3 de vos pions (ligne ou colonne), vous capturez un pion adverse de votre choix.",
+      "Le premier joueur réduit à moins de 3 pions perd la partie."
+    ]
+  },
+  achi: {
+    name:'Achi', icon:'✕', viewId:'view-achi',
+    about:"L'Achi est un jeu d'alignement traditionnel ghanéen, simple à apprendre mais riche en tactique. Chaque joueur place puis glisse ses pions pour former le premier une ligne de trois.",
+    goal:"Être le premier à aligner ses 3 pions.",
+    steps:[
+      "Chaque joueur a 4 pions à placer, chacun leur tour, sur les 9 points du plateau.",
+      "Une fois les pions placés, glissez-en un à chaque tour vers un point voisin relié par une ligne.",
+      "Le premier joueur à aligner ses 3 pions (ligne, colonne ou diagonale) gagne la partie."
+    ]
+  },
+  ludo: {
+    name:'Ludo traditionnel', icon:'●', viewId:'view-ludo',
+    about:"Le Ludo traditionnel s'inspire des jeux de parcours ancestraux joués à travers le continent, où le hasard du dé se mêle à la tension de la course jusqu'à l'arrivée.",
+    goal:"Être le premier à parcourir tout le trajet.",
+    steps:[
+      "Il faut lancer un 6 pour faire entrer son pion sur le parcours.",
+      "À chaque lancer, avancez votre pion du nombre de cases indiqué par le dé.",
+      "Si vous arrivez sur la case occupée par l'adversaire, il retourne au départ.",
+      "Le premier joueur à parcourir tout le trajet gagne."
+    ]
+  }
+};
+
+let currentGameKey = null;
+let tutoStepIndex = 0;
+
+function openGameInfo(key){
+  const g = GAME_INFO[key];
+  if(!g) return;
+  currentGameKey = key;
+  tutoStepIndex = 0;
+  document.getElementById('info-title').textContent = g.name;
+  document.getElementById('info-about-text').textContent = g.about;
+  document.getElementById('info-goal-text').textContent = g.goal;
+  const stepsEl = document.getElementById('info-rules-steps');
+  stepsEl.innerHTML = '';
+  g.steps.forEach(function(s, i){
+    const row = document.createElement('div');
+    row.className = 'rule-step';
+    row.innerHTML = '<div class="rule-num">'+(i+1)+'</div><p></p>';
+    row.querySelector('p').textContent = s;
+    stepsEl.appendChild(row);
+  });
+  switchInfoTab('about');
+  renderTutoStep();
+  showView('view-game-info');
+}
+
+function switchInfoTab(tab){
+  ['about','rules','tuto'].forEach(function(t){
+    document.getElementById('tab-btn-'+t).classList.toggle('active', t===tab);
+    document.getElementById('panel-'+t).classList.toggle('active', t===tab);
+  });
+}
+
+function renderTutoStep(){
+  const g = GAME_INFO[currentGameKey];
+  if(!g) return;
+  const dotsEl = document.getElementById('tuto-dots');
+  dotsEl.innerHTML = '';
+  g.steps.forEach(function(s, i){
+    const d = document.createElement('div');
+    d.className = 'dot'+(i===tutoStepIndex?' active':'');
+    d.textContent = i+1;
+    dotsEl.appendChild(d);
+  });
+  document.getElementById('tuto-icon').textContent = g.icon;
+  document.getElementById('tuto-step-title').textContent = 'Étape '+(tutoStepIndex+1);
+  document.getElementById('tuto-step-text').textContent = g.steps[tutoStepIndex];
+  const tipEl = document.getElementById('tuto-tip');
+  if(tutoStepIndex===0){
+    tipEl.style.display = 'block';
+    tipEl.textContent = "Astuce : commencez par une partie locale pour vous familiariser avec le plateau avant de jouer en ligne.";
+  } else {
+    tipEl.style.display = 'none';
+  }
+  document.getElementById('tuto-prev-btn').style.visibility = tutoStepIndex===0 ? 'hidden' : 'visible';
+  document.getElementById('tuto-next-btn').textContent = (tutoStepIndex===g.steps.length-1) ? 'Terminer' : 'Suivant';
+}
+function tutoNext(){
+  const g = GAME_INFO[currentGameKey];
+  if(tutoStepIndex < g.steps.length-1){ tutoStepIndex++; renderTutoStep(); }
+  else { switchInfoTab('rules'); }
+}
+function tutoPrev(){
+  if(tutoStepIndex>0){ tutoStepIndex--; renderTutoStep(); }
+}
+function startGamePlay(){
+  const g = GAME_INFO[currentGameKey];
+  if(g) showView(g.viewId);
+}
 
 /* ===================== AWALE ===================== */
 const Awale = (function(){
@@ -272,8 +532,7 @@ const Awale = (function(){
   function makePit(index, playable){
     const div=document.createElement('div');
     div.className='pit'+(playable && board[index]>0 ? ' playable':'');
-    for(let s=0;s<Math.min(board[index],12);s++){ const sd=document.createElement('div'); sd.className='seed'; div.appendChild(sd); }
-    const c=document.createElement('div'); c.className='count'; c.textContent=board[index]; div.appendChild(c);
+    for(let s=0;s<Math.min(board[index],12);s++){ const sd=document.createElement('div'); sd.className='seed'; div.appendChild(sd); }const c=document.createElement('div'); c.className='count'; c.textContent=board[index]; div.appendChild(c);
     if(playable && board[index]>0) div.addEventListener('click', function(){ playMove(index); });
     return div;
   }
@@ -330,7 +589,7 @@ const Awale = (function(){
   return { reset };
 })();
 
-/* ===================== YOTE ===================== */
+/* ===================== YOTE (local) ===================== */
 const Yote = (function(){
   let board, hand, turn, gameOver, selected;
   const boardEl = document.getElementById('yote-board');
@@ -452,7 +711,9 @@ const Yote = (function(){
   }
   reset();
   return { reset };
-})();/* ===================== DARA ===================== */
+})();
+
+/* ===================== DARA (local) ===================== */
 const Dara = (function(){
   let board, placed, turn, gameOver, phase, selected;
   const boardEl = document.getElementById('dara-board');
@@ -565,7 +826,7 @@ const Dara = (function(){
   return { reset };
 })();
 
-/* ===================== ACHI ===================== */
+/* ===================== ACHI (local) ===================== */
 const Achi = (function(){
   let board, placed, turn, gameOver, phase, selected;
   const boardEl = document.getElementById('achi-board');
@@ -637,7 +898,7 @@ const Achi = (function(){
   return { reset };
 })();
 
-/* ===================== LUDO ===================== */
+/* ===================== LUDO (local) ===================== */
 const Ludo = (function(){
   let pos, turn, gameOver;
   const trackEl = document.getElementById('ludo-track');
@@ -688,7 +949,7 @@ const Ludo = (function(){
   return { roll, reset };
 })();
 
-/* ===================== ONLINE (Firebase) ===================== */
+/* ===================== FIREBASE / ONLINE (Yoté, Dara, Achi, Ludo) ===================== */
 const firebaseConfig = {
   apiKey: "AIzaSyDqK1uiKmHjCCtvW0OMQ0bj_qyNgmGM1LY",
   authDomain: "fasoracine.firebaseapp.com",
@@ -701,26 +962,74 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 const db = firebase.database();
 
-const OnlineYote = (function(){
-  let roomCode = null, myPlayer = null, roomRef = null, state = null, selected = null;
+const Online = (function(){
+  let roomCode = null, myPlayer = null, roomRef = null, state = null, selected = null, pendingGame = null;
   const SIZE = 6;
+
   const lobbyStatus = document.getElementById('online-lobby-status');
   const codeDisplay = document.getElementById('online-code-display');
-  const boardEl = document.getElementById('online-board');
-  const statusEl = document.getElementById('online-status');
+  const createJoinBox = document.getElementById('online-create-join');
+  const titleEl = document.getElementById('online-game-title');
+  const roomLabelEl = document.getElementById('online-room-label');
+  const reserveRow = document.getElementById('online-reserve-row');
   const handP1El = document.getElementById('online-hand-p1');
   const handP2El = document.getElementById('online-hand-p2');
-  const roomLabelEl = document.getElementById('online-room-label');
+  const boardEl = document.getElementById('online-board');
+  const trackEl = document.getElementById('online-track');const diceEl = document.getElementById('online-dice');
+  const statusEl = document.getElementById('online-status');
+  const rollBtn = document.getElementById('online-roll-btn');
+
+  const GAME_NAMES = { yote:'Yoté', dara:'Dara', achi:'Achi', ludo:'Ludo traditionnel' };
+
+  function idx6(r,c){ return r*SIZE+c; }
+  function neighbors6(i){
+    const r=Math.floor(i/SIZE), c=i%SIZE;
+    const list=[];
+    if(r>0) list.push(idx6(r-1,c));
+    if(r<SIZE-1) list.push(idx6(r+1,c));
+    if(c>0) list.push(idx6(r,c-1));
+    if(c<SIZE-1) list.push(idx6(r,c+1));
+    return list;
+  }
+  function linesThrough6(i){
+    const r=Math.floor(i/SIZE), c=i%SIZE;
+    const lines=[];
+    for(let start=Math.max(0,c-2); start<=Math.min(SIZE-3,c); start++) lines.push([idx6(r,start),idx6(r,start+1),idx6(r,start+2)]);
+    for(let start=Math.max(0,r-2); start<=Math.min(SIZE-3,r); start++) lines.push([idx6(start,c),idx6(start+1,c),idx6(start+2,c)]);
+    return lines;
+  }
+  const ACHI_ADJ = [
+    [1,3,4],[0,2,4],[1,5,4],
+    [0,4,6],[0,1,2,3,5,6,7,8],[2,4,8],
+    [3,4,7],[6,8,4],[7,5,4]
+  ];
+  const ACHI_LINES = [[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];
+
+  function chooseGame(g){
+    pendingGame = g;
+    document.querySelectorAll('.game-pick').forEach(function(b){ b.classList.remove('active'); });
+    document.getElementById('pick-'+g).classList.add('active');
+    createJoinBox.style.display = 'block';
+    lobbyStatus.textContent = '';
+    codeDisplay.textContent = '';
+  }
+
+  function initialStateFor(g){
+    if(g==='yote') return { game:'yote', board:new Array(36).fill(0), hand:{1:12,2:12}, turn:1, gameOver:false, winner:null, bonus:false };
+    if(g==='dara') return { game:'dara', board:new Array(36).fill(0), placed:{1:0,2:0}, turn:1, gameOver:false, winner:null, phase:'place', capturePending:false };
+    if(g==='achi') return { game:'achi', board:new Array(9).fill(0), placed:{1:0,2:0}, turn:1, gameOver:false, winner:null, phase:'place' };
+    if(g==='ludo') return { game:'ludo', pos:{1:-1,2:-1}, turn:1, gameOver:false, winner:null };
+  }
 
   function randomCode(){ return String(Math.floor(1000 + Math.random()*9000)); }
 
   function createRoom(){
+    if(!pendingGame){ lobbyStatus.textContent = "Choisissez d'abord un jeu ci-dessus."; return; }
     roomCode = randomCode();
     myPlayer = 1;
     lobbyStatus.textContent = 'Création de la salle...';
     roomRef = db.ref('rooms/'+roomCode);
-    const initialState = { board:new Array(SIZE*SIZE).fill(0), hand:{1:12,2:12}, turn:1, gameOver:false, winner:null, bonus:false };
-    roomRef.set({ playerCount:1, state:initialState }).then(function(){
+    roomRef.set({ playerCount:1, state: initialStateFor(pendingGame) }).then(function(){
       codeDisplay.textContent = roomCode;
       lobbyStatus.textContent = "Salle créée ! Partagez ce code : "+roomCode+". En attente d'un adversaire...";
       roomRef.child('playerCount').on('value', function(snap){
@@ -742,15 +1051,15 @@ const OnlineYote = (function(){
       if(!val){ lobbyStatus.textContent = "Cette salle n'existe pas."; return; }
       if(val.playerCount>=2){ lobbyStatus.textContent = 'Cette salle est déjà pleine.'; return; }
       myPlayer = 2;
-      roomRef.child('playerCount').set(2).then(function(){
-        startGame();
-      });
+      pendingGame = val.state.game;
+      roomRef.child('playerCount').set(2).then(function(){ startGame(); });
     });
   }
 
   function startGame(){
+    titleEl.textContent = (GAME_NAMES[pendingGame]||'') + ' en ligne';
     roomLabelEl.textContent = 'Salle '+roomCode+' — vous êtes le Joueur '+myPlayer;
-    showView('view-yote-online');
+    showView('view-online-game');
     roomRef.child('state').on('value', function(snap){
       state = snap.val();
       if(state) render();
@@ -759,127 +1068,266 @@ const OnlineYote = (function(){
 
   function leaveRoom(){
     if(roomRef) roomRef.child('state').off();
-    roomCode = null; myPlayer = null; roomRef = null; state = null; selected = null;
+    roomCode = null; myPlayer = null; roomRef = null; state = null; selected = null; pendingGame = null;
+    createJoinBox.style.display = 'none';
+    document.querySelectorAll('.game-pick').forEach(function(b){ b.classList.remove('active'); });
+    codeDisplay.textContent = ''; lobbyStatus.textContent = '';
     showView('view-home');
   }
 
-  function pushState(newState){
-    roomRef.child('state').set(newState);
+  function pushState(newState){ roomRef.child('state').set(newState); }
+
+  function render(){
+    if(!state) return;
+    boardEl.style.display = 'none';
+    trackEl.style.display = 'none';
+    diceEl.style.display = 'none';
+    reserveRow.style.display = 'none';
+    rollBtn.style.display = 'none';
+    if(state.game==='yote') renderYote();
+    else if(state.game==='dara') renderDara();
+    else if(state.game==='achi') renderAchi();
+    else if(state.game==='ludo') renderLudo();
   }
 
-  function idx(r,c){ return r*SIZE+c; }
-  function neighbors(i){
-    const r=Math.floor(i/SIZE), c=i%SIZE;
-    const list=[];
-    if(r>0) list.push(idx(r-1,c));
-    if(r<SIZE-1) list.push(idx(r+1,c));
-    if(c>0) list.push(idx(r,c-1));
-    if(c<SIZE-1) list.push(idx(r,c+1));
-    return list;
-  }
-  function canMoveOrCapture(from,to,board,turn){
-    if(neighbors(from).indexOf(to)!==-1 && !board[to]) return true;
+  /* ---- YOTE ONLINE ---- */
+  function canMoveOrCaptureYote(from,to,board,turn){
+    if(neighbors6(from).indexOf(to)!==-1 && !board[to]) return true;
     const r1=Math.floor(from/SIZE), c1=from%SIZE;
     const r2=Math.floor(to/SIZE), c2=to%SIZE;
     const dr=r2-r1, dc=c2-c1;
     if((Math.abs(dr)===2 && dc===0) || (dr===0 && Math.abs(dc)===2)){
-      const mid = idx(r1+dr/2, c1+dc/2);
+      const mid = idx6(r1+dr/2, c1+dc/2);
       if(board[mid] && board[mid]!==turn && !board[to]) return true;
     }
     return false;
   }
-
-  function render(){
-    if(!state) return;
-    const board = state.board, hand = state.hand, turn = state.turn;
+  function renderYote(){
+    boardEl.style.display='grid'; boardEl.style.gridTemplateColumns='repeat(6,1fr)';
+    reserveRow.style.display='flex';
+    const board=state.board, hand=state.hand, turn=state.turn;
     const myTurn = (turn===myPlayer) && !state.gameOver;
     boardEl.innerHTML='';
-    for(let i=0;i<SIZE*SIZE;i++){
-      const cell=document.createElement('div');
-      cell.className='cell';
-      if(board[i]){
-        const p=document.createElement('div');
-        p.className='piece '+(board[i]===1?'p1':'p2');
-        cell.appendChild(p);
-      }
+    for(let i=0;i<36;i++){
+      const cell=document.createElement('div'); cell.className='cell';
+      if(board[i]){ const p=document.createElement('div'); p.className='piece '+(board[i]===1?'p1':'p2'); cell.appendChild(p); }
       if(myTurn && !state.bonus){
         if(hand[turn]>0 && !board[i]){
           cell.classList.add('selectable');
-          cell.addEventListener('click', (function(idx2){ return function(){ place(idx2); }; })(i));
+          cell.addEventListener('click',(function(idx2){return function(){ yotePlace(idx2); };})(i));
         } else if(hand[turn]===0){
           if(selected===i) cell.classList.add('selected');
-          if(board[i]===turn){
-            cell.addEventListener('click', (function(idx2){ return function(){ select(idx2); }; })(i));
-          } else if(selected!==null && canMoveOrCapture(selected,i,board,turn)){
+          if(board[i]===turn) cell.addEventListener('click',(function(idx2){return function(){ selected=(selected===idx2)?null:idx2; render(); };})(i));
+          else if(selected!==null && canMoveOrCaptureYote(selected,i,board,turn)){
             cell.classList.add('selectable');
-            cell.addEventListener('click', (function(idx2){ return function(){ moveOrCapture(selected,idx2); }; })(i));
+            cell.addEventListener('click',(function(idx2){return function(){ yoteMove(selected,idx2); };})(i));
           }
         }
       } else if(myTurn && state.bonus && state.bonus===myPlayer){
         const opp = turn===1?2:1;
         if(board[i]===opp){
           cell.classList.add('selectable');
-          cell.addEventListener('click', (function(idx2){ return function(){ bonusCapture(idx2); }; })(i));
+          cell.addEventListener('click',(function(idx2){return function(){ yoteBonusCapture(idx2); };})(i));
         }
       }
       boardEl.appendChild(cell);
     }
-    handP1El.textContent = hand[1];
-    handP2El.textContent = hand[2];
-    if(state.gameOver){
-      statusEl.textContent = state.winner===myPlayer ? 'Vous avez gagné ! 🎉' : 'Vous avez perdu.';
-    } else if(state.bonus){
-      statusEl.textContent = state.bonus===myPlayer ? 'Capture bonus : choisissez un pion adverse.' : "L'adversaire choisit sa capture bonus...";
-    } else {
-      statusEl.textContent = myTurn ? 'À vous de jouer' : "Tour de l'adversaire...";
-    }
+    handP1El.textContent = hand[1]; handP2El.textContent = hand[2];
+    if(state.gameOver) statusEl.textContent = state.winner===myPlayer ? 'Vous avez gagné ! 🎉' : 'Vous avez perdu.';
+    else if(state.bonus) statusEl.textContent = state.bonus===myPlayer ? 'Capture bonus : choisissez un pion adverse.' : "L'adversaire choisit sa capture bonus...";
+    else statusEl.textContent = myTurn ? 'À vous de jouer' : "Tour de l'adversaire...";
   }
-
-  function place(i){
-    const board = state.board.slice();
-    const hand = { 1: state.hand[1], 2: state.hand[2] };
+  function yotePlace(i){
+    const board=state.board.slice(); const hand={1:state.hand[1],2:state.hand[2]};
     board[i]=myPlayer; hand[myPlayer]--;
-    const newState = Object.assign({}, state, { board:board, hand:hand });
-    endTurn(newState);
+    yoteEndTurn(Object.assign({},state,{board:board,hand:hand}));
   }
-  function select(i){ selected=(selected===i)?null:i; render(); }
-  function moveOrCapture(from,to){
-    const board = state.board.slice();
-    const turn = state.turn;
-    if(neighbors(from).indexOf(to)!==-1 && !board[to]){
+  function yoteMove(from,to){
+    const board=state.board.slice(); const turn=state.turn;
+    if(neighbors6(from).indexOf(to)!==-1 && !board[to]){
       board[to]=board[from]; board[from]=0; selected=null;
-      const newState = Object.assign({}, state, { board:board });
-      endTurn(newState);
+      yoteEndTurn(Object.assign({},state,{board:board}));
       return;
     }
-    const r1=Math.floor(from/SIZE), c1=from%SIZE;
-    const r2=Math.floor(to/SIZE), c2=to%SIZE;
-    const dr=r2-r1, dc=c2-c1;
-    const mid = idx(r1+dr/2, c1+dc/2);
+    const r1=Math.floor(from/SIZE), c1=from%SIZE, r2=Math.floor(to/SIZE), c2=to%SIZE;
+    const dr=r2-r1, dc=c2-c1, mid=idx6(r1+dr/2,c1+dc/2);
     if(board[mid] && board[mid]!==turn){
-      board[to]=board[from]; board[from]=0; board[mid]=0;
-      selected=null;
-      const newState = Object.assign({}, state, { board:board, bonus:turn });
-      pushState(newState);
+      board[to]=board[from]; board[from]=0; board[mid]=0; selected=null;
+      pushState(Object.assign({},state,{board:board,bonus:turn}));
     }
   }
-  function bonusCapture(i){
-    const board = state.board.slice();
-    board[i]=0;
-    const newState = Object.assign({}, state, { board:board, bonus:false });
-    endTurn(newState);
+  function yoteBonusCapture(i){
+    const board=state.board.slice(); board[i]=0;
+    yoteEndTurn(Object.assign({},state,{board:board,bonus:false}));
   }
-  function endTurn(newState){
-    const board = newState.board, hand = newState.hand;
-    const count1 = board.filter(function(v){return v===1;}).length + hand[1];
-    const count2 = board.filter(function(v){return v===2;}).length + hand[2];
-    if(count1===0){ newState.gameOver=true; newState.winner=2; }
-    else if(count2===0){ newState.gameOver=true; newState.winner=1; }
-    else { newState.turn = newState.turn===1?2:1; newState.bonus=false; }
-    pushState(newState);
+  function yoteEndTurn(ns){
+    const board=ns.board, hand=ns.hand;
+    const c1=board.filter(function(v){return v===1;}).length+hand[1];
+    const c2=board.filter(function(v){return v===2;}).length+hand[2];
+    if(c1===0){ ns.gameOver=true; ns.winner=2; }
+    else if(c2===0){ ns.gameOver=true; ns.winner=1; }
+    else { ns.turn = ns.turn===1?2:1; ns.bonus=false; }
+    pushState(ns);
   }
 
-  return { createRoom, joinRoom, leaveRoom };
+  /* ---- DARA ONLINE ---- */
+  function renderDara(){
+    boardEl.style.display='grid'; boardEl.style.gridTemplateColumns='repeat(6,1fr)';
+    const board=state.board, turn=state.turn;
+    const myTurn = (turn===myPlayer) && !state.gameOver;
+    boardEl.innerHTML='';
+    for(let i=0;i<36;i++){
+      const cell=document.createElement('div'); cell.className='cell';
+      if(board[i]){ const p=document.createElement('div'); p.className='piece '+(board[i]===1?'p1':'p2'); cell.appendChild(p); }
+      if(myTurn && !state.capturePending){
+        if(state.phase==='place'){
+          if(!board[i]){
+            cell.classList.add('selectable');
+            cell.addEventListener('click',(function(idx2){return function(){ daraPlace(idx2); };})(i));
+          }
+        } else {
+          if(selected===i) cell.classList.add('selected');
+          if(board[i]===turn) cell.addEventListener('click',(function(idx2){return function(){ selected=(selected===idx2)?null:idx2; render(); };})(i));
+          else if(selected!==null && !board[i] && neighbors6(selected).indexOf(i)!==-1){
+            cell.classList.add('selectable');
+            cell.addEventListener('click',(function(idx2){return function(){ daraMove(selected,idx2); };})(i));
+          }
+        }
+      } else if(myTurn && state.capturePending===myPlayer){
+        const opp = turn===1?2:1;
+        if(board[i]===opp){
+          cell.classList.add('selectable');
+          cell.addEventListener('click',(function(idx2){return function(){ daraCapture(idx2); };})(i));
+        }
+      }
+      boardEl.appendChild(cell);
+    }
+    if(state.gameOver) statusEl.textContent = state.winner===myPlayer ? 'Vous avez gagné ! 🎉' : 'Vous avez perdu.';
+    else if(state.capturePending) statusEl.textContent = state.capturePending===myPlayer ? 'Alignement ! Choisissez un pion adverse à capturer.' : "L'adversaire choisit sa capture...";
+    else statusEl.textContent = myTurn ? (state.phase==='place' ? 'À vous de placer un pion' : 'À vous de déplacer un pion') : "Tour de l'adversaire...";
+  }
+  function daraPlace(i){
+    const board=state.board.slice(); const placed={1:state.placed[1],2:state.placed[2]};
+    board[i]=myPlayer; placed[myPlayer]++;
+    const ns=Object.assign({},state,{board:board,placed:placed});
+    if(placed[1]>=12 && placed[2]>=12){ ns.phase='move'; ns.turn=1; }
+    else ns.turn = state.turn===1?2:1;
+    pushState(ns);
+  }
+  function daraMove(from,to){
+    const board=state.board.slice(); const turn=state.turn;
+    board[to]=board[from]; board[from]=0; selected=null;
+    for(const line of linesThrough6(to)){
+      if(line.every(function(p){return board[p]===turn;})){
+        pushState(Object.assign({},state,{board:board,capturePending:turn}));
+        return;
+      }
+    }
+    daraEndTurn(Object.assign({},state,{board:board}));
+  }
+  function daraCapture(i){
+    const board=state.board.slice(); board[i]=0;
+    daraEndTurn(Object.assign({},state,{board:board,capturePending:false}));
+  }
+  function daraEndTurn(ns){
+    const c1=ns.board.filter(function(v){return v===1;}).length;
+    const c2=ns.board.filter(function(v){return v===2;}).length;
+    if(ns.phase==='move' && c1<3){ ns.gameOver=true; ns.winner=2; }
+    else if(ns.phase==='move' && c2<3){ ns.gameOver=true; ns.winner=1; }
+    else { ns.turn = ns.turn===1?2:1; ns.capturePending=false; }
+    pushState(ns);
+  }
+
+  /* ---- ACHI ONLINE ---- */
+  function renderAchi(){
+    boardEl.style.display='grid'; boardEl.style.gridTemplateColumns='repeat(3,1fr)';
+    boardEl.style.maxWidth='280px'; boardEl.style.margin='0 auto';
+    const board=state.board, turn=state.turn;
+    const myTurn = (turn===myPlayer) && !state.gameOver;
+    boardEl.innerHTML='';
+    for(let i=0;i<9;i++){
+      const cell=document.createElement('div'); cell.className='cell';
+      if(board[i]){ const p=document.createElement('div'); p.className='piece '+(board[i]===1?'p1':'p2'); cell.appendChild(p); }
+      if(myTurn){
+        if(state.phase==='place'){
+          if(!board[i]){
+            cell.classList.add('selectable');
+            cell.addEventListener('click',(function(idx2){return function(){ achiPlace(idx2); };})(i));
+          }
+        } else {
+          if(selected===i) cell.classList.add('selected');
+          if(board[i]===turn) cell.addEventListener('click',(function(idx2){return function(){ selected=(selected===idx2)?null:idx2; render(); };})(i));
+          else if(selected!==null && !board[i] && ACHI_ADJ[selected].indexOf(i)!==-1){
+            cell.classList.add('selectable');
+            cell.addEventListener('click',(function(idx2){return function(){ achiMove(selected,idx2); };})(i));
+          }
+        }
+      }
+      boardEl.appendChild(cell);
+    }
+    if(state.gameOver) statusEl.textContent = state.winner===myPlayer ? 'Vous avez gagné ! 🎉' : 'Vous avez perdu.';
+    else statusEl.textContent = myTurn ? (state.phase==='place' ? 'À vous de placer un pion' : 'À vous de déplacer un pion') : "Tour de l'adversaire...";
+  }
+  function achiCheckWin(board,turn){
+    for(const line of ACHI_LINES){ if(line.every(function(p){return board[p]===turn;})) return true; }
+    return false;
+  }
+  function achiPlace(i){
+    const board=state.board.slice(); const placed={1:state.placed[1],2:state.placed[2]}; const turn=state.turn;
+    board[i]=turn; placed[turn]++;
+    const ns=Object.assign({},state,{board:board,placed:placed});
+    if(achiCheckWin(board,turn)){ ns.gameOver=true; ns.winner=turn; pushState(ns); return; }
+    if(placed[1]>=4 && placed[2]>=4) ns.phase='move';
+    ns.turn = turn===1?2:1;
+    pushState(ns);
+  }
+  function achiMove(from,to){
+    const board=state.board.slice(); const turn=state.turn;
+    board[to]=board[from]; board[from]=0; selected=null;
+    const ns=Object.assign({},state,{board:board});
+    if(achiCheckWin(board,turn)){ ns.gameOver=true; ns.winner=turn; pushState(ns); return; }
+    ns.turn = turn===1?2:1;
+    pushState(ns);
+  }
+
+  /* ---- LUDO ONLINE ---- */
+  const TRACK_LEN = 24;
+  function renderLudo(){
+    trackEl.style.display='flex'; diceEl.style.display='flex'; rollBtn.style.display='inline-block';
+    const pos=state.pos, turn=state.turn;
+    const myTurn = (turn===myPlayer) && !state.gameOver;
+    trackEl.innerHTML='';
+    for(let i=0;i<TRACK_LEN;i++){
+      const cell=document.createElement('div'); cell.className='track-cell'; cell.textContent=i+1;
+      if(pos[1]===i){ const p=document.createElement('div'); p.className='pawn p1'; cell.appendChild(p); }
+      if(pos[2]===i){ const p=document.createElement('div'); p.className='pawn p2'; cell.appendChild(p); }
+      trackEl.appendChild(cell);
+    }
+    diceEl.textContent = state.lastRoll || '–';
+    rollBtn.disabled = !myTurn;
+    rollBtn.style.opacity = myTurn ? '1' : '0.5';
+    if(state.gameOver) statusEl.textContent = state.winner===myPlayer ? 'Vous avez gagné ! 🎉' : 'Vous avez perdu.';
+    else statusEl.textContent = myTurn ? 'À vous de lancer le dé' : "Tour de l'adversaire...";
+  }
+  function ludoRoll(){
+    if(!state || state.gameOver || state.turn!==myPlayer) return;
+    const d = 1+Math.floor(Math.random()*6);
+    const pos = { 1:state.pos[1], 2:state.pos[2] };
+    const turn = state.turn;
+    const ns = Object.assign({},state,{pos:pos, lastRoll:d});
+    if(pos[turn]===-1){
+      if(d===6){ pos[turn]=0; ns.turn=turn; pushState(ns); return; }
+      else { ns.turn = turn===1?2:1; pushState(ns); return; }
+    }
+    pos[turn]+=d;
+    if(pos[turn]>=TRACK_LEN){ ns.gameOver=true; ns.winner=turn; pushState(ns); return; }
+    const opp = turn===1?2:1;
+    if(pos[turn]===pos[opp]){ pos[opp]=-1; ns.turn=turn; pushState(ns); return; }
+    ns.turn = turn===1?2:1;
+    pushState(ns);
+  }
+
+  return { chooseGame, createRoom, joinRoom, leaveRoom, roll: ludoRoll };
 })();
 </script>
 </body>

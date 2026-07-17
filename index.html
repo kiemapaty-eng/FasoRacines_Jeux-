@@ -127,9 +127,59 @@
   .stub-wrap .stub-ic{ font-size:2.6rem; margin-bottom:1rem; }
   .stub-wrap h3{ color:var(--ink); font-size:1.2rem; margin-bottom:0.5rem; }
   .stub-wrap p{ color:var(--ink-dim); font-size:0.85rem; max-width:28ch; margin:0 auto; }
+
+  /* ---------- AUTH / PROFILE / PRIVACY ---------- */
+  .field-label{ font-size:0.78rem; color:var(--ink-dim); margin:1rem 0 0.35rem; display:block; }
+  .field-input{ width:100%; padding:0.75rem 0.9rem; border-radius:12px; border:1px solid var(--card-border); background:var(--card); color:var(--ink); font-size:0.9rem; }
+  .auth-switch{ text-align:center; margin-top:1.4rem; font-size:0.82rem; color:var(--ink-dim); }
+  .auth-switch a{ color:var(--accent); font-weight:600; text-decoration:none; cursor:pointer; }
+  .auth-error{ background:rgba(166,38,57,0.15); border-left:3px solid var(--kente); color:#F0C9CE; padding:0.7rem 0.9rem; border-radius:6px; font-size:0.8rem; margin-top:1rem; display:none; }
+  .auth-legal{ font-size:0.72rem; color:var(--ink-dim); margin-top:1.2rem; text-align:center; }
+  .auth-legal a{ color:var(--accent); text-decoration:none; }
+  .avatar-picker{ display:grid; grid-template-columns:repeat(6,1fr); gap:0.5rem; margin-top:0.3rem; }
+  .avatar-option{ aspect-ratio:1; border-radius:12px; background:var(--card); border:1.5px solid var(--card-border); display:flex; align-items:center; justify-content:center; font-size:1.3rem; cursor:pointer; }
+  .avatar-option.active{ border-color:var(--accent); background:rgba(224,145,61,0.12); }
+  .profile-country{ font-size:0.78rem; color:var(--ink-dim); }
+  .profile-header{ display:flex; align-items:center; gap:1rem; padding:0.4rem 0 1.4rem; }
+  .avatar-circle{ width:3.6rem; height:3.6rem; border-radius:50%; background:var(--accent-dark); color:#1A1108; display:flex; align-items:center; justify-content:center; font-family:'Fraunces',serif; font-weight:700; font-size:1.4rem; }
+  .profile-name{ font-size:1.1rem; color:var(--ink); font-family:'Fraunces',serif; font-weight:700; }
+  .profile-email{ font-size:0.78rem; color:var(--ink-dim); }
+  .stats-row{ display:flex; gap:0.7rem; margin:1rem 0; }
+  .stat-chip{ flex:1; background:var(--card); border:1px solid var(--card-border); border-radius:12px; padding:0.7rem; text-align:center; }
+  .stat-chip b{ font-family:'Fraunces',serif; font-size:1.3rem; display:block; color:var(--accent); }.stat-chip span{ font-size:0.66rem; text-transform:uppercase; letter-spacing:0.05em; color:var(--ink-dim); }
+  .profile-link-row{ display:flex; align-items:center; justify-content:space-between; padding:0.9rem 0; border-bottom:1px solid var(--card-border); color:var(--ink); font-size:0.88rem; cursor:pointer; }
+  .privacy-text h3{ font-size:0.95rem; color:var(--accent); margin:1.2rem 0 0.4rem; }
+  .privacy-text p, .privacy-text li{ font-size:0.83rem; color:#CFC4B2; margin-bottom:0.5rem; }
+  .privacy-text ul{ padding-left:1.2rem; }
+
+  /* capture flash */
+  @keyframes captureFlash{ 0%{ box-shadow:0 0 0 0 rgba(224,145,61,0); } 30%{ box-shadow:0 0 0 8px rgba(224,145,61,0.35); } 100%{ box-shadow:0 0 0 0 rgba(224,145,61,0); } }
+  .board-wrap.capture-flash, .grid-board.capture-flash{ animation:captureFlash 0.5s ease-out; }
+
+  /* subtle African-inspired background pattern (pure CSS, no image files) */
+  body{
+    background-color:var(--bg);
+    background-image:
+      radial-gradient(circle at 20% 15%, rgba(224,145,61,0.05) 0, transparent 40%),
+      radial-gradient(circle at 85% 75%, rgba(224,145,61,0.04) 0, transparent 45%),
+      repeating-linear-gradient(45deg, rgba(224,145,61,0.02) 0 2px, transparent 2px 22px);
+  }
+
+  /* loading spinner */
+  .spinner{ display:inline-block; width:0.9rem; height:0.9rem; border:2px solid rgba(224,145,61,0.25); border-top-color:var(--accent); border-radius:50%; animation:spin 0.7s linear infinite; vertical-align:middle; margin-left:0.4rem; }
+  @keyframes spin{ to{ transform:rotate(360deg); } }
+
+  /* offline banner */
+  .offline-banner{ position:fixed; top:0; left:0; right:0; background:var(--kente); color:#fff; text-align:center; font-size:0.78rem; font-weight:600; padding:0.5rem; z-index:100; transform:translateY(-100%); transition:transform 0.25s ease; }
+  .offline-banner.show{ transform:translateY(0); }
+
+  /* win pulse */
+  @keyframes winPulse{ 0%{ transform:scale(1); } 30%{ transform:scale(1.18); } 60%{ transform:scale(0.96); } 100%{ transform:scale(1); } }
+  .status-line.win-pulse{ animation:winPulse 0.6s ease; }
 </style>
 </head>
 <body>
+<div class="offline-banner" id="offline-banner">📡 Connexion perdue — en attente du réseau...</div>
 
 <!-- ===================== HOME ===================== -->
 <div class="view active" id="view-home">
@@ -148,7 +198,7 @@
   <div class="bottom-nav">
     <button class="nav-item active"><span class="nav-ic">🏠</span>Accueil</button>
     <button class="nav-item" onclick="showView('view-games-list')"><span class="nav-ic">🎲</span>Jeux</button>
-    <button class="nav-item" onclick="openStub()"><span class="nav-ic">👤</span>Profil</button>
+    <button class="nav-item" onclick="openProfile()"><span class="nav-ic">👤</span>Profil</button>
     <button class="nav-item" onclick="openStub()"><span class="nav-ic">🏅</span>Classement</button>
     <button class="nav-item" onclick="openStub()"><span class="nav-ic">⋯</span>Plus</button>
   </div>
@@ -187,7 +237,7 @@
   <div class="bottom-nav">
     <button class="nav-item" onclick="showView('view-home')"><span class="nav-ic">🏠</span>Accueil</button>
     <button class="nav-item active"><span class="nav-ic">🎲</span>Jeux</button>
-    <button class="nav-item" onclick="openStub()"><span class="nav-ic">👤</span>Profil</button>
+    <button class="nav-item" onclick="openProfile()"><span class="nav-ic">👤</span>Profil</button>
     <button class="nav-item" onclick="openStub()"><span class="nav-ic">🏅</span>Classement</button>
     <button class="nav-item" onclick="openStub()"><span class="nav-ic">⋯</span>Plus</button>
   </div>
@@ -205,7 +255,8 @@
     <div class="tab-panel active" id="panel-about">
       <div class="eyebrow">Origine</div>
       <p id="info-about-text"></p>
-      <button class="play-btn-big" onclick="startGamePlay()">▶ JOUER</button></div>
+      <button class="play-btn-big" onclick="startGamePlay()">▶ JOUER</button>
+    </div>
     <div class="tab-panel" id="panel-rules">
       <div class="eyebrow">But du jeu</div>
       <p id="info-goal-text"></p>
@@ -229,7 +280,7 @@
 
 <!-- ===================== ONLINE LOBBY ===================== -->
 <div class="view" id="view-online-lobby">
-  <div class="game-header"><button class="back-btn" onclick="showView('view-home')">←</button><h2>Jouer en ligne</h2></div>
+  <div class="game-header"><button class="back-btn" onclick="Online.cancelWaitingRoom()">←</button><h2>Jouer en ligne</h2></div>
   <div class="game-body">
     <div class="info-box" style="margin-top:0;">Choisissez un jeu, puis créez une salle pour obtenir un code à 4 chiffres à partager, ou entrez le code reçu pour rejoindre votre adversaire.</div>
     <div class="picker-row">
@@ -243,6 +294,9 @@
         <button class="action primary" onclick="Online.createRoom()">Créer une salle</button>
       </div>
       <div id="online-code-display" style="text-align:center; font-family:'Fraunces',serif; font-size:2.4rem; color:var(--accent); margin:0.6rem 0; letter-spacing:0.1em;"></div>
+      <div class="controls-row" id="invite-row" style="display:none; margin-top:0;">
+        <button class="action" onclick="Online.inviteFriend()">📤 Inviter un ami</button>
+      </div>
       <div style="text-align:center; margin:1.6rem 0 0.6rem; font-weight:600; color:var(--ink-dim);">— ou —</div>
       <div style="display:flex; gap:0.6rem; justify-content:center; margin-top:0.8rem;">
         <input id="online-code-input" maxlength="4" inputmode="numeric" placeholder="Code" style="width:7rem; text-align:center; font-size:1.2rem; padding:0.6rem; border:1px solid var(--card-border); border-radius:10px; background:var(--card); color:var(--ink);">
@@ -332,8 +386,7 @@
     <div class="track" id="ludo-track"></div>
     <div id="dice-face">–</div>
     <div class="status-line" id="ludo-status">Tour du joueur 1 — lancez le dé</div>
-    <div class="controls-row">
-      <button class="action primary" onclick="Ludo.roll()">Lancer le dé</button>
+    <div class="controls-row"><button class="action primary" onclick="Ludo.roll()">Lancer le dé</button>
       <button class="reset" onclick="Ludo.reset()">Recommencer</button>
     </div>
   </div>
@@ -345,12 +398,95 @@
   <div class="stub-wrap">
     <div class="stub-ic">🚧</div>
     <h3>On y travaille</h3>
-    <p>Les profils, le classement et les tournois arrivent dans une prochaine mise à jour.</p>
+    <p>Le classement et les tournois arrivent dans une prochaine mise à jour.</p>
+  </div>
+</div>
+
+<!-- ===================== AUTH (login / signup) ===================== -->
+<div class="view" id="view-auth">
+  <div class="game-header"><button class="back-btn" onclick="showView('view-home')">←</button><h2 id="auth-title">Connexion</h2></div>
+  <div class="game-body">
+    <div id="auth-name-field" style="display:none;">
+      <label class="field-label">Nom affiché</label>
+      <input class="field-input" id="auth-name" placeholder="Ex : Paty" maxlength="24">
+      <label class="field-label">Pays</label>
+      <select class="field-input" id="auth-country">
+        <option value="🇧🇫 Burkina Faso">🇧🇫 Burkina Faso</option>
+        <option value="🇲🇱 Mali">🇲🇱 Mali</option>
+        <option value="🇸🇳 Sénégal">🇸🇳 Sénégal</option>
+        <option value="🇨🇮 Côte d'Ivoire">🇨🇮 Côte d'Ivoire</option>
+        <option value="🇳🇪 Niger">🇳🇪 Niger</option>
+        <option value="🇬🇭 Ghana">🇬🇭 Ghana</option>
+        <option value="🇳🇬 Nigeria">🇳🇬 Nigeria</option>
+        <option value="🇹🇬 Togo">🇹🇬 Togo</option>
+        <option value="🇧🇯 Bénin">🇧🇯 Bénin</option>
+        <option value="🇬🇳 Guinée">🇬🇳 Guinée</option>
+        <option value="🇨🇲 Cameroun">🇨🇲 Cameroun</option>
+        <option value="🌍 Autre pays">🌍 Autre pays</option>
+      </select>
+      <label class="field-label">Avatar</label>
+      <div class="avatar-picker" id="auth-avatar-picker"></div>
+    </div>
+    <label class="field-label">Email</label>
+    <input class="field-input" id="auth-email" type="email" placeholder="vous@exemple.com">
+    <label class="field-label">Mot de passe</label>
+    <input class="field-input" id="auth-password" type="password" placeholder="6 caractères minimum">
+    <div class="auth-error" id="auth-error"></div>
+    <button class="big-btn primary" style="margin-top:1.4rem;" id="auth-submit-btn" onclick="submitAuth()">Se connecter</button>
+    <div class="auth-switch" id="auth-switch-text">Pas encore de compte ? <a onclick="toggleAuthMode()">Créer un compte</a></div>
+    <div class="auth-legal">En créant un compte, vous acceptez notre <a onclick="showView('view-privacy')">politique de confidentialité</a>.</div>
+  </div>
+</div>
+
+<!-- ===================== PROFILE ===================== -->
+<div class="view" id="view-profile">
+  <div class="game-header"><button class="back-btn" onclick="showView('view-home')">←</button><h2>Mon profil</h2></div>
+  <div class="game-body">
+    <div class="profile-header">
+      <div class="avatar-circle" id="profile-avatar">?</div>
+      <div>
+        <div class="profile-name" id="profile-name">—</div>
+        <div class="profile-country" id="profile-country"></div>
+        <div class="profile-email" id="profile-email">—</div>
+      </div>
+    </div>
+    <div class="stats-row">
+      <div class="stat-chip"><b id="profile-games">0</b><span>Parties</span></div>
+      <div class="stat-chip"><b id="profile-wins">0</b><span>Victoires</span></div>
+    </div>
+    <div class="profile-link-row" onclick="showView('view-privacy')"><span>Politique de confidentialité</span><span class="chevron">›</span></div>
+    <div class="profile-link-row" onclick="logOutUser()"><span>Se déconnecter</span><span class="chevron">›</span></div>
+  </div>
+</div>
+
+<!-- ===================== PRIVACY POLICY ===================== -->
+<div class="view" id="view-privacy">
+  <div class="game-header"><button class="back-btn" onclick="history.back ? showView('view-home') : showView('view-home')">←</button><h2>Confidentialité</h2></div>
+  <div class="game-body privacy-text">
+    <p>Dernière mise à jour : juillet 2026. Racines est une petite application indépendante ; ce texte décrit simplement et honnêtement ce que nous faisons de vos données.</p>
+    <h3>Données collectées</h3>
+    <ul>
+      <li>Si vous créez un compte : votre email, votre mot de passe (jamais stocké en clair, géré par Firebase Authentication), et le nom que vous choisissez d'afficher.</li>
+      <li>Vos statistiques de jeu (parties jouées, victoires) liées à votre compte.</li>
+      <li>En mode "Jouer en ligne" sans compte, seul un code de salle temporaire est créé ; il est supprimé automatiquement et n'est lié à aucune identité.</li>
+    </ul>
+    <h3>Utilisation</h3>
+    <ul>
+      <li>Ces données servent uniquement à faire fonctionner votre profil, vos statistiques et le multijoueur.</li>
+      <li>Nous ne vendons ni ne partageons vos données avec des tiers à des fins publicitaires. Il n'y a pas de publicité dans Racines.</li>
+    </ul>
+    <h3>Stockage</h3>
+    <p>Les données sont hébergées par Firebase (Google) avec des règles d'accès restreignant chaque profil à son propriétaire. Vous pouvez demander la suppression de votre compte et de vos données à tout moment.</p>
+    <h3>Enfants</h3>
+    <p>Racines peut être utilisée en famille. Nous recommandons aux parents de superviser la création de compte pour les plus jeunes joueurs.</p>
+    <h3>Contact</h3>
+    <p>Pour toute question ou demande de suppression de données, contactez la développeuse via la page GitHub du projet.</p>
   </div>
 </div>
 
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
 <script>
 function showView(id){
   document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
@@ -358,6 +494,43 @@ function showView(id){
   window.scrollTo(0,0);
 }
 function openStub(){ showView('view-stub'); }
+function flashBoard(el){
+  if(!el) return;
+  el.classList.remove('capture-flash');
+  void el.offsetWidth;
+  el.classList.add('capture-flash');
+  sfxCapture();
+}
+
+/* ===================== SOUND EFFECTS (Web Audio, no files needed) ===================== */
+let sfxCtx = null;
+function playTone(freq, duration, type){
+  try{
+    if(!sfxCtx) sfxCtx = new (window.AudioContext||window.webkitAudioContext)();
+    const osc = sfxCtx.createOscillator();
+    const gain = sfxCtx.createGain();
+    osc.type = type || 'sine';
+    osc.frequency.value = freq;
+    gain.gain.setValueAtTime(0.14, sfxCtx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.001, sfxCtx.currentTime + duration);
+    osc.connect(gain); gain.connect(sfxCtx.destination);
+    osc.start(); osc.stop(sfxCtx.currentTime + duration);
+  }catch(e){}
+}
+function sfxMove(){ playTone(420, 0.07, 'sine'); }
+function sfxCapture(){ playTone(210, 0.16, 'square'); }
+function sfxDice(){ playTone(300, 0.06, 'triangle'); }
+function sfxWin(){ playTone(523,0.14); setTimeout(function(){playTone(659,0.14);},110); setTimeout(function(){playTone(784,0.28);},220); }
+function pulseWin(el){ if(!el) return; el.classList.remove('win-pulse'); void el.offsetWidth; el.classList.add('win-pulse'); }
+
+/* ===================== OFFLINE DETECTION ===================== */
+window.addEventListener('offline', function(){ document.getElementById('offline-banner').classList.add('show'); });
+window.addEventListener('online', function(){ document.getElementById('offline-banner').classList.remove('show'); });
+if(!navigator.onLine){ window.addEventListener('load', function(){ document.getElementById('offline-banner').classList.add('show'); }); }
+function openProfile(){
+  if(firebase.auth().currentUser) showView('view-profile');
+  else { authMode='login'; renderAuthMode(); showView('view-auth'); }
+}
 
 if('serviceWorker' in navigator){
   window.addEventListener('load', () => {
@@ -485,8 +658,7 @@ function renderTutoStep(){
   dotsEl.innerHTML = '';
   g.steps.forEach(function(s, i){
     const d = document.createElement('div');
-    d.className = 'dot'+(i===tutoStepIndex?' active':'');
-    d.textContent = i+1;
+    d.className = 'dot'+(i===tutoStepIndex?' active':'');d.textContent = i+1;
     dotsEl.appendChild(d);
   });
   document.getElementById('tuto-icon').textContent = g.icon;
@@ -532,7 +704,8 @@ const Awale = (function(){
   function makePit(index, playable){
     const div=document.createElement('div');
     div.className='pit'+(playable && board[index]>0 ? ' playable':'');
-    for(let s=0;s<Math.min(board[index],12);s++){ const sd=document.createElement('div'); sd.className='seed'; div.appendChild(sd); }const c=document.createElement('div'); c.className='count'; c.textContent=board[index]; div.appendChild(c);
+    for(let s=0;s<Math.min(board[index],12);s++){ const sd=document.createElement('div'); sd.className='seed'; div.appendChild(sd); }
+    const c=document.createElement('div'); c.className='count'; c.textContent=board[index]; div.appendChild(c);
     if(playable && board[index]>0) div.addEventListener('click', function(){ playMove(index); });
     return div;
   }
@@ -541,10 +714,12 @@ const Awale = (function(){
     let seeds=board[index]; board[index]=0; let i=index;
     while(seeds>0){ i=nextIndex(i); if(i===index) continue; board[i]++; seeds--; }
     let last=i; const opp=isPlayer?[0,5]:[6,11];
+    let captured=false;
     while(last>=opp[0] && last<=opp[1] && (board[last]===2||board[last]===3)){
       if(isPlayer) stores.player+=board[last]; else stores.ai+=board[last];
-      board[last]=0; last--; if(last<opp[0]) break;
+      board[last]=0; last--; captured=true; if(last<opp[0]) break;
     }
+    if(captured) flashBoard(document.querySelector('#view-awale .board-wrap'));
   }
   function sideSum(r){ let s=0; for(let i=r[0];i<=r[1];i++) s+=board[i]; return s; }
   function checkEnd(){
@@ -552,6 +727,7 @@ const Awale = (function(){
     if(ps===0||as===0){
       stores.player+=ps; stores.ai+=as; board=board.map(function(){return 0;}); gameOver=true;
       statusEl.textContent=(stores.player>stores.ai?'Vous gagnez ! 🎉':(stores.player<stores.ai?"L'IA gagne.":'Match nul.'))+' — '+stores.player+' / '+stores.ai;
+      sfxWin(); pulseWin(statusEl);
       return true;
     }
     return false;
@@ -639,6 +815,7 @@ const Yote = (function(){
   function place(i){
     if(gameOver||hand[turn]<=0||board[i]) return;
     board[i]=turn; hand[turn]--;
+    sfxMove();
     endTurn();
   }
   function select(i){
@@ -670,6 +847,7 @@ const Yote = (function(){
       board[to]=board[from]; board[from]=0; board[mid]=0;
       selected=null;
       statusEl.textContent = 'Capture ! Choisissez un second pion adverse à retirer.';
+      flashBoard(boardEl);
       render();
       enableBonusCapture();
       return;
@@ -683,6 +861,7 @@ const Yote = (function(){
           cells[idx2].classList.add('selectable');
           cells[idx2].addEventListener('click', function(){
             board[idx2]=0;
+            flashBoard(boardEl);
             endTurn();
           }, { once:true });
         })(i);
@@ -692,8 +871,8 @@ const Yote = (function(){
   function checkWin(){
     const count1 = board.filter(function(v){return v===1;}).length + hand[1];
     const count2 = board.filter(function(v){return v===2;}).length + hand[2];
-    if(count1===0){ gameOver=true; statusEl.textContent='Joueur 2 gagne !'; return true; }
-    if(count2===0){ gameOver=true; statusEl.textContent='Joueur 1 gagne !'; return true; }
+    if(count1===0){ gameOver=true; statusEl.textContent='Joueur 2 gagne !'; sfxWin(); pulseWin(statusEl); return true; }
+    if(count2===0){ gameOver=true; statusEl.textContent='Joueur 1 gagne !'; sfxWin(); pulseWin(statusEl); return true; }
     return false;
   }
   function endTurn(){
@@ -771,6 +950,7 @@ const Dara = (function(){
   }
   function place(i){
     board[i]=turn; placed[turn]++;
+    sfxMove();
     if(placed[1]>=12 && placed[2]>=12){ phase='move'; turn=1; statusEl.textContent='Déplacement — Joueur 1'; render(); return; }
     turn = turn===1?2:1;
     statusEl.textContent = 'Placement — Joueur '+turn;
@@ -797,7 +977,9 @@ const Dara = (function(){
         (function(idx2){
           cells[idx2].classList.add('selectable');
           cells[idx2].addEventListener('click', function(){
-            board[idx2]=0; endTurn();
+            board[idx2]=0;
+            flashBoard(boardEl);
+            endTurn();
           }, { once:true });
         })(i);
       }
@@ -806,8 +988,8 @@ const Dara = (function(){
   function checkWin(){
     const c1=board.filter(function(v){return v===1;}).length;
     const c2=board.filter(function(v){return v===2;}).length;
-    if(c1<3){ gameOver=true; statusEl.textContent='Joueur 2 gagne !'; return true; }
-    if(c2<3){ gameOver=true; statusEl.textContent='Joueur 1 gagne !'; return true; }
+    if(c1<3){ gameOver=true; statusEl.textContent='Joueur 2 gagne !'; sfxWin(); pulseWin(statusEl); return true; }
+    if(c2<3){ gameOver=true; statusEl.textContent='Joueur 1 gagne !'; sfxWin(); pulseWin(statusEl); return true; }
     return false;
   }
   function endTurn(){
@@ -850,8 +1032,7 @@ const Achi = (function(){
       if(!gameOver){
         if(phase==='place'){
           if(!board[i]){
-            cell.classList.add('selectable');
-            cell.addEventListener('click', (function(idx2){ return function(){ place(idx2); }; })(i));
+            cell.classList.add('selectable');cell.addEventListener('click', (function(idx2){ return function(){ place(idx2); }; })(i));
           }
         } else {
           if(selected===i) cell.classList.add('selected');
@@ -874,7 +1055,8 @@ const Achi = (function(){
   }
   function place(i){
     board[i]=turn; placed[turn]++;
-    if(checkWin()){ gameOver=true; statusEl.textContent='Joueur '+turn+' gagne !'; render(); return; }
+    sfxMove();
+    if(checkWin()){ gameOver=true; statusEl.textContent='Joueur '+turn+' gagne !'; sfxWin(); pulseWin(statusEl); render(); return; }
     if(placed[1]>=4 && placed[2]>=4){ phase='move'; }
     turn = turn===1?2:1;
     statusEl.textContent = (phase==='place'?'Placement':'Déplacement')+' — Joueur '+turn;
@@ -883,7 +1065,7 @@ const Achi = (function(){
   function select(i){ selected=(selected===i)?null:i; render(); }
   function move(from,to){
     board[to]=board[from]; board[from]=0; selected=null;
-    if(checkWin()){ gameOver=true; statusEl.textContent='Joueur '+turn+' gagne !'; render(); return; }
+    if(checkWin()){ gameOver=true; statusEl.textContent='Joueur '+turn+' gagne !'; sfxWin(); pulseWin(statusEl); render(); return; }
     turn = turn===1?2:1;
     statusEl.textContent = 'Déplacement — Joueur '+turn;
     render();
@@ -920,13 +1102,14 @@ const Ludo = (function(){
     if(gameOver) return;
     const d = 1+Math.floor(Math.random()*6);
     diceEl.textContent = d;
+    sfxDice();
     if(pos[turn]===-1){
       if(d===6){ pos[turn]=0; statusEl.textContent='Joueur '+turn+' entre en jeu !'; }
       else { statusEl.textContent='Il faut un 6 pour entrer — Joueur '+(turn===1?2:1); turn=turn===1?2:1; render(); return; }
     } else {
       pos[turn]+=d;
       if(pos[turn]>=TRACK_LEN){
-        gameOver=true; statusEl.textContent='Joueur '+turn+' a gagné !'; render(); return;
+        gameOver=true; statusEl.textContent='Joueur '+turn+' a gagné !'; sfxWin(); pulseWin(statusEl); render(); return;
       }
       const opp=turn===1?2:1;
       if(pos[turn]===pos[opp]){
@@ -961,9 +1144,110 @@ const firebaseConfig = {
 };
 firebase.initializeApp(firebaseConfig);
 const db = firebase.database();
+const auth = firebase.auth();
+
+/* ===================== AUTH / PROFILE / STATS ===================== */
+let authMode = 'login';
+let currentUserProfile = null;
+const AVATAR_OPTIONS = ['👤','🦁','🐘','🦓','🌍','🥁','🎭','🌳','🦜','🐆','🌾','🪘'];
+let selectedAvatar = AVATAR_OPTIONS[0];
+
+function renderAvatarPicker(){
+  const el = document.getElementById('auth-avatar-picker');
+  el.innerHTML = '';
+  AVATAR_OPTIONS.forEach(function(a){
+    const btn = document.createElement('div');
+    btn.className = 'avatar-option' + (a === selectedAvatar ? ' active' : '');
+    btn.textContent = a;
+    btn.addEventListener('click', function(){
+      selectedAvatar = a;
+      renderAvatarPicker();
+    });
+    el.appendChild(btn);
+  });
+}
+
+function renderAuthMode(){
+  const isSignup = authMode === 'signup';
+  document.getElementById('auth-title').textContent = isSignup ? 'Créer un compte' : 'Connexion';
+  document.getElementById('auth-name-field').style.display = isSignup ? 'block' : 'none';
+  document.getElementById('auth-submit-btn').textContent = isSignup ? "S'inscrire" : 'Se connecter';
+  document.getElementById('auth-switch-text').innerHTML = isSignup
+    ? 'Déjà un compte ? <a onclick="toggleAuthMode()">Se connecter</a>'
+    : "Pas encore de compte ? <a onclick=\"toggleAuthMode()\">Créer un compte</a>";
+  document.getElementById('auth-error').style.display = 'none';
+  if(isSignup) renderAvatarPicker();
+}
+function toggleAuthMode(){
+  authMode = authMode === 'login' ? 'signup' : 'login';
+  renderAuthMode();
+}
+function showAuthError(msg){
+  const el = document.getElementById('auth-error');
+  el.textContent = msg;
+  el.style.display = 'block';
+}
+function submitAuth(){
+  const email = document.getElementById('auth-email').value.trim();
+  const password = document.getElementById('auth-password').value;
+  const name = document.getElementById('auth-name').value.trim();
+  if(!email || !password){ showAuthError('Merci de renseigner un email et un mot de passe.'); return; }
+  if(authMode === 'signup'){
+    if(!name){ showAuthError('Merci de choisir un nom à afficher.'); return; }
+    const country = document.getElementById('auth-country').value;
+    auth.createUserWithEmailAndPassword(email, password).then(function(cred){
+      return db.ref('users/'+cred.user.uid).set({ displayName:name, email:email, country:country, avatar:selectedAvatar, createdAt:Date.now(), gamesPlayed:0, wins:0 });
+    }).then(function(){
+      showView('view-profile');
+    }).catch(function(err){ showAuthError(translateAuthError(err)); });
+  } else {
+    auth.signInWithEmailAndPassword(email, password).then(function(){
+      showView('view-profile');
+    }).catch(function(err){ showAuthError(translateAuthError(err)); });
+  }
+}
+function translateAuthError(err){
+  const code = err && err.code || '';
+  if(code.indexOf('email-already-in-use')!==-1) return 'Cet email est déjà utilisé. Essayez de vous connecter.';
+  if(code.indexOf('invalid-email')!==-1) return "Cet email n'est pas valide.";
+  if(code.indexOf('weak-password')!==-1) return 'Le mot de passe doit contenir au moins 6 caractères.';
+  if(code.indexOf('user-not-found')!==-1 || code.indexOf('wrong-password')!==-1 || code.indexOf('invalid-credential')!==-1) return 'Email ou mot de passe incorrect.';
+  return "Une erreur est survenue. Réessayez.";
+}
+function logOutUser(){
+  auth.signOut().then(function(){ showView('view-home'); });
+}
+function renderProfile(){
+  if(!currentUserProfile) return;
+  const initial = (currentUserProfile.displayName || '?').charAt(0).toUpperCase();
+  document.getElementById('profile-avatar').textContent = currentUserProfile.avatar || initial;
+  document.getElementById('profile-name').textContent = currentUserProfile.displayName || 'Joueur';
+  document.getElementById('profile-country').textContent = currentUserProfile.country || '';
+  document.getElementById('profile-email').textContent = currentUserProfile.email || '';
+  document.getElementById('profile-games').textContent = currentUserProfile.gamesPlayed || 0;
+  document.getElementById('profile-wins').textContent = currentUserProfile.wins || 0;
+}
+auth.onAuthStateChanged(function(user){
+  if(user){
+    db.ref('users/'+user.uid).on('value', function(snap){
+      currentUserProfile = snap.val();
+      renderProfile();
+    });
+  } else {
+    if(currentUserProfile) db.ref().off();
+    currentUserProfile = null;
+  }
+});
+function recordGameResult(won){
+  const user = auth.currentUser;
+  if(!user) return;
+  const ref = db.ref('users/'+user.uid);
+  ref.child('gamesPlayed').transaction(function(v){ return (v||0)+1; });
+  if(won) ref.child('wins').transaction(function(v){ return (v||0)+1; });
+}
 
 const Online = (function(){
-  let roomCode = null, myPlayer = null, roomRef = null, state = null, selected = null, pendingGame = null;
+  let roomCode = null, myPlayer = null, roomRef = null, state = null, selected = null, pendingGame = null, statsRecorded = false;
   const SIZE = 6;
 
   const lobbyStatus = document.getElementById('online-lobby-status');
@@ -975,7 +1259,8 @@ const Online = (function(){
   const handP1El = document.getElementById('online-hand-p1');
   const handP2El = document.getElementById('online-hand-p2');
   const boardEl = document.getElementById('online-board');
-  const trackEl = document.getElementById('online-track');const diceEl = document.getElementById('online-dice');
+  const trackEl = document.getElementById('online-track');
+  const diceEl = document.getElementById('online-dice');
   const statusEl = document.getElementById('online-status');
   const rollBtn = document.getElementById('online-roll-btn');
 
@@ -1027,25 +1312,40 @@ const Online = (function(){
     if(!pendingGame){ lobbyStatus.textContent = "Choisissez d'abord un jeu ci-dessus."; return; }
     roomCode = randomCode();
     myPlayer = 1;
-    lobbyStatus.textContent = 'Création de la salle...';
+    lobbyStatus.innerHTML = 'Création de la salle... <span class="spinner"></span>';
     roomRef = db.ref('rooms/'+roomCode);
     roomRef.set({ playerCount:1, state: initialStateFor(pendingGame) }).then(function(){
+      roomRef.onDisconnect().remove();
       codeDisplay.textContent = roomCode;
-      lobbyStatus.textContent = "Salle créée ! Partagez ce code : "+roomCode+". En attente d'un adversaire...";
+      lobbyStatus.innerHTML = "Salle créée ! Partagez ce code : "+roomCode+". En attente d'un adversaire... <span class=\"spinner\"></span>";
+      document.getElementById('invite-row').style.display = 'flex';
       roomRef.child('playerCount').on('value', function(snap){
         if(snap.val()===2){
           roomRef.child('playerCount').off();
+          roomRef.onDisconnect().cancel();
+          document.getElementById('invite-row').style.display = 'none';
           startGame();
         }
       });
     });
+  }
+  function inviteFriend(){
+    if(!roomCode) return;
+    const text = 'Rejoins-moi sur Racines ! Utilise le code de salle : ' + roomCode + ' dans "Jouer en ligne".';
+    if(navigator.share){
+      navigator.share({ title:'Racines', text:text }).catch(function(){});
+    } else if(navigator.clipboard){
+      navigator.clipboard.writeText(text).then(function(){
+        lobbyStatus.textContent = 'Message copié ! Colle-le pour inviter un ami.';
+      });
+    }
   }
 
   function joinRoom(code){
     if(!code || code.length!==4){ lobbyStatus.textContent = 'Entrez un code à 4 chiffres.'; return; }
     roomCode = code;
     roomRef = db.ref('rooms/'+roomCode);
-    lobbyStatus.textContent = 'Connexion...';
+    lobbyStatus.innerHTML = 'Connexion... <span class="spinner"></span>';
     roomRef.once('value').then(function(snap){
       const val = snap.val();
       if(!val){ lobbyStatus.textContent = "Cette salle n'existe pas."; return; }
@@ -1056,10 +1356,24 @@ const Online = (function(){
     });
   }
 
+  function cancelWaitingRoom(){
+    if(roomRef && myPlayer === 1 && state === null){
+      roomRef.onDisconnect().cancel();
+      roomRef.remove();}
+    roomCode = null; myPlayer = null; roomRef = null; pendingGame = null;
+    createJoinBox.style.display = 'none';
+    document.getElementById('invite-row').style.display = 'none';
+    document.querySelectorAll('.game-pick').forEach(function(b){ b.classList.remove('active'); });
+    codeDisplay.textContent = ''; lobbyStatus.textContent = '';
+    showView('view-home');
+  }
+
   function startGame(){
+    statsRecorded = false;
     titleEl.textContent = (GAME_NAMES[pendingGame]||'') + ' en ligne';
     roomLabelEl.textContent = 'Salle '+roomCode+' — vous êtes le Joueur '+myPlayer;
     showView('view-online-game');
+    roomRef.child('state/left').onDisconnect().set(myPlayer);
     roomRef.child('state').on('value', function(snap){
       state = snap.val();
       if(state) render();
@@ -1067,6 +1381,14 @@ const Online = (function(){
   }
 
   function leaveRoom(){
+    if(roomRef && state && !state.gameOver && !state.left){
+      const sure = window.confirm ? window.confirm('Quitter la partie en cours ? Votre adversaire sera prévenu.') : true;
+      if(!sure) return;
+    }
+    if(roomRef && state){
+      roomRef.child('state/left').onDisconnect().cancel();
+      roomRef.child('state/left').set(myPlayer);
+    }
     if(roomRef) roomRef.child('state').off();
     roomCode = null; myPlayer = null; roomRef = null; state = null; selected = null; pendingGame = null;
     createJoinBox.style.display = 'none';
@@ -1084,10 +1406,19 @@ const Online = (function(){
     diceEl.style.display = 'none';
     reserveRow.style.display = 'none';
     rollBtn.style.display = 'none';
+    if(state.left && state.left !== myPlayer && !state.gameOver){
+      statusEl.textContent = "L'adversaire a quitté la partie.";
+      return;
+    }
     if(state.game==='yote') renderYote();
     else if(state.game==='dara') renderDara();
     else if(state.game==='achi') renderAchi();
     else if(state.game==='ludo') renderLudo();
+    if(state.gameOver && !statsRecorded){
+      statsRecorded = true;
+      recordGameResult(state.winner === myPlayer);
+      sfxWin(); pulseWin(statusEl);
+    }
   }
 
   /* ---- YOTE ONLINE ---- */
@@ -1312,6 +1643,7 @@ const Online = (function(){
   function ludoRoll(){
     if(!state || state.gameOver || state.turn!==myPlayer) return;
     const d = 1+Math.floor(Math.random()*6);
+    sfxDice();
     const pos = { 1:state.pos[1], 2:state.pos[2] };
     const turn = state.turn;
     const ns = Object.assign({},state,{pos:pos, lastRoll:d});
@@ -1327,7 +1659,7 @@ const Online = (function(){
     pushState(ns);
   }
 
-  return { chooseGame, createRoom, joinRoom, leaveRoom, roll: ludoRoll };
+  return { chooseGame, createRoom, joinRoom, leaveRoom, cancelWaitingRoom, inviteFriend, roll: ludoRoll };
 })();
 </script>
 </body>

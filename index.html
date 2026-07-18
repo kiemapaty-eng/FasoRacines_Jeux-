@@ -101,6 +101,10 @@
   .store b{ font-family:'Fraunces',serif; font-size:1.4rem; display:block; color:var(--accent); }
   .store span{ font-size:0.68rem; text-transform:uppercase; letter-spacing:0.07em; color:#B9AE93; }
   .grid-board{ display:grid; gap:6px; background:var(--wood); border-radius:14px; padding:10px; }
+  .grid-board.dara-royal{ background:linear-gradient(160deg,var(--wood),#3a2313); border:2px solid var(--accent); box-shadow:0 0 0 4px rgba(224,145,61,0.18), 0 14px 30px -12px rgba(0,0,0,0.6); }
+  .grid-board.achi-elegant{ background:#2a2019; border:1px solid var(--accent-dark); }
+  .grid-board.achi-elegant .cell{ background:transparent; border-radius:50%; width:70%; height:70%; margin:auto; }
+  .grid-board.achi-elegant .cell::before{ content:""; position:absolute; inset:0; border-radius:50%; border:1.5px solid rgba(224,145,61,0.35); }
   .cell{ aspect-ratio:1; background:#3a2313; border-radius:6px; display:flex; align-items:center; justify-content:center; cursor:pointer; position:relative; }
   .cell.selectable::after{ content:""; position:absolute; inset:2px; border-radius:5px; border:1.5px dashed var(--accent); opacity:0.7; }
   .cell.selected::after{ content:""; position:absolute; inset:2px; border-radius:5px; border:2px solid #fff; }
@@ -109,6 +113,12 @@
   .piece.p2{ background:radial-gradient(circle at 35% 30%,#dfe3ea,#6d7480); }
   .track{ display:flex; flex-wrap:wrap; gap:4px; background:var(--wood); border-radius:14px; padding:10px; }
   .track-cell{ width:12.5%; aspect-ratio:1; background:#3a2313; border-radius:6px; display:flex; align-items:center; justify-content:center; font-size:0.6rem; color:var(--ink-dim); position:relative; }
+  .track-cell:nth-child(6n+1){ background:linear-gradient(160deg,#C97C2C,#8a521c); }
+  .track-cell:nth-child(6n+2){ background:linear-gradient(160deg,#3E7B4F,#254d31); }
+  .track-cell:nth-child(6n+3){ background:linear-gradient(160deg,#A62639,#6d1826); }
+  .track-cell:nth-child(6n+4){ background:linear-gradient(160deg,#2C5F8A,#1c3d59); }
+  .track-cell:nth-child(6n+5){ background:linear-gradient(160deg,#C9A227,#8a6f1a); }
+  .track-cell:nth-child(6n){ background:#3a2313; }
   .pawn{ width:60%; height:60%; border-radius:50%; position:absolute; }
   .pawn.p1{ background:radial-gradient(circle at 35% 30%,#e8c77a,#8a5a1f); left:2px; }
   .pawn.p2{ background:radial-gradient(circle at 35% 30%,#dfe3ea,#6d7480); right:2px; }
@@ -138,15 +148,15 @@
   .auth-legal a{ color:var(--accent); text-decoration:none; }
   .avatar-picker{ display:grid; grid-template-columns:repeat(6,1fr); gap:0.5rem; margin-top:0.3rem; }
   .avatar-option{ aspect-ratio:1; border-radius:12px; background:var(--card); border:1.5px solid var(--card-border); display:flex; align-items:center; justify-content:center; font-size:1.3rem; cursor:pointer; }
-  .avatar-option.active{ border-color:var(--accent); background:rgba(224,145,61,0.12); }
-  .profile-country{ font-size:0.78rem; color:var(--ink-dim); }
+  .avatar-option.active{ border-color:var(--accent); background:rgba(224,145,61,0.12); }.profile-country{ font-size:0.78rem; color:var(--ink-dim); }
   .profile-header{ display:flex; align-items:center; gap:1rem; padding:0.4rem 0 1.4rem; }
   .avatar-circle{ width:3.6rem; height:3.6rem; border-radius:50%; background:var(--accent-dark); color:#1A1108; display:flex; align-items:center; justify-content:center; font-family:'Fraunces',serif; font-weight:700; font-size:1.4rem; }
   .profile-name{ font-size:1.1rem; color:var(--ink); font-family:'Fraunces',serif; font-weight:700; }
   .profile-email{ font-size:0.78rem; color:var(--ink-dim); }
   .stats-row{ display:flex; gap:0.7rem; margin:1rem 0; }
   .stat-chip{ flex:1; background:var(--card); border:1px solid var(--card-border); border-radius:12px; padding:0.7rem; text-align:center; }
-  .stat-chip b{ font-family:'Fraunces',serif; font-size:1.3rem; display:block; color:var(--accent); }.stat-chip span{ font-size:0.66rem; text-transform:uppercase; letter-spacing:0.05em; color:var(--ink-dim); }
+  .stat-chip b{ font-family:'Fraunces',serif; font-size:1.3rem; display:block; color:var(--accent); }
+  .stat-chip span{ font-size:0.66rem; text-transform:uppercase; letter-spacing:0.05em; color:var(--ink-dim); }
   .profile-link-row{ display:flex; align-items:center; justify-content:space-between; padding:0.9rem 0; border-bottom:1px solid var(--card-border); color:var(--ink); font-size:0.88rem; cursor:pointer; }
   .privacy-text h3{ font-size:0.95rem; color:var(--accent); margin:1.2rem 0 0.4rem; }
   .privacy-text p, .privacy-text li{ font-size:0.83rem; color:#CFC4B2; margin-bottom:0.5rem; }
@@ -361,21 +371,13 @@
 
 <!-- ===================== DARA ===================== -->
 <div class="view" id="view-dara">
-  <div class="game-header"><button class="back-btn" onclick="showView('view-games-list')">←</button><h2>Dara</h2></div>
+  <div class="game-header"><button class="back-btn" onclick="showView('view-games-list')">←</button><h2>👑 Dara</h2></div>
   <div class="game-body">
-    <div class="grid-board" id="dara-board" style="grid-template-columns:repeat(6,1fr);"></div>
+    <div class="grid-board dara-royal" id="dara-board" style="grid-template-columns:repeat(6,1fr);"></div>
     <div class="status-line" id="dara-status">Placement — Joueur 1</div>
     <div class="controls-row"><button class="reset" onclick="Dara.reset()">Recommencer</button></div>
   </div>
-</div>
-
-<!-- ===================== ACHI ===================== -->
-<div class="view" id="view-achi">
-  <div class="game-header"><button class="back-btn" onclick="showView('view-games-list')">←</button><h2>Achi</h2></div>
-  <div class="game-body">
-    <div class="grid-board" id="achi-board" style="grid-template-columns:repeat(3,1fr); max-width:280px; margin:0 auto;"></div>
-    <div class="status-line" id="achi-status">Placement — Joueur 1</div>
-    <div class="controls-row"><button class="reset" onclick="Achi.reset()">Recommencer</button></div>
+</div><div class="controls-row"><button class="reset" onclick="Achi.reset()">Recommencer</button></div>
   </div>
 </div>
 
@@ -386,7 +388,8 @@
     <div class="track" id="ludo-track"></div>
     <div id="dice-face">–</div>
     <div class="status-line" id="ludo-status">Tour du joueur 1 — lancez le dé</div>
-    <div class="controls-row"><button class="action primary" onclick="Ludo.roll()">Lancer le dé</button>
+    <div class="controls-row">
+      <button class="action primary" onclick="Ludo.roll()">Lancer le dé</button>
       <button class="reset" onclick="Ludo.reset()">Recommencer</button>
     </div>
   </div>
@@ -647,7 +650,11 @@ function openGameInfo(key){
 function switchInfoTab(tab){
   ['about','rules','tuto'].forEach(function(t){
     document.getElementById('tab-btn-'+t).classList.toggle('active', t===tab);
-    document.getElementById('panel-'+t).classList.toggle('active', t===tab);
+
+<!-- ===================== ACHI ===================== -->
+<div class="view" id="view-achi">
+  <div class="game-header"><button class="back-btn" onclick="showView('view-games-list')">←</button><h2>Achi</h2></div>
+  <div class="game-body">document.getElementById('panel-'+t).classList.toggle('active', t===tab);
   });
 }
 
@@ -658,7 +665,8 @@ function renderTutoStep(){
   dotsEl.innerHTML = '';
   g.steps.forEach(function(s, i){
     const d = document.createElement('div');
-    d.className = 'dot'+(i===tutoStepIndex?' active':'');d.textContent = i+1;
+    d.className = 'dot'+(i===tutoStepIndex?' active':'');
+    d.textContent = i+1;
     dotsEl.appendChild(d);
   });
   document.getElementById('tuto-icon').textContent = g.icon;
@@ -1027,12 +1035,13 @@ const Achi = (function(){
       if(board[i]){
         const p=document.createElement('div');
         p.className='piece '+(board[i]===1?'p1':'p2');
-        cell.appendChild(p);
+    <div class="grid-board achi-elegant" id="achi-board" style="grid-template-columns:repeat(3,1fr); max-width:280px; margin:0 auto;"></div>cell.appendChild(p);
       }
       if(!gameOver){
         if(phase==='place'){
           if(!board[i]){
-            cell.classList.add('selectable');cell.addEventListener('click', (function(idx2){ return function(){ place(idx2); }; })(i));
+            cell.classList.add('selectable');
+            cell.addEventListener('click', (function(idx2){ return function(){ place(idx2); }; })(i));
           }
         } else {
           if(selected===i) cell.classList.add('selected');
@@ -1149,7 +1158,7 @@ const auth = firebase.auth();
 /* ===================== AUTH / PROFILE / STATS ===================== */
 let authMode = 'login';
 let currentUserProfile = null;
-const AVATAR_OPTIONS = ['👤','🦁','🐘','🦓','🌍','🥁','🎭','🌳','🦜','🐆','🌾','🪘'];
+const AVATAR_OPTIONS = ['👨🏿','👩🏿','👨🏾','👩🏾','🧕🏾','👳🏿','🧔🏿','👵🏾','👴🏿','🧑🏿‍🦱','👦🏿','👧🏾'];
 let selectedAvatar = AVATAR_OPTIONS[0];
 
 function renderAvatarPicker(){
@@ -1435,6 +1444,7 @@ const Online = (function(){
   }
   function renderYote(){
     boardEl.style.display='grid'; boardEl.style.gridTemplateColumns='repeat(6,1fr)';
+    boardEl.classList.remove('dara-royal','achi-elegant');
     reserveRow.style.display='flex';
     const board=state.board, hand=state.hand, turn=state.turn;
     const myTurn = (turn===myPlayer) && !state.gameOver;
@@ -1504,6 +1514,7 @@ const Online = (function(){
   /* ---- DARA ONLINE ---- */
   function renderDara(){
     boardEl.style.display='grid'; boardEl.style.gridTemplateColumns='repeat(6,1fr)';
+    boardEl.classList.add('dara-royal'); boardEl.classList.remove('achi-elegant');
     const board=state.board, turn=state.turn;
     const myTurn = (turn===myPlayer) && !state.gameOver;
     boardEl.innerHTML='';
@@ -1573,6 +1584,7 @@ const Online = (function(){
   function renderAchi(){
     boardEl.style.display='grid'; boardEl.style.gridTemplateColumns='repeat(3,1fr)';
     boardEl.style.maxWidth='280px'; boardEl.style.margin='0 auto';
+    boardEl.classList.add('achi-elegant'); boardEl.classList.remove('dara-royal');
     const board=state.board, turn=state.turn;
     const myTurn = (turn===myPlayer) && !state.gameOver;
     boardEl.innerHTML='';

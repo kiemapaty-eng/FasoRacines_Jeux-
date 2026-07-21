@@ -221,7 +221,31 @@
 
   /* win pulse */
   @keyframes winPulse{ 0%{ transform:scale(1); } 30%{ transform:scale(1.18); } 60%{ transform:scale(0.96); } 100%{ transform:scale(1); } }
-  .status-line.win-pulse{ animation:winPulse 0.6s ease; }
+  .status-line.win-pulse{ animation:winPulse 0.6s ease; }#view-home{ position:relative; overflow:hidden; background:linear-gradient(to bottom, #3a2249 0%, #c9622f 55%, #f2a541 100%); }
+#view-home > *:not(.village-sky):not(.baobab):not(.leaf):not(.campfire){ position:relative; z-index:2; }
+
+.village-sky{ position:absolute; inset:0; background:radial-gradient(circle at 75% 15%, rgba(255,230,180,0.5), transparent 40%); pointer-events:none; z-index:0; }
+.baobab{ position:absolute; bottom:0; left:6%; width:90px; height:auto; opacity:0.85; z-index:1; filter:drop-shadow(0 0 6px rgba(0,0,0,0.3)); }
+
+.leaf{ position:absolute; width:18px; opacity:0.8; z-index:1; animation:sway 6s ease-in-out infinite; }
+.leaf-1{ top:6%; left:75%; }
+.leaf-2{ top:14%; left:88%; animation-delay:2s; }
+@keyframes sway{ 0%,100%{ transform:translateY(0) rotate(-8deg); } 50%{ transform:translateY(14px) rotate(8deg); } }
+
+.campfire{ position:absolute; bottom:70px; right:8%; width:40px; height:50px; z-index:1; }
+.logs{ position:absolute; bottom:0; left:0; width:40px; height:6px; background:#3d2716; border-radius:2px; }
+.flame{ position:absolute; bottom:6px; left:50%; width:11px; height:20px; border-radius:50% 50% 50% 50% / 60% 60% 40% 40%; transform:translateX(-50%); animation:flicker 0.9s ease-in-out infinite alternate; }
+.flame-1{ background:#ff7b1a; z-index:3; }
+.flame-2{ background:#ffb347; width:8px; height:15px; bottom:7px; z-index:2; animation-delay:0.2s; }
+.flame-3{ background:#ffe08a; width:5px; height:10px; bottom:8px; z-index:1; animation-delay:0.4s; }
+@keyframes flicker{ 0%{ transform:translateX(-50%) scaleY(1) rotate(-2deg); } 100%{ transform:translateX(-50%) scaleY(1.15) rotate(2deg); } }
+
+#view-home .big-btn{ border:2px solid #b5762f; background:repeating-linear-gradient(115deg, rgba(0,0,0,0.12) 0 2px, transparent 2px 6px), linear-gradient(135deg, #5a3a22, #3d2716); box-shadow: inset 0 0 0 2px rgba(181,118,47,0.35), 0 4px 10px rgba(0,0,0,0.3); }
+
+.dust-particle{ position:fixed; width:6px; height:6px; border-radius:50%; background:rgba(210,180,140,0.8); pointer-events:none; z-index:999; animation:dust-fade 0.6s ease-out forwards; }
+@keyframes dust-fade{ to{ transform:translate(var(--dx),var(--dy)) scale(0); opacity:0; } }
+
+@media (prefers-reduced-motion: reduce){ .leaf, .flame, .dust-particle{ animation:none !important; } }
 </style>
 </head>
 <body>

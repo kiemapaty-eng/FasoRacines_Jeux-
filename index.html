@@ -1,14 +1,15 @@
 <!DOCTYPE html>
+<!-- © 2026 KIEMA Patricia Wendemi Laura — FasoRacine — Tous droits réservés -->
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>Racines — 5 jeux traditionnels d'Afrique</title>
+<title>FasoRacine — 5 jeux traditionnels d'Afrique</title>
 <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#15110D">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="Racines">
+<meta name="apple-mobile-web-app-title" content="FasoRacine">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
@@ -193,6 +194,9 @@
   .stat-chip{ flex:1; background:var(--card); border:1px solid var(--card-border); border-radius:12px; padding:0.7rem; text-align:center; }
   .stat-chip b{ font-family:'Fraunces',serif; font-size:1.3rem; display:block; color:var(--accent); }
   .stat-chip span{ font-size:0.66rem; text-transform:uppercase; letter-spacing:0.05em; color:var(--ink-dim); }
+  .xp-bar-wrap{ background:var(--card); border:1px solid var(--card-border); border-radius:20px; height:0.6rem; overflow:hidden; margin-top:0.2rem; }
+  .xp-bar-fill{ height:100%; background:linear-gradient(90deg,var(--accent-dark),var(--accent)); border-radius:20px; transition:width 0.4s ease; }
+  .xp-bar-label{ text-align:center; font-size:0.68rem; color:var(--ink-dim); margin-top:0.4rem; margin-bottom:0.6rem; }
   .profile-link-row{ display:flex; align-items:center; justify-content:space-between; padding:0.9rem 0; border-bottom:1px solid var(--card-border); color:var(--ink); font-size:0.88rem; cursor:pointer; }
   .privacy-text h3{ font-size:0.95rem; color:var(--accent); margin:1.2rem 0 0.4rem; }
   .privacy-text p, .privacy-text li{ font-size:0.83rem; color:#CFC4B2; margin-bottom:0.5rem; }
@@ -221,31 +225,7 @@
 
   /* win pulse */
   @keyframes winPulse{ 0%{ transform:scale(1); } 30%{ transform:scale(1.18); } 60%{ transform:scale(0.96); } 100%{ transform:scale(1); } }
-  .status-line.win-pulse{ animation:winPulse 0.6s ease; }#view-home{ position:relative; overflow:hidden; background:linear-gradient(to bottom, #3a2249 0%, #c9622f 55%, #f2a541 100%); }
-#view-home > *:not(.village-sky):not(.baobab):not(.leaf):not(.campfire){ position:relative; z-index:2; }
-
-.village-sky{ position:absolute; inset:0; background:radial-gradient(circle at 75% 15%, rgba(255,230,180,0.5), transparent 40%); pointer-events:none; z-index:0; }
-.baobab{ position:absolute; bottom:0; left:6%; width:90px; height:auto; opacity:0.85; z-index:1; filter:drop-shadow(0 0 6px rgba(0,0,0,0.3)); }
-
-.leaf{ position:absolute; width:18px; opacity:0.8; z-index:1; animation:sway 6s ease-in-out infinite; }
-.leaf-1{ top:6%; left:75%; }
-.leaf-2{ top:14%; left:88%; animation-delay:2s; }
-@keyframes sway{ 0%,100%{ transform:translateY(0) rotate(-8deg); } 50%{ transform:translateY(14px) rotate(8deg); } }
-
-.campfire{ position:absolute; bottom:70px; right:8%; width:40px; height:50px; z-index:1; }
-.logs{ position:absolute; bottom:0; left:0; width:40px; height:6px; background:#3d2716; border-radius:2px; }
-.flame{ position:absolute; bottom:6px; left:50%; width:11px; height:20px; border-radius:50% 50% 50% 50% / 60% 60% 40% 40%; transform:translateX(-50%); animation:flicker 0.9s ease-in-out infinite alternate; }
-.flame-1{ background:#ff7b1a; z-index:3; }
-.flame-2{ background:#ffb347; width:8px; height:15px; bottom:7px; z-index:2; animation-delay:0.2s; }
-.flame-3{ background:#ffe08a; width:5px; height:10px; bottom:8px; z-index:1; animation-delay:0.4s; }
-@keyframes flicker{ 0%{ transform:translateX(-50%) scaleY(1) rotate(-2deg); } 100%{ transform:translateX(-50%) scaleY(1.15) rotate(2deg); } }
-
-#view-home .big-btn{ border:2px solid #b5762f; background:repeating-linear-gradient(115deg, rgba(0,0,0,0.12) 0 2px, transparent 2px 6px), linear-gradient(135deg, #5a3a22, #3d2716); box-shadow: inset 0 0 0 2px rgba(181,118,47,0.35), 0 4px 10px rgba(0,0,0,0.3); }
-
-.dust-particle{ position:fixed; width:6px; height:6px; border-radius:50%; background:rgba(210,180,140,0.8); pointer-events:none; z-index:999; animation:dust-fade 0.6s ease-out forwards; }
-@keyframes dust-fade{ to{ transform:translate(var(--dx),var(--dy)) scale(0); opacity:0; } }
-
-@media (prefers-reduced-motion: reduce){ .leaf, .flame, .dust-particle{ animation:none !important; } }
+  .status-line.win-pulse{ animation:winPulse 0.6s ease; }
 </style>
 </head>
 <body>
@@ -255,7 +235,7 @@
 <div class="view active" id="view-home">
   <div class="hero">
     <div class="logo-mark">🌳</div>
-    <h1>RACINES</h1>
+    <h1>FASORACINE</h1>
     <div class="tagline">Nos jeux, notre héritage</div>
     <p>Les jeux traditionnels africains, notre culture, notre fierté.</p>
     <div class="bogolan-strip"></div>
@@ -263,7 +243,7 @@
   <div class="home-actions">
     <button class="big-btn primary" onclick="showView('view-games-list')">▶ JOUER</button>
     <button class="big-btn secondary" onclick="showView('view-online-lobby')">🌐 JOUER EN LIGNE</button>
-    <button class="big-btn tertiary" onclick="openStub()">🏆 DÉFIS &amp; TOURNOIS</button>
+    <button class="big-btn tertiary" onclick="showView('view-tournament')">🏆 DÉFIS &amp; TOURNOIS</button>
     <button id="install-btn" onclick="installApp()">📲 Installer l'appli</button>
   </div>
   <div class="active-games-section" id="active-games-section" style="display:none;">
@@ -274,9 +254,10 @@
     <button class="nav-item active"><span class="nav-ic">🏠</span>Accueil</button>
     <button class="nav-item" onclick="showView('view-games-list')"><span class="nav-ic">🎲</span>Jeux</button>
     <button class="nav-item" onclick="openProfile()"><span class="nav-ic">👤</span>Profil</button>
-    <button class="nav-item" onclick="openStub()"><span class="nav-ic">🏅</span>Classement</button>
-    <button class="nav-item" onclick="openStub()"><span class="nav-ic">⋯</span>Plus</button>
+    <button class="nav-item" onclick="showView('view-leaderboard')"><span class="nav-ic">🏅</span>Classement</button>
+    <button class="nav-item" onclick="showView('view-more')"><span class="nav-ic">⋯</span>Plus</button>
   </div>
+  <div style="text-align:center; font-size:0.68rem; color:var(--ink-dim); opacity:0.6; padding:0.9rem 1rem 1.4rem;">© 2026 KIEMA Patricia Wendemi Laura — FasoRacine</div>
 </div>
 
 <!-- ===================== GAMES LIST ===================== -->
@@ -313,15 +294,13 @@
     <button class="nav-item" onclick="showView('view-home')"><span class="nav-ic">🏠</span>Accueil</button>
     <button class="nav-item active"><span class="nav-ic">🎲</span>Jeux</button>
     <button class="nav-item" onclick="openProfile()"><span class="nav-ic">👤</span>Profil</button>
-    <button class="nav-item" onclick="openStub()"><span class="nav-ic">🏅</span>Classement</button>
-    <button class="nav-item" onclick="openStub()"><span class="nav-ic">⋯</span>Plus</button>
-  </div>
-</div>
-
-<!-- ===================== GAME INFO (À propos / Règles / Tutoriel) ===================== -->
+    <button class="nav-item" onclick="showView('view-leaderboard')"><span class="nav-ic">🏅</span>Classement</button>
+    <button class="nav-item" onclick="showView('view-more')"><span class="nav-ic">⋯</span>Plus</button>
+  </div><!-- ===================== GAME INFO (À propos / Règles / Tutoriel) ===================== -->
 <div class="view" id="view-game-info">
   <div class="game-header"><button class="back-btn" onclick="showView('view-games-list')">←</button><h2 id="info-title">Jeu</h2></div>
-  <div class="tabs-row"><button class="tab-btn active" id="tab-btn-about" onclick="switchInfoTab('about')">À PROPOS</button>
+  <div class="tabs-row">
+    <button class="tab-btn active" id="tab-btn-about" onclick="switchInfoTab('about')">À PROPOS</button>
     <button class="tab-btn" id="tab-btn-rules" onclick="switchInfoTab('rules')">RÈGLES</button>
     <button class="tab-btn" id="tab-btn-tuto" onclick="switchInfoTab('tuto')">TUTORIEL</button>
   </div>
@@ -528,7 +507,14 @@
     <div class="stats-row">
       <div class="stat-chip"><b id="profile-games">0</b><span>Parties</span></div>
       <div class="stat-chip"><b id="profile-wins">0</b><span>Victoires</span></div>
+      <div class="stat-chip"><b id="profile-level">1</b><span>Niveau</span></div>
     </div>
+    <div class="xp-bar-wrap">
+      <div class="xp-bar-fill" id="profile-xp-fill" style="width:0%;"></div>
+    </div>
+    <div class="xp-bar-label" id="profile-xp-label">0 / 100 XP</div>
+    <div class="profile-link-row" onclick="showView('view-leaderboard')"><span>🏅 Classement</span><span class="chevron">›</span></div>
+    <div class="profile-link-row" onclick="openAvatarShop()"><span>👗 Avatars à débloquer</span><span class="chevron">›</span></div>
     <div class="profile-link-row" onclick="showView('view-privacy')"><span>Politique de confidentialité</span><span class="chevron">›</span></div>
     <div class="profile-link-row" onclick="logOutUser()"><span>Se déconnecter</span><span class="chevron">›</span></div>
   </div>
@@ -538,7 +524,7 @@
 <div class="view" id="view-privacy">
   <div class="game-header"><button class="back-btn" onclick="history.back ? showView('view-home') : showView('view-home')">←</button><h2>Confidentialité</h2></div>
   <div class="game-body privacy-text">
-    <p>Dernière mise à jour : juillet 2026. Racines est une petite application indépendante ; ce texte décrit simplement et honnêtement ce que nous faisons de vos données.</p>
+    <p>Dernière mise à jour : juillet 2026. FasoRacine est une petite application indépendante ; ce texte décrit simplement et honnêtement ce que nous faisons de vos données.</p>
     <h3>Données collectées</h3>
     <ul>
       <li>Si vous créez un compte : votre email, votre mot de passe (jamais stocké en clair, géré par Firebase Authentication), et le nom que vous choisissez d'afficher.</li>
@@ -548,14 +534,75 @@
     <h3>Utilisation</h3>
     <ul>
       <li>Ces données servent uniquement à faire fonctionner votre profil, vos statistiques et le multijoueur.</li>
-      <li>Nous ne vendons ni ne partageons vos données avec des tiers à des fins publicitaires. Il n'y a pas de publicité dans Racines.</li>
+      <li>Nous ne vendons ni ne partageons vos données avec des tiers à des fins publicitaires. Il n'y a pas de publicité dans FasoRacine.</li>
     </ul>
     <h3>Stockage</h3>
     <p>Les données sont hébergées par Firebase (Google) avec des règles d'accès restreignant chaque profil à son propriétaire. Vous pouvez demander la suppression de votre compte et de vos données à tout moment.</p>
     <h3>Enfants</h3>
-    <p>Racines peut être utilisée en famille. Nous recommandons aux parents de superviser la création de compte pour les plus jeunes joueurs.</p>
+    <p>FasoRacine peut être utilisée en famille. Nous recommandons aux parents de superviser la création de compte pour les plus jeunes joueurs.</p>
     <h3>Contact</h3>
     <p>Pour toute question ou demande de suppression de données, contactez la développeuse via la page GitHub du projet.</p>
+    <p style="margin-top:1.5rem; opacity:0.7;">© 2026 KIEMA Patricia Wendemi Laura — Tous droits réservés.</p>
+  </div>
+</div>
+
+<!-- ===================== LEADERBOARD ===================== -->
+<div class="view" id="view-leaderboard">
+  <div class="game-header"><button class="back-btn" onclick="showView('view-home')">←</button><h2>🏅 Classement</h2></div>
+  <div class="tabs-row">
+    <button class="tab-btn active" id="lb-tab-world" onclick="switchLeaderboardTab('world')">MONDE</button>
+    <button class="tab-btn" id="lb-tab-country" onclick="switchLeaderboardTab('country')">MON PAYS</button>
+  </div>
+  <div class="game-body">
+    <div id="leaderboard-list"></div>
+  </div>
+</div>
+
+<!-- ===================== PUBLIC PLAYER PROFILE ===================== -->
+<div class="view" id="view-public-profile">
+  <div class="game-header"><button class="back-btn" onclick="showView('view-leaderboard')">←</button><h2>Profil joueur</h2></div>
+  <div class="game-body">
+    <div class="profile-header">
+      <div class="avatar-circle" id="pp-avatar">?</div>
+      <div>
+        <div class="profile-name" id="pp-name">—</div>
+        <div class="profile-country" id="pp-country"></div>
+      </div>
+    </div>
+    <div class="stats-row">
+      <div class="stat-chip"><b id="pp-games">0</b><span>Parties</span></div>
+      <div class="stat-chip"><b id="pp-wins">0</b><span>Victoires</span></div>
+      <div class="stat-chip"><b id="pp-level">1</b><span>Niveau</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== AVATAR SHOP ===================== -->
+<div class="view" id="view-avatar-shop">
+  <div class="game-header"><button class="back-btn" onclick="showView('view-profile')">←</button><h2>👗 Avatars</h2></div>
+  <div class="game-body">
+    <div class="info-box" style="margin-top:0;">Débloquez de nouveaux avatars en gagnant de l'XP (parties jouées et victoires). Niveau actuel : <b id="shop-level">1</b>.</div>
+    <div class="avatar-picker" id="shop-avatar-grid" style="margin-top:1.2rem; grid-template-columns:repeat(4,1fr);"></div>
+  </div>
+</div>
+
+<!-- ===================== TOURNAMENT ===================== -->
+<div class="view" id="view-tournament">
+  <div class="game-header"><button class="back-btn" onclick="showView('view-home')">←</button><h2>🏆 Tournoi</h2></div>
+  <div class="game-body" id="tournament-body">
+    <div style="text-align:center; padding:2rem 0;"><span class="spinner"></span></div>
+  </div>
+</div>
+
+<!-- ===================== PLUS (menu) ===================== -->
+</div><div class="view" id="view-more">
+  <div class="game-header"><button class="back-btn" onclick="showView('view-home')">←</button><h2>Plus</h2></div>
+  <div class="game-body">
+    <div class="profile-link-row" onclick="showView('view-privacy')"><span>🔒 Politique de confidentialité</span><span class="chevron">›</span></div>
+    <div class="profile-link-row" onclick="openGameInfo('awale')"><span>❓ Comment jouer (règles &amp; tutoriels)</span><span class="chevron">›</span></div>
+    <div class="profile-link-row" onclick="showView('view-leaderboard')"><span>🏅 Classement</span><span class="chevron">›</span></div>
+    <div class="profile-link-row" onclick="showView('view-tournament')"><span>🏆 Tournoi</span><span class="chevron">›</span></div>
+    <div class="info-box" style="margin-top:1.6rem;">FasoRacine — © 2026 KIEMA Patricia Wendemi Laura<br>Version en développement continu.</div>
   </div>
 </div>
 
@@ -568,6 +615,7 @@ function showView(id){
   document.getElementById(id).classList.add('active');
   window.scrollTo(0,0);
   if(id==='view-home' && typeof renderActiveGames==='function') renderActiveGames();
+  if(id==='view-leaderboard' && typeof renderLeaderboard==='function') renderLeaderboard();
 }
 function openStub(){ showView('view-stub'); }
 function flashBoard(el){
@@ -596,7 +644,60 @@ function playTone(freq, duration, type){
 function sfxMove(){ playTone(420, 0.07, 'sine'); }
 function sfxCapture(){ playTone(210, 0.16, 'square'); }
 function sfxDice(){ playTone(300, 0.06, 'triangle'); }
-function sfxWin(){ playTone(523,0.14); setTimeout(function(){playTone(659,0.14);},110); setTimeout(function(){playTone(784,0.28);},220); }
+function sfxWin(){
+  /* Si un fichier "sounds/victoire.mp3" existe dans le dépôt, il sera joué à la place — sinon on utilise le son généré ci-dessous. */
+  const realAudio = new Audio('sounds/victoire.mp3');
+  realAudio.volume = 0.85;
+  realAudio.play().then(function(){
+    /* succès : le vrai fichier joue, on ne fait rien de plus */
+  }).catch(function(){
+    playGeneratedVictoryFanfare();
+  });
+}
+function playGeneratedVictoryFanfare(){
+  try{
+    if(!sfxCtx) sfxCtx = new (window.AudioContext||window.webkitAudioContext)();
+    playApplause(sfxCtx, 1.6);
+    playTrumpetFanfare(sfxCtx);
+  }catch(e){}
+}
+function playApplause(ctx, duration){
+  const bufferSize = Math.floor(ctx.sampleRate * duration);
+  const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
+  const data = buffer.getChannelData(0);
+  for(let i=0;i<bufferSize;i++){
+    const envelope = Math.pow(1 - i/bufferSize, 0.4) * (0.6 + 0.4*Math.random());
+    data[i] = (Math.random()*2-1) * envelope;
+  }
+  const source = ctx.createBufferSource();
+  source.buffer = buffer;
+  const filter = ctx.createBiquadFilter();
+  filter.type = 'bandpass';
+  filter.frequency.value = 2800;
+  filter.Q.value = 0.5;
+  const gain = ctx.createGain();
+  gain.gain.value = 0.22;
+  source.connect(filter); filter.connect(gain); gain.connect(ctx.destination);
+  source.start();
+}
+function playTrumpetFanfare(ctx){
+  const notes = [523.25, 659.25, 783.99, 1046.5];
+  notes.forEach(function(freq, i){
+    setTimeout(function(){
+      const osc = ctx.createOscillator();
+      const osc2 = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.type = 'sawtooth'; osc2.type = 'square'; osc2.detune.value = 7;
+      osc.frequency.value = freq; osc2.frequency.value = freq;
+      gain.gain.setValueAtTime(0.0001, ctx.currentTime);
+      gain.gain.linearRampToValueAtTime(0.16, ctx.currentTime+0.03);
+      gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime+0.5);
+      osc.connect(gain); osc2.connect(gain); gain.connect(ctx.destination);
+      osc.start(); osc2.start();
+      osc.stop(ctx.currentTime+0.55); osc2.stop(ctx.currentTime+0.55);
+    }, i*160);
+  });
+}
 function pulseWin(el){ if(!el) return; el.classList.remove('win-pulse'); void el.offsetWidth; el.classList.add('win-pulse'); }
 
 /* ===================== OFFLINE DETECTION ===================== */
@@ -620,7 +721,8 @@ window.addEventListener('beforeinstallprompt', (e) => {
   deferredInstallPrompt = e;
   const btn = document.getElementById('install-btn');
   if(btn) btn.style.display = 'block';
-});function installApp(){
+});
+function installApp(){
   const btn = document.getElementById('install-btn');
   if(deferredInstallPrompt){
     deferredInstallPrompt.prompt();
@@ -792,8 +894,7 @@ const Awale = (function(){
     let last=i; const opp=isPlayer?[0,5]:[6,11];
     let captured=false;
     while(last>=opp[0] && last<=opp[1] && (board[last]===2||board[last]===3)){
-      if(isPlayer) stores.player+=board[last]; else stores.ai+=board[last];
-      board[last]=0; last--; captured=true; if(last<opp[0]) break;
+      if(isPlayer) stores.player+=board[last]; else stores.ai+=board[last];board[last]=0; last--; captured=true; if(last<opp[0]) break;
     }
     if(captured) flashBoard(document.querySelector('#view-awale .board-wrap'));
   }
@@ -919,7 +1020,8 @@ const Yote = (function(){
     const r2=Math.floor(to/SIZE), c2=to%SIZE;
     const dr=r2-r1, dc=c2-c1;
     const mid = idx(r1+dr/2, c1+dc/2);
-    if(board[mid] && board[mid]!==turn){board[to]=board[from]; board[from]=0; board[mid]=0;
+    if(board[mid] && board[mid]!==turn){
+      board[to]=board[from]; board[from]=0; board[mid]=0;
       selected=null;
       statusEl.textContent = 'Capture ! Choisissez un second pion adverse à retirer.';
       flashBoard(boardEl);
@@ -1091,8 +1193,7 @@ const Achi = (function(){
   const adj = [
     [1,3,4],[0,2,4],[1,5,4],
     [0,4,6],[0,1,2,3,5,6,7,8],[2,4,8],
-    [3,4,7],[6,8,4],[7,5,4]
-  ];
+    [3,4,7],[6,8,4],[7,5,4]];
   const lines = [[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];
   function render(){
     boardEl.innerHTML='';
@@ -1218,7 +1319,8 @@ const firebaseConfig = {
   messagingSenderId: "400120515060",
   appId: "1:400120515060:web:8fbad38607e25fe66e11a1"
 };
-firebase.initializeApp(firebaseConfig);const db = firebase.database();
+firebase.initializeApp(firebaseConfig);
+const db = firebase.database();
 const auth = firebase.auth();
 
 /* ===================== AUTH / PROFILE / STATS ===================== */
@@ -1286,7 +1388,7 @@ function submitAuth(){
     if(!name){ showAuthError('Merci de choisir un nom à afficher.'); return; }
     const country = document.getElementById('auth-country').value;
     auth.createUserWithEmailAndPassword(email, password).then(function(cred){
-      return db.ref('users/'+cred.user.uid).set({ displayName:name, email:email, country:country, avatar:selectedAvatar, createdAt:Date.now(), gamesPlayed:0, wins:0 });
+      return db.ref('users/'+cred.user.uid).set({ displayName:name, email:email, country:country, avatar:selectedAvatar, createdAt:Date.now(), gamesPlayed:0, wins:0, xp:0 });
     }).then(function(){
       showView('view-profile');
     }).catch(function(err){ showAuthError(translateAuthError(err)); });
@@ -1318,6 +1420,10 @@ function renderProfile(){
   }
   document.getElementById('profile-name').textContent = currentUserProfile.displayName || 'Joueur';
   document.getElementById('profile-country').textContent = currentUserProfile.country || '';
+  const xp = currentUserProfile.xp || 0;
+  document.getElementById('profile-level').textContent = levelFromXp(xp);
+  document.getElementById('profile-xp-fill').style.width = xpIntoLevel(xp) + '%';
+  document.getElementById('profile-xp-label').textContent = xpIntoLevel(xp) + ' / 100 XP';
   document.getElementById('profile-email').textContent = currentUserProfile.email || '';
   document.getElementById('profile-games').textContent = currentUserProfile.gamesPlayed || 0;
   document.getElementById('profile-wins').textContent = currentUserProfile.wins || 0;
@@ -1340,6 +1446,105 @@ function recordGameResult(won){
   const ref = db.ref('users/'+user.uid);
   ref.child('gamesPlayed').transaction(function(v){ return (v||0)+1; });
   if(won) ref.child('wins').transaction(function(v){ return (v||0)+1; });
+  ref.child('xp').transaction(function(v){ return (v||0) + (won?30:10); });
+}
+function levelFromXp(xp){ return Math.floor((xp||0)/100) + 1; }
+function xpIntoLevel(xp){ return (xp||0) % 100; }
+
+/* ===================== LEADERBOARD ===================== */
+let leaderboardTab = 'world';
+function switchLeaderboardTab(tab){
+  leaderboardTab = tab;
+  document.getElementById('lb-tab-world').classList.toggle('active', tab==='world');
+  document.getElementById('lb-tab-country').classList.toggle('active', tab==='country');
+  renderLeaderboard();
+}
+function renderLeaderboard(){
+  const list = document.getElementById('leaderboard-list');
+  if(!auth.currentUser){
+    list.innerHTML = '<p style="text-align:center; color:var(--ink-dim); padding:2rem 0;">Connectez-vous pour voir le classement.</p>';
+    return;
+  }
+  list.innerHTML = '<div style="text-align:center; padding:2rem 0;"><span class="spinner"></span></div>';
+  db.ref('users').once('value').then(function(snap){
+    const all = snap.val() || {};
+    let players = Object.keys(all).map(function(uid){ return Object.assign({uid:uid}, all[uid]); });
+    if(leaderboardTab==='country' && currentUserProfile && currentUserProfile.country){
+      players = players.filter(function(p){ return p.country === currentUserProfile.country; });
+    }
+    players.sort(function(a,b){ return (b.wins||0) - (a.wins||0); });
+    players = players.slice(0, 100);
+    if(players.length===0){
+      list.innerHTML = '<p style="text-align:center; color:var(--ink-dim); padding:2rem 0;">Personne à afficher pour l\'instant.</p>';
+      return;
+    }
+    list.innerHTML = '';
+    players.forEach(function(p, i){
+      const row = document.createElement('div');
+      row.className = 'active-game-card';
+      const isMe = auth.currentUser && p.uid === auth.currentUser.uid;
+      if(isMe) row.style.borderColor = 'var(--accent)';
+      const avatarHtml = (p.avatar && p.avatar.indexOf('http')===0)
+        ? '<img src="'+p.avatar+'" alt="" style="width:100%;height:100%;border-radius:10px;">'
+        : (p.avatar || '?');
+      row.innerHTML = '<div class="active-game-icon" style="font-weight:700;">'+(i+1)+'</div>'+
+        '<div class="active-game-icon" style="overflow:hidden;">'+avatarHtml+'</div>'+
+        '<div class="active-game-info"><div class="g-name">'+(p.displayName||'Joueur')+(isMe?' (vous)':'')+'</div>'+
+        '<div class="g-status">'+(p.country||'')+' · Niveau '+levelFromXp(p.xp)+'</div></div>'+
+        '<div class="active-game-code">'+(p.wins||0)+' 🏆</div>';
+      row.addEventListener('click', function(){ openPublicProfile(p); });list.appendChild(row);
+    });
+  });
+}
+function openPublicProfile(p){
+  const avEl = document.getElementById('pp-avatar');
+  if(p.avatar && p.avatar.indexOf('http')===0){
+    avEl.innerHTML = '<img src="'+p.avatar+'" alt="" style="width:100%;height:100%;border-radius:50%;">';
+  } else {
+    avEl.textContent = p.avatar || (p.displayName||'?').charAt(0).toUpperCase();
+  }
+  document.getElementById('pp-name').textContent = p.displayName || 'Joueur';
+  document.getElementById('pp-country').textContent = p.country || '';
+  document.getElementById('pp-games').textContent = p.gamesPlayed || 0;
+  document.getElementById('pp-wins').textContent = p.wins || 0;
+  document.getElementById('pp-level').textContent = levelFromXp(p.xp);
+  showView('view-public-profile');
+}
+
+/* ===================== AVATAR SHOP ===================== */
+const AVATAR_UNLOCK_LEVEL = [1,1,1,2,2,3,3,4,5,6,7,8];
+function openAvatarShop(){
+  if(!currentUserProfile){ showView('view-profile'); return; }
+  document.getElementById('shop-level').textContent = levelFromXp(currentUserProfile.xp||0);
+  renderAvatarShop();
+  showView('view-avatar-shop');
+}
+function renderAvatarShop(){
+  const grid = document.getElementById('shop-avatar-grid');
+  grid.innerHTML = '';
+  const myLevel = levelFromXp((currentUserProfile&&currentUserProfile.xp)||0);
+  AVATAR_OPTIONS.forEach(function(a, i){
+    const needLevel = AVATAR_UNLOCK_LEVEL[i] || 1;
+    const unlocked = myLevel >= needLevel;
+    const btn = document.createElement('div');
+    btn.className = 'avatar-option' + (currentUserProfile && currentUserProfile.avatar===a ? ' active' : '');
+    btn.style.position = 'relative';
+    btn.style.opacity = unlocked ? '1' : '0.35';
+    const img = document.createElement('img');
+    img.src = a; img.alt='avatar'; img.style.width='100%'; img.style.height='100%'; img.style.borderRadius='12px';
+    btn.appendChild(img);
+    if(!unlocked){
+      const lock = document.createElement('div');
+      lock.textContent = '🔒 Niv.'+needLevel;
+      lock.style.cssText = 'position:absolute; inset:0; display:flex; align-items:center; justify-content:center; font-size:0.62rem; color:#fff; background:rgba(0,0,0,0.5); border-radius:12px;';
+      btn.appendChild(lock);
+    }
+    btn.addEventListener('click', function(){
+      if(!unlocked || !auth.currentUser) return;
+      db.ref('users/'+auth.currentUser.uid+'/avatar').set(a);
+    });
+    grid.appendChild(btn);
+  });
 }
 
 /* ===================== ACTIVE GAMES (home preview) ===================== */
@@ -1466,9 +1671,9 @@ const Online = (function(){
   }
   function inviteFriend(){
     if(!roomCode) return;
-    const text = 'Rejoins-moi sur Racines ! Utilise le code de salle : ' + roomCode + ' dans "Jouer en ligne".';
+    const text = 'Rejoins-moi sur FasoRacine ! Utilise le code de salle : ' + roomCode + ' dans "Jouer en ligne".';
     if(navigator.share){
-      navigator.share({ title:'Racines', text:text }).catch(function(){});
+      navigator.share({ title:'FasoRacine', text:text }).catch(function(){});
     } else if(navigator.clipboard){
       navigator.clipboard.writeText(text).then(function(){
         lobbyStatus.textContent = 'Message copié ! Colle-le pour inviter un ami.';
@@ -1517,7 +1722,8 @@ const Online = (function(){
     roomRef.child('state').on('value', function(snap){
       state = snap.val();
       if(state) render();
-    });}
+    });
+  }
   function resumeRoom(code, player, game){
     roomCode = code; myPlayer = player; pendingGame = game;
     roomRef = db.ref('rooms/'+code);
@@ -1566,6 +1772,15 @@ const Online = (function(){
       sfxWin(); pulseWin(statusEl);
       const user = auth.currentUser;
       if(user && roomCode){ db.ref('users/'+user.uid+'/activeGames/'+roomCode).remove(); }
+      if(roomCode){
+        roomRef.once('value').then(function(snap){
+          const val = snap.val();
+          if(val && val.tournament && typeof Tournament!=='undefined'){
+            const winnerUid = state.winner===1 ? val.p1uid : val.p2uid;
+            Tournament.reportResult(roomCode, winnerUid);
+          }
+        });
+      }
     }
   }
 
@@ -1576,8 +1791,7 @@ const Online = (function(){
     const r2=Math.floor(to/SIZE), c2=to%SIZE;
     const dr=r2-r1, dc=c2-c1;
     if((Math.abs(dr)===2 && dc===0) || (dr===0 && Math.abs(dc)===2)){
-      const mid = idx6(r1+dr/2, c1+dc/2);
-      if(board[mid] && board[mid]!==turn && !board[to]) return true;
+      const mid = idx6(r1+dr/2, c1+dc/2);if(board[mid] && board[mid]!==turn && !board[to]) return true;
     }
     return false;
   }
@@ -1810,8 +2024,169 @@ const Online = (function(){
     pushState(ns);
   }
 
-  return { chooseGame, createRoom, joinRoom, leaveRoom, cancelWaitingRoom, inviteFriend, resumeRoom, roll: ludoRoll };
+  return { chooseGame, createRoom, joinRoom, leaveRoom, cancelWaitingRoom, inviteFriend, resumeRoom, buildInitialState: initialStateFor, roll: ludoRoll };
 })();
+
+/* ===================== TOURNAMENT (8 players, single elimination) ===================== */
+const TOURNAMENT_GAME = 'yote';
+const Tournament = (function(){
+  let data = null;
+  let started = false;
+
+  function init(){
+    if(started) return;
+    started = true;
+    db.ref('tournaments/current').on('value', function(snap){
+      data = snap.val();
+      renderTournament();
+    });
+  }
+
+  function randomRoomCode(){ return 'T'+String(Math.floor(1000 + Math.random()*9000)); }
+
+  function join(){
+    const user = auth.currentUser;
+    if(!user || !currentUserProfile){ alert('Connectez-vous pour participer au tournoi.'); return; }
+    const ref = db.ref('tournaments/current');
+    ref.transaction(function(t){
+      if(!t) t = { status:'open', size:8, players:{} };
+      if(t.status !== 'open') return t;
+      t.players = t.players || {};
+      if(t.players[user.uid]) return t;
+      const count = Object.keys(t.players).length;
+      if(count >= t.size) return t;
+      t.players[user.uid] = { name: currentUserProfile.displayName||'Joueur', avatar: currentUserProfile.avatar||'', country: currentUserProfile.country||'' };
+      if(Object.keys(t.players).length >= t.size){
+        t.status = 'in_progress';
+        t.bracket = generateBracket(t.players);
+      }
+      return t;
+    });
+  }
+
+  function generateBracket(players){
+    const uids = Object.keys(players);
+    for(let i=uids.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); const tmp=uids[i]; uids[i]=uids[j]; uids[j]=tmp; }
+    const round1 = [];
+    for(let i=0;i<uids.length;i+=2){
+      round1.push({ p1: uids[i], p2: uids[i+1]||null, winner:null, roomCode: randomRoomCode() });
+    }
+    const rounds = [round1];
+    let prevCount = round1.length;
+    while(prevCount > 1){
+      const round = [];
+      for(let i=0;i<prevCount/2;i++) round.push({ p1:null, p2:null, winner:null, roomCode:null });
+      rounds.push(round);
+      prevCount = round.length;
+    }
+    return { rounds: rounds };
+  }
+
+  function playMatch(match){
+    const user = auth.currentUser;
+    if(!user) return;
+    if(!match.p1 || !match.p2){ alert("En attente de l'adversaire pour ce tour."); return; }
+    const mySlot = (match.p1===user.uid) ? 1 : 2;
+    const roomRef = db.ref('rooms/'+match.roomCode);
+    roomRef.once('value').then(function(snap){
+      if(!snap.exists()){
+        roomRef.set({ playerCount:2, tournament:true, p1uid:match.p1, p2uid:match.p2, state: Online.buildInitialState(TOURNAMENT_GAME) });}
+      Online.resumeRoom(match.roomCode, mySlot, TOURNAMENT_GAME);
+    });
+  }
+
+  function reportResult(roomCode, winnerUid){
+    if(!winnerUid) return;
+    const ref = db.ref('tournaments/current');
+    ref.transaction(function(t){
+      if(!t || !t.bracket) return t;
+      let ri=-1, mi=-1;
+      t.bracket.rounds.forEach(function(round, i){
+        round.forEach(function(m, j){ if(m.roomCode===roomCode && !m.winner){ ri=i; mi=j; } });
+      });
+      if(ri===-1) return t;
+      t.bracket.rounds[ri][mi].winner = winnerUid;
+      if(ri+1 < t.bracket.rounds.length){
+        const next = t.bracket.rounds[ri+1][Math.floor(mi/2)];
+        if(mi%2===0) next.p1 = winnerUid; else next.p2 = winnerUid;
+        if(next.p1 && next.p2) next.roomCode = randomRoomCode();
+      } else {
+        t.status = 'finished';
+        t.champion = winnerUid;
+      }
+      return t;
+    }).then(function(res){
+      if(res.committed){
+        const t = res.snapshot.val();
+        if(t && t.status==='finished' && t.champion){
+          db.ref('users/'+t.champion+'/champion').set(true);
+        }
+      }
+    });
+  }
+
+  function resetTournament(){
+    if(!currentUserProfile) return;
+    db.ref('tournaments/current').remove();
+  }
+
+  function playerName(uid){
+    if(!data || !data.players || !data.players[uid]) return '—';
+    return data.players[uid].name;
+  }
+
+  function renderTournament(){
+    const body = document.getElementById('tournament-body');
+    if(!body) return;
+    if(!data || data.status==='open' || !data.players){
+      const count = data && data.players ? Object.keys(data.players).length : 0;
+      const alreadyIn = auth.currentUser && data && data.players && data.players[auth.currentUser.uid];
+      body.innerHTML =
+        '<div class="info-box" style="margin-top:0;">Tournoi à 8 joueurs, élimination directe, jeu : Yoté. Dès que 8 joueurs se sont inscrits, le tableau se génère automatiquement.</div>'+
+        '<div style="text-align:center; font-family:Fraunces,serif; font-size:2rem; color:var(--accent); margin:1.4rem 0 0.4rem;">'+count+' / 8</div>'+
+        '<div class="controls-row">'+(alreadyIn
+          ? '<span style="color:var(--ink-dim); font-size:0.85rem;">Vous êtes inscrit(e), en attente des autres joueurs...</span>'
+          : '<button class="action primary" onclick="Tournament.join()">Participer</button>') +
+        '</div>';
+      return;
+    }
+    if(data.status==='in_progress' && data.bracket){
+      let html = '<div class="info-box" style="margin-top:0;">Tournoi en cours — Yoté, élimination directe.</div>';
+      data.bracket.rounds.forEach(function(round, ri){
+        html += '<div class="eyebrow" style="margin-top:1.4rem;">'+round0Label(data.bracket.rounds.length, ri)+'</div>';
+        round.forEach(function(m){
+          const p1n = m.p1 ? playerName(m.p1) : 'À déterminer';
+          const p2n = m.p2 ? playerName(m.p2) : 'À déterminer';
+          const isMine = auth.currentUser && (m.p1===auth.currentUser.uid || m.p2===auth.currentUser.uid) && !m.winner;
+          html += '<div class="active-game-card" style="cursor:default;">'+
+            '<div class="active-game-info"><div class="g-name">'+p1n+' <span style="opacity:0.5;">vs</span> '+p2n+'</div>'+
+            '<div class="g-status">'+(m.winner ? ('Vainqueur : '+playerName(m.winner)) : (isMine ? 'À vous de jouer' : 'En attente'))+'</div></div>'+
+            (isMine ? '<button class="action primary" onclick=\'Tournament.playMatch('+JSON.stringify(m)+')\'>Jouer</button>' : '') +
+            '</div>';
+        });
+      });
+      body.innerHTML = html;
+      return;
+    }
+    if(data.status==='finished' && data.champion){
+      body.innerHTML =
+        '<div style="text-align:center; padding:2rem 0;">'+
+        '<div style="font-size:3rem;">🏆</div>'+
+        '<div class="eyebrow" style="margin-top:1rem;">Champion du tournoi</div>'+
+        '<div style="font-family:Fraunces,serif; font-size:1.6rem; color:var(--accent); margin-top:0.4rem;">'+playerName(data.champion)+'</div>'+
+        '</div>';
+      return;
+    }
+  }
+  function round0Label(total, ri){
+    const namesFromEnd = ['Finale','Demi-finales','Quarts de finale','Huitièmes de finale'];
+    const fromEnd = total - 1 - ri;
+    return namesFromEnd[fromEnd] || ('Tour '+(ri+1));
+  }
+
+  return { init, join, playMatch, reportResult, resetTournament };
+})();
+Tournament.init();
 </script>
 </body>
 </html>

@@ -1,11 +1,9 @@
 {
-  "rules": {
-    "rooms": { ".read": true, ".write": true },
-    "users": {
-      ".read": "auth != null",
-      "$uid": {
-        ".write": "auth != null && auth.uid === $uid"
-      }
-    }
-  }
+  "name": "FasoRacine",
+  "short_name": "FasoRacine",
+  "description": "5 jeux traditionnels africains : Awalé, Yoté, Dara, Achi, Ludo.",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#15110D",
+  "theme_color": "#15110D"
 }
